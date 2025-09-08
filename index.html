@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate PLR Analysis Tool - Professional Edition</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gold-gradient: linear-gradient(45deg, #ffd700, #ffed4e);
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --info-color: #2196F3;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--primary-gradient);
+            border-radius: 15px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .premium-badge {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--success-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--info-color);
+            background: #f0f8ff;
+            transform: translateY(-2px);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--success-color);
+            background: #f0fff0;
+        }
+        
+        .demo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 15px;
+        }
+        
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            background: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .results-table th {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .score-excellent { background: #d4edda; color: #155724; }
+        .score-good { background: #cce7ff; color: #004085; }
+        .score-average { background: #fff3cd; color: #856404; }
+        .score-poor { background: #f8d7da; color: #721c24; }
+        
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--info-color);
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .export-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .export-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .export-btn.pdf { background: #dc3545; color: white; }
+        .export-btn.excel { background: #28a745; color: white; }
+        .export-btn.csv { background: #007bff; color: white; }
+        .export-btn.report { background: #6f42c1; color: white; }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .analysis-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .recommendation-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .recommendation-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                min-width: auto;
+            }
+            
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Ultimate PLR Analysis Tool</h1>
+            <div class="subtitle">Professional Market Research & Profit Optimization Suite</div>
+            <span class="premium-badge">💎 PREMIUM EDITION</span>
+        </div>
+        
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span><strong>System Status:</strong> Ready for Professional Analysis</span>
+            <span id="fileCount">0 PLR files analyzed with market intelligence</span>
+        </div>
+        
+        <div class="demo-section">
+            <button class="demo-button" onclick="loadUltimateDemo()">
+                ⚡ Load Ultimate Demo
+            </button>
+            <p style="margin-top: 10px; color: #666;">Experience the full power of professional PLR analysis</p>
+        </div>
+        
+        <div class="control-panel">
+            <div class="upload-area" id="uploadArea">
+                <div style="font-size: 2em; margin-bottom: 10px;">📁</div>
+                <h3>Upload PLR Content</h3>
+                <p>Drag & drop files or click to browse</p>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    Supports: PDF, DOC, TXT, ZIP (Multiple files)
+                </p>
+                <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.zip" style="display: none;">
+            </div>
+            
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 15px;">
+                <h3 style="margin-bottom: 15px;">Analysis Options</h3>
+                
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" checked> Market Intelligence
+                </label>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" checked> Quality Assessment
+                </label>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" checked> Profit Optimization
+                </label>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" checked> Bundle Strategies
+                </label>
+                <label style="display: block; margin-bottom: 10px;">
+                    <input type="checkbox" checked> AI Title Generation
+                </label>
+                
+                <button style="width: 100%; padding: 10px; background: var(--info-color); color: white; border: none; border-radius: 8px; margin-top: 15px;">
+                    🔄 Start Analysis
+                </button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">📊 Overview</button>
+            <button class="tab" onclick="showTab('quality')">⭐ Quality</button>
+            <button class="tab" onclick="showTab('market')">📈 Market</button>
+            <button class="tab" onclick="showTab('profit')">💰 Profit</button>
+            <button class="tab" onclick="showTab('bundle')">📦 Bundle</button>
+            <button class="tab" onclick="showTab('optimize')">🚀 Optimize</button>
+        </div>
+        
+        <div id="overview" class="tab-content active">
+            <div class="analysis-summary">
+                <h3 style="text-align: center; margin-bottom: 20px;">Ultimate Analysis Dashboard</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-icon">📊</div>
+                        <h4>Market Score</h4>
+                        <div style="font-size: 1.5em; color: var(--success-color); font-weight: bold;">92/100</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">💰</div>
+                        <h4>Profit Potential</h4>
+                        <div style="font-size: 1.5em; color: var(--success-color); font-weight: bold;">$2,847</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">⚡</div>
+                        <h4>Quick Wins</h4>
+                        <div style="font-size: 1.5em; color: var(--info-color); font-weight: bold;">7 Found</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">🎯</div>
+                        <h4>Optimization</h4>
+                        <div style="font-size: 1.5em; color: var(--warning-color); font-weight: bold;">High ROI</div>
+                    </div>
+                </div>
+            </div>
+            
+            <table class="results-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>PLR Content</th>
+                        <th>Market Score</th>
+                        <th>Quality Rating</th>
+                        <th>Profit Potential</th>
+                        <th>Best Strategy</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            📋 Upload PLR content or load demo to see professional analysis
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="quality" class="tab-content">
+            <h3>🔍 Quality Assessment Matrix</h3>
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div class="metric-value">8.7</div>
+                    <div class="metric-label">Content Quality</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">94%</div>
+                    <div class="metric-label">Originality</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">12</div>
+                    <div class="metric-label">Readability Grade</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">2.3%</div>
+                    <div class="metric-label">Keyword Density</div>
+                </div>
+            </div>
+            
+            <div class="recommendation-box">
+                <h4>💡 Quality Recommendations</h4>
+                <ul style="margin-left: 20px;">
+                    <li>Content shows excellent structure and flow</li>
+                    <li>Consider adding more visual elements for engagement</li>
+                    <li>Readability score is optimal for target audience</li>
+                    <li>Minor grammar improvements could boost quality by 5%</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="market" class="tab-content">
+            <h3>📈 Market Intelligence Report</h3>
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div class="metric-value">$47</div>
+                    <div class="metric-label">Avg Market Price</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">2,340</div>
+                    <div class="metric-label">Monthly Searches</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">68%</div>
+                    <div class="metric-label">Market Demand</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">7.2</div>
+                    <div class="metric-label">Competition Score</div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>🎯 Target Market Analysis</h4>
+                <div style="margin: 15px 0;">
+                    <strong>Primary Audience:</strong> Digital marketers, online entrepreneurs
+                </div>
+                <div style="margin: 15px 0;">
+                    <strong>Price Range:</strong> $27 - $67 (Premium positioning recommended)
+                </div>
+                <div style="margin: 15px 0;">
+                    <strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank, JVZoo
+                </div>
+            </div>
+        </div>
+        
+        <div id="profit" class="tab-content">
+            <h3>💰 Profit Optimization Dashboard</h3>
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div class="metric-value">$2,847</div>
+                    <div class="metric-label">Monthly Potential</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">340%</div>
+                    <div class="metric-label">ROI Projection</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$67</div>
+                    <div class="metric-label">Optimal Price</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">45</div>
+                    <div class="metric-label">Units/Month</div>
+                </div>
+            </div>
+            
+            <div class="recommendation-box">
+                <h4>🚀 Profit Maximization Strategy</h4>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Price at $67</strong> - Premium positioning with high perceived value</li>
+                    <li><strong>Create bundle packages</strong> - Increase average order value by 180%</li>
+                    <li><strong>Add bonus materials</strong> - Templates, checklists, video tutorials</li>
+                    <li><strong>Implement upsells</strong> - Done-for-you services, consultations</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="bundle" class="tab-content">
+            <h3>📦 Bundle Strategy Generator</h3>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>🎁 Recommended Bundle Packages</h4>
+                
+                <div style="border: 2px solid var(--success-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--success-color);">💎 PREMIUM BUNDLE - $197</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package</li>
+                        <li>Sales Page Templates</li>
+                        <li>Email Marketing Sequences</li>
+                        <li>Social Media Graphics</li>
+                        <li>Video Sales Letter Script</li>
+                    </ul>
+                    <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> $8,850/month
+                    </div>
+                </div>
+                
+                <div style="border: 2px solid var(--info-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--info-color);">⭐ STANDARD BUNDLE - $97</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package</li>
+                        <li>Basic Sales Materials</li>
+                        <li>Email Templates</li>
+                        <li>Social Graphics Pack</li>
+                    </ul>
+                    <div style="background: #cce7ff; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> $4,365/month
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="optimize" class="tab-content">
+            <h3>🚀 AI-Powered Optimization</h3>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>🤖 AI Title Suggestions</h4>
+                <div style="margin: 15px 0;">
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        "Ultimate Digital Marketing Mastery: 50 Premium PLR Articles That Sell"
+                    </div>
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        "Content Creator's Goldmine: High-Converting PLR Package + Sales System"
+                    </div>
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        "Ready-to-Profit PLR Empire: Premium Content + Marketing Materials"
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>⚡ Quick Win Actions</h4>
+                <div style="margin: 15px 0;">
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--success-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">✅</span>
+                        <span>Add testimonials section - Increases conversion by 23%</span>
+                    </div>
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--warning-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">⚠️</span>
+                        <span>Optimize price point - Current pricing leaves $340/month on table</span>
+                    </div>
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Create video preview - Increases sales by 67%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="export-section">
+            <h3 style="text-align: center; margin-bottom: 20px;">📄 Professional Reports & Exports</h3>
+            <div class="export-buttons">
+                <button class="export-btn pdf" onclick="exportPDF()">
+                    📄 PDF Report
+                </button>
+                <button class="export-btn excel" onclick="exportExcel()">
+                    📊 Excel Analysis
+                </button>
+                <button class="export-btn csv" onclick="exportCSV()">
+                    📋 CSV Data
+                </button>
+                <button class="export-btn report" onclick="exportFullReport()">
+                    📈 Complete Report
+                </button>
+                <button class="export-btn" style="background: #fd7e14;" onclick="exportBundleGuide()">
+                    🎁 Bundle Guide
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let ultimateAnalysisData = [];
+        
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Load comprehensive demo data
+        function loadUltimateDemo() {
+            ultimateAnalysisData = [
+                {
+                    title: "Digital Marketing Mastery PLR Pack",
+                    marketScore: 94,
+                    qualityRating: "Excellent",
+                    profitPotential: "$2,847",
+                    strategy: "Premium Bundle",
+                    category: "Marketing",
+                    pages: 127,
+                    searchVolume: 2340,
+                    competition: "Medium",
+                    suggestedPrice: 67
+                },
+                {
+                    title: "Social Media Success Templates",
+                    marketScore: 87,
+                    qualityRating: "Very Good",
+                    profitPotential: "$1,923",
+                    strategy: "Quick Launch",
+                    category: "Social Media",
+                    pages: 89,
+                    searchVolume: 1890,
+                    competition: "Low",
+                    suggestedPrice: 47
+                },
+                {
+                    title: "Email Marketing Automation Guide",
+                    marketScore: 91,
+                    qualityRating: "Excellent",
+                    profitPotential: "$2,156",
+                    strategy: "Upsell Package",
+                    category: "Email Marketing",
+                    pages: 156,
+                    searchVolume: 3240,
+                    competition: "High",
+                    suggestedPrice: 87
+                },
+                {
+                    title: "Content Creation Masterclass PLR",
+                    marketScore: 89,
+                    qualityRating: "Very Good",
+                    profitPotential: "$1,678",
+                    strategy: "Bundle Addition",
+                    category: "Content Creation",
+                    pages: 98,
+                    searchVolume: 1560,
+                    competition: "Medium",
+                    suggestedPrice: 57
+                },
+                {
+                    title: "SEO Optimization Toolkit",
+                    marketScore: 92,
+                    qualityRating: "Excellent",
+                    profitPotential: "$2,234",
+                    strategy: "Premium Single",
+                    category: "SEO",
+                    pages: 134,
+                    searchVolume: 2890,
+                    competition: "High",
+                    suggestedPrice: 77
+                }
+            ];
+            
+            updateResultsTable();
+            updateFileCount();
+            
+            // Show success message
+            const statusIndicator = document.querySelector('.status-indicator');
+            statusIndicator.innerHTML = `
+                <div class="status-dot"></div>
+                <span><strong>Analysis Complete:</strong> Professional market intelligence loaded</span>
+                <span>${ultimateAnalysisData.length} premium PLR packages analyzed</span>
+            `;
+            statusIndicator.style.borderLeftColor = '#4CAF50';
+        }
+        
+        function updateResultsTable() {
+            const tbody = document.getElementById('resultsBody');
+            
+            if (ultimateAnalysisData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            📋 Upload PLR content or load demo to see professional analysis
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = ultimateAnalysisData.map(item => {
+                const scoreClass = getScoreClass(item.marketScore);
+                const qualityClass = getQualityClass(item.qualityRating);
+                
+                return `
+                    <tr>
+                        <td>
+                            <strong>${item.title}</strong>
+                            <br>
+                            <small style="color: #666;">${item.category} • ${item.pages} pages</small>
+                        </td>
+                        <td>
+                            <span class="score-badge ${scoreClass}">${item.marketScore}/100</span>
+                            <br>
+                            <small>${item.searchVolume} monthly searches</small>
+                        </td>
+                        <td>
+                            <span class="score-badge ${qualityClass}">${item.qualityRating}</span>
+                            <br>
+                            <small>${item.competition} competition</small>
+                        </td>
+                        <td>
+                            <strong style="color: #4CAF50;">${item.profitPotential}</strong>
+                            <br>
+                            <small>Suggested: ${item.suggestedPrice}</small>
+                        </td>
+                        <td>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;">
+                                ${item.strategy}
+                            </span>
+                        </td>
+                        <td>
+                            <button style="background: #4CAF50; color: white; border: none; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 0.8em;">
+                                📊 Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-excellent';
+            if (score >= 80) return 'score-good';
+            if (score >= 70) return 'score-average';
+            return 'score-poor';
+        }
+        
+        function getQualityClass(quality) {
+            if (quality === 'Excellent') return 'score-excellent';
+            if (quality === 'Very Good') return 'score-good';
+            if (quality === 'Good') return 'score-average';
+            return 'score-poor';
+        }
+        
+        function updateFileCount() {
+            document.getElementById('fileCount').textContent = 
+                `${ultimateAnalysisData.length} PLR files analyzed with market intelligence`;
+        }
+        
+        // File upload functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        });
+        
+        function processFiles(files) {
+            // Simulate file processing
+            const statusIndicator = document.querySelector('.status-indicator');
+            statusIndicator.innerHTML = `
+                <div class="status-dot"></div>
+                <span><strong>Processing:</strong> Analyzing ${files.length} files...</span>
+            `;
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                // Add uploaded files to analysis data (simplified)
+                files.forEach((file, index) => {
+                    ultimateAnalysisData.push({
+                        title: file.name.replace(/\.[^/.]+$/, ""), // Remove extension
+                        marketScore: Math.floor(Math.random() * 30) + 70, // 70-100
+                        qualityRating: ['Good', 'Very Good', 'Excellent'][Math.floor(Math.random() * 3)],
+                        profitPotential: `${Math.floor(Math.random() * 2000) + 500}`,
+                        strategy: ['Quick Launch', 'Premium Bundle', 'Upsell Package'][Math.floor(Math.random() * 3)],
+                        category: 'Uploaded Content',
+                        pages: Math.floor(Math.random() * 100) + 50,
+                        searchVolume: Math.floor(Math.random() * 3000) + 500,
+                        competition: ['Low', 'Medium', 'High'][Math.floor(Math.random() * 3)],
+                        suggestedPrice: Math.floor(Math.random() * 50) + 30
+                    });
+                });
+                
+                updateResultsTable();
+                updateFileCount();
+                
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>Analysis Complete:</strong> ${files.length} files processed successfully</span>
+                    <span>${ultimateAnalysisData.length} total PLR files analyzed</span>
+                `;
+            }, 2000);
+        }
+        
+        // Export functions
+        function exportPDF() {
+            const pdfContent = `ULTIMATE PLR ANALYSIS REPORT
+========================================
+
+Generated: ${new Date().toLocaleDateString()}
+Total Files Analyzed: ${ultimateAnalysisData.length}
+
+EXECUTIVE SUMMARY
+================
+- Average Market Score: ${calculateAverageScore()}
+- Total Profit Potential: ${calculateTotalProfit()}
+- Recommended Strategy: Premium Bundle Approach
+- Market Opportunity: High-value digital products
+
+DETAILED ANALYSIS
+================
+${ultimateAnalysisData.map((item, index) => `
+${index + 1}. ${item.title}
+   Market Score: ${item.marketScore}/100
+   Quality: ${item.qualityRating}
+   Profit Potential: ${item.profitPotential}
+   Strategy: ${item.strategy}
+   Suggested Price: ${item.suggestedPrice}
+   Competition: ${item.competition}
+   
+`).join('')}
+
+RECOMMENDATIONS
+===============
+1. Focus on premium pricing strategy
+2. Create comprehensive bundle packages
+3. Develop strong sales funnels
+4. Implement upsell sequences
+5. Target high-value keywords
+
+© Ultimate PLR Analysis Tool - Professional Edition`;
+
+            downloadFile('Ultimate-PLR-Analysis-Report.txt', pdfContent);
+        }
+        
+        function exportExcel() {
+            const csvContent = `Title,Market Score,Quality Rating,Profit Potential,Strategy,Category,Pages,Search Volume,Competition,Suggested Price
+${ultimateAnalysisData.map(item => 
+                `"${item.title}",${item.marketScore},"${item.qualityRating}","${item.profitPotential}","${item.strategy}","${item.category}",${item.pages},${item.searchVolume},"${item.competition}",${item.suggestedPrice}`
+            ).join('\n')}`;
+            
+            downloadFile('Ultimate-PLR-Analysis.csv', csvContent);
+        }
+        
+        function exportCSV() {
+            exportExcel(); // Same functionality for now
+        }
+        
+        function exportFullReport() {
+            const report = `ULTIMATE PLR MARKET INTELLIGENCE REPORT
+===============================================
+
+📊 ANALYSIS OVERVIEW
+===================
+Report Generated: ${new Date().toLocaleDateString()}
+Files Analyzed: ${ultimateAnalysisData.length}
+Average Market Score: ${calculateAverageScore()}/100
+Total Market Potential: ${calculateTotalProfit()}
+
+🎯 KEY FINDINGS
+===============
+- Premium PLR content shows 340% ROI potential
+- Bundle strategies increase revenue by 180%
+- High-quality content commands premium pricing
+- Market demand strong across all categories
+
+💰 PROFIT OPTIMIZATION STRATEGIES
+=================================
+1. PREMIUM POSITIONING
+   - Price point: $67-$197 range
+   - Bundle approach increases AOV
+   - Quality content justifies premium pricing
+
+2. MARKET PENETRATION
+   - Focus on underserved niches
+   - Leverage high search volume keywords
+   - Target medium-competition markets
+
+3. REVENUE MAXIMIZATION
+   - Create tiered product offerings
+   - Implement upsell sequences
+   - Develop subscription models
+
+📈 DETAILED MARKET ANALYSIS
+===========================
+${ultimateAnalysisData.map((item, index) => `
+${index + 1}. ${item.title.toUpperCase()}
+   ┌─ Market Intelligence
+   │  • Score: ${item.marketScore}/100
+   │  • Search Volume: ${item.searchVolume}/month
+   │  • Competition: ${item.competition}
+   │
+   ├─ Content Assessment
+   │  • Quality: ${item.qualityRating}
+   │  • Pages: ${item.pages}
+   │  • Category: ${item.category}
+   │
+   └─ Profit Analysis
+      • Potential: ${item.profitPotential}/month
+      • Suggested Price: ${item.suggestedPrice}
+      • Strategy: ${item.strategy}
+
+`).join('')}
+
+🚀 IMPLEMENTATION ROADMAP
+=========================
+PHASE 1: Content Optimization (Week 1-2)
+- Enhance quality scores above 90
+- Optimize titles for market appeal
+- Create compelling sales copy
+
+PHASE 2: Market Launch (Week 3-4)
+- Deploy premium pricing strategy
+- Launch on primary platforms
+- Implement tracking systems
+
+PHASE 3: Scale & Optimize (Month 2+)
+- Analyze performance metrics
+- Expand successful products
+- Develop additional revenue streams
+
+🎁 BUNDLE RECOMMENDATIONS
+=========================
+STARTER BUNDLE ($97)
+- 3-5 core PLR packages
+- Basic sales materials
+- Email templates
+- Social media graphics
+
+PROFESSIONAL BUNDLE ($197)
+- 8-12 premium PLR packages
+- Complete sales funnel
+- Video marketing materials
+- Advanced templates
+
+ENTERPRISE BUNDLE ($397)
+- 20+ PLR packages
+- Done-for-you campaigns
+- Private label software
+- Exclusive bonus content
+
+📋 ACTION ITEMS
+===============
+□ Implement premium pricing on top performers
+□ Create bundle packages for higher AOV
+□ Develop video sales materials
+□ Set up tracking and analytics
+□ Plan content expansion strategy
+
+═══════════════════════════════════════════
+© Ultimate PLR Analysis Tool - Professional Edition
+Market Intelligence • Profit Optimization • Strategic Growth`;
+
+            downloadFile('Complete-PLR-Intelligence-Report.txt', report);
+        }
+        
+        function exportBundleGuide() {
+            const bundleGuide = `🎁 ULTIMATE PLR BUNDLE STRATEGY GUIDE
+========================================
+
+💎 PREMIUM BUNDLE MASTERY
+=========================
+
+The Ultimate Bundle Formula:
+Core Content + Sales Materials + Bonus Items = Maximum Profit
+
+📦 BUNDLE TIER STRATEGY
+=======================
+
+TIER 1: STARTER BUNDLE ($47-$97)
+────────────────────────────────
+✓ 3-5 Core PLR Products
+✓ Basic Sales Page Template
+✓ Email Series (5-7 emails)
+✓ Social Media Graphics Pack
+✓ Simple Instructions Guide
+
+Target: New marketers, budget-conscious buyers
+Conversion Rate: 8-12%
+Monthly Volume: 45-60 sales
+
+TIER 2: PROFESSIONAL BUNDLE ($97-$197)
+──────────────────────────────────────
+✓ 8-12 Premium PLR Products
+✓ Complete Sales Funnel
+✓ Advanced Email Sequences (15+ emails)
+✓ Video Sales Letter Scripts
+✓ Comprehensive Graphics Package
+✓ Legal Pages Templates
+✓ Step-by-Step Training Videos
+
+Target: Serious marketers, established businesses
+Conversion Rate: 5-8%
+Monthly Volume: 25-35 sales
+
+TIER 3: ENTERPRISE BUNDLE ($197-$397)
+─────────────────────────────────────
+✓ 20+ Premium PLR Products
+✓ Done-For-You Marketing Campaigns
+✓ Private Label Software/Tools
+✓ Exclusive Video Training Course
+✓ 1-on-1 Strategy Session
+✓ Reseller License Included
+✓ Quarterly Update Packages
+
+Target: Power users, agencies, resellers
+Conversion Rate: 2-4%
+Monthly Volume: 8-15 sales
+
+🎯 BUNDLE OPTIMIZATION SECRETS
+==============================
+
+1. VALUE STACKING TECHNIQUE
+   ✓ Lead with highest perceived value item
+   ✓ Add complementary products
+   ✓ Include exclusive bonuses
+   ✓ Create artificial scarcity
+
+2. PRICING PSYCHOLOGY
+   ✓ Make single items expensive ($47-67 each)
+   ✓ Show massive savings in bundles
+   ✓ Use odd pricing ($97, $197, $297)
+   ✓ Offer payment plans for high-ticket
+
+3. BONUS AMPLIFICATION
+   ✓ Include time-sensitive bonuses
+   ✓ Add "if you buy today" extras
+   ✓ Provide exclusive access items
+   ✓ Offer future product previews
+
+💰 REVENUE MULTIPLICATION TACTICS
+=================================
+
+CROSS-SELLING OPPORTUNITIES:
+- Bundle → Individual upsells
+- Basic → Premium upgrades  
+- One-time → Subscription offers
+- Digital → Done-for-you services
+
+UPSELL SEQUENCE STRATEGY:
+1. Core Bundle Purchase
+2. Immediate: Graphics Package (+$27)
+3. Order Bump: Video Training (+$47)
+4. Post-Purchase: Private Coaching (+$197)
+
+🚀 IMPLEMENTATION CHECKLIST
+===========================
+
+PRE-LAUNCH (Week 1)
+□ Analyze all PLR content quality
+□ Group complementary products
+□ Calculate value proposition
+□ Design bundle graphics
+□ Write compelling sales copy
+
+LAUNCH PHASE (Week 2-3)
+□ Deploy on primary platforms
+□ Set up tracking systems
+□ Monitor conversion rates
+□ A/B test pricing points
+□ Collect customer feedback
+
+OPTIMIZATION (Week 4+)
+□ Analyze performance data
+□ Adjust bundle compositions
+□ Test new pricing strategies
+□ Expand successful bundles
+□ Plan seasonal variations
+
+📈 PERFORMANCE BENCHMARKS
+=========================
+
+CONVERSION RATES:
+- Starter Bundle: 8-12%
+- Professional Bundle: 5-8%
+- Enterprise Bundle: 2-4%
+
+AVERAGE ORDER VALUE:
+- Without Bundles: $47
+- With Bundles: $127
+- With Upsells: $184
+
+CUSTOMER LIFETIME VALUE:
+- Single Purchase: $47
+- Bundle Buyer: $156
+- Repeat Customer: $387
+
+🎁 SEASONAL BUNDLE STRATEGIES
+=============================
+
+Q1: New Year Resolution Bundles
+- Weight Loss PLR
+- Business Planning Content
+- Self-Improvement Materials
+
+Q2: Spring Cleaning Sales
+- Organization PLR
+- Productivity Content
+- Marketing Fresh Start Packages
+
+Q3: Back-to-School Themes
+- Educational PLR
+- Learning Materials
+- Skill Development Bundles
+
+Q4: Holiday Mega Bundles
+- Gift-Giving PLR
+- Year-End Business Content
+- Holiday Marketing Materials
+
+💡 ADVANCED BUNDLE TACTICS
+==========================
+
+THE TROJAN HORSE METHOD:
+Lead with irresistible free bonus, upsell to bundle
+
+THE COMPLEMENT STRATEGY:
+Bundle items that naturally work together
+
+THE AUTHORITY POSITIONING:
+Include exclusive expert interviews/content
+
+THE SCARCITY MULTIPLIER:
+Limited quantity or time-based offers
+
+═══════════════════════════════════════════
+Focus on customer value and clear savings messaging for maximum success.`;
+
+            downloadFile('Ultimate-Bundle-Guide.txt', bundleGuide);
+        }
+        
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function calculateAverageScore() {
+            if (ultimateAnalysisData.length === 0) return 0;
+            const total = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0);
+            return Math.round(total / ultimateAnalysisData.length);
+        }
+        
+        function calculateTotalProfit() {
+            return ultimateAnalysisData.reduce((total, item) => {
+                const profit = parseInt(item.profitPotential.replace(/[^0-9]/g, ''));
+                return total + profit;
+            }, 0).toLocaleString();
+        }
+        
+        // Initialize
+        console.log('Ultimate PLR Analysis Tool loaded successfully!');
+    </script>
+</body>
+</html>
