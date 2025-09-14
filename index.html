@@ -411,19 +411,26 @@
         }
         
         .tooltip {
-            position: absolute;
-            background: rgba(0,0,0,0.9);
+            position: fixed;
+            background: rgba(0,0,0,0.95);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border-radius: 8px;
-            font-size: 0.9em;
-            max-width: 250px;
-            z-index: 1000;
+            font-size: 0.85em;
+            max-width: 350px;
+            min-width: 200px;
+            z-index: 10000;
             opacity: 0;
             transform: translateY(-10px);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             pointer-events: none;
-            white-space: nowrap;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            max-height: 300px;
+            overflow-y: auto;
         }
         
         .tooltip.show {
@@ -434,12 +441,15 @@
         .tooltip::after {
             content: '';
             position: absolute;
+            border: 6px solid;
+            border-color: rgba(0,0,0,0.95) transparent transparent transparent;
             top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(0,0,0,0.9) transparent transparent transparent;
+            left: 20px;
+        }
+        
+        .tooltip.tooltip-bottom::after {
+            top: -12px;
+            border-color: transparent transparent rgba(0,0,0,0.95) transparent;
         }
         
         .hidden-section {
@@ -490,17 +500,17 @@
         </div>
         
         <div class="demo-section">
-            <button class="demo-button" onclick="loadUltimateDemo()" data-tooltip="Load sample PLR data to test all features and see professional analysis in action">
+            <button class="demo-button" onclick="loadUltimateDemo()" data-tooltip="Load sample PLR data to test all features.<br><br>This will populate the tool with 5 professional PLR packages to demonstrate analysis capabilities.">
                 ⚡ Load Ultimate Demo
             </button>
-            <button class="clear-button" onclick="clearAllData()" data-tooltip="Remove all analyzed data and reset the tool to start fresh">
+            <button class="clear-button" onclick="clearAllData()" data-tooltip="Remove all analyzed data and reset tool.<br><br>This will clear all uploaded files and analysis results, returning to the initial state.">
                 🗑️ Clear Data
             </button>
             <p style="margin-top: 10px; color: #666;">Experience the full power of professional PLR analysis</p>
         </div>
         
         <div class="control-panel">
-            <div class="upload-area" id="uploadArea" data-tooltip="Upload your PLR files for analysis. Supports multiple file types including PDF, DOC, TXT, and ZIP archives">
+            <div class="upload-area" id="uploadArea" data-tooltip="Upload PLR files for comprehensive analysis.<br><br>Supported formats:<br>• PDF documents<br>• DOC/DOCX files<br>• TXT plain text<br>• ZIP archives<br><br>You can upload multiple files at once.">
                 <div style="font-size: 2em; margin-bottom: 10px;">📁</div>
                 <h3>Upload PLR Content</h3>
                 <p>Drag & drop files or click to browse</p>
@@ -513,35 +523,35 @@
             <div style="padding: 20px; background: #f8f9fa; border-radius: 15px;">
                 <h3 style="margin-bottom: 15px;">Analysis Options</h3>
                 
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Analyze market demand, competition levels, and search volume for your PLR content">
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Market Intelligence Analysis<br><br>Analyzes:<br>• Market demand levels<br>• Competition analysis<br>• Search volume data<br>• Pricing benchmarks<br>• Target audience insights">
                     <input type="checkbox" id="marketIntelligence" checked> Market Intelligence
                 </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Evaluate content quality, originality, readability, and professional standards">
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Quality Assessment Review<br><br>Evaluates:<br>• Content structure & flow<br>• Originality percentage<br>• Readability scores<br>• Professional standards<br>• Improvement recommendations">
                     <input type="checkbox" id="qualityAssessment" checked> Quality Assessment
                 </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Calculate profit potential, optimal pricing, and ROI projections for maximum revenue">
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Profit Optimization Calculator<br><br>Calculates:<br>• Revenue projections<br>• Optimal pricing strategies<br>• ROI estimates<br>• Sales volume predictions<br>• Profit maximization tactics">
                     <input type="checkbox" id="profitOptimization" checked> Profit Optimization
                 </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Generate bundle packages and strategies to increase average order value">
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Bundle Strategy Generator<br><br>Creates:<br>• Package combinations<br>• Pricing tier recommendations<br>• Revenue multipliers<br>• Value stacking methods<br>• Upsell opportunities">
                     <input type="checkbox" id="bundleStrategies" checked> Bundle Strategies
                 </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="AI-powered title suggestions and optimization recommendations for better marketing">
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="AI-Powered Title Optimization<br><br>Generates:<br>• High-converting titles<br>• SEO-optimized headlines<br>• Market-tested phrases<br>• Emotional triggers<br>• Click-worthy descriptions">
                     <input type="checkbox" id="aiTitleGeneration" checked> AI Title Generation
                 </label>
                 
-                <button onclick="startAnalysis()" style="width: 100%; padding: 10px; background: var(--info-color); color: white; border: none; border-radius: 8px; margin-top: 15px; cursor: pointer;" data-tooltip="Begin comprehensive analysis of uploaded files using selected analysis options">
+                <button onclick="startAnalysis()" style="width: 100%; padding: 10px; background: var(--info-color); color: white; border: none; border-radius: 8px; margin-top: 15px; cursor: pointer;" data-tooltip="Begin comprehensive analysis process.<br><br>This will process all uploaded files using your selected analysis options and generate detailed reports.">
                     🔄 Start Analysis
                 </button>
             </div>
         </div>
         
         <div class="tabs">
-            <button class="tab active" onclick="showTab('overview')" data-tooltip="Main dashboard showing overall analysis results and key metrics">📊 Overview</button>
-            <button class="tab" onclick="showTab('quality')" data-tooltip="Detailed quality assessment including content scoring and improvement recommendations">⭐ Quality</button>
-            <button class="tab" onclick="showTab('market')" data-tooltip="Market intelligence report with demand analysis and competition data">📈 Market</button>
-            <button class="tab" onclick="showTab('profit')" data-tooltip="Profit optimization dashboard with pricing strategies and revenue projections">💰 Profit</button>
-            <button class="tab" onclick="showTab('bundle')" data-tooltip="Bundle strategy generator with package recommendations and revenue calculations">📦 Bundle</button>
-            <button class="tab" onclick="showTab('optimize')" data-tooltip="AI-powered optimization suggestions and quick-win action items">🚀 Optimize</button>
+            <button class="tab active" onclick="showTab('overview')" data-tooltip="Analysis Overview Dashboard<br><br>Shows:<br>• Key performance metrics<br>• Summary statistics<br>• Complete results table<br>• Overall recommendations">📊 Overview</button>
+            <button class="tab" onclick="showTab('quality')" data-tooltip="Quality Assessment Report<br><br>Displays:<br>• Content quality scores<br>• Originality percentages<br>• Readability analysis<br>• Improvement suggestions">⭐ Quality</button>
+            <button class="tab" onclick="showTab('market')" data-tooltip="Market Intelligence Analysis<br><br>Provides:<br>• Competition analysis<br>• Search volume data<br>• Price benchmarking<br>• Target audience insights">📈 Market</button>
+            <button class="tab" onclick="showTab('profit')" data-tooltip="Profit Optimization Center<br><br>Calculates:<br>• Revenue projections<br>• ROI estimates<br>• Pricing strategies<br>• Sales forecasts">💰 Profit</button>
+            <button class="tab" onclick="showTab('bundle')" data-tooltip="Bundle Strategy Generator<br><br>Creates:<br>• Package recommendations<br>• Pricing tiers<br>• Revenue multipliers<br>• Upsell strategies">📦 Bundle</button>
+            <button class="tab" onclick="showTab('optimize')" data-tooltip="AI Optimization Suite<br><br>Generates:<br>• Title suggestions<br>• Quick-win actions<br>• Marketing improvements<br>• Conversion boosters">🚀 Optimize</button>
         </div>
         
         <div id="overview" class="tab-content active">
@@ -746,19 +756,19 @@
         <div class="export-section">
             <h3 style="text-align: center; margin-bottom: 20px;">📄 Professional Reports & Exports</h3>
             <div class="export-buttons">
-                <button class="export-btn pdf" onclick="exportPDF()" data-tooltip="Download comprehensive PDF report with all analysis data, charts, and recommendations">
+                <button class="export-btn pdf" onclick="exportPDF()" data-tooltip="Professional PDF Report<br><br>Includes:<br>• Executive summary<br>• Detailed analysis results<br>• Visual charts & graphs<br>• Professional formatting<br>• Print-ready layout">
                     📄 PDF Report
                 </button>
-                <button class="export-btn excel" onclick="exportExcel()" data-tooltip="Export detailed spreadsheet with all metrics, formulas, and data for further analysis">
+                <button class="export-btn excel" onclick="exportExcel()" data-tooltip="Advanced Excel Spreadsheet<br><br>Contains:<br>• All analysis data<br>• Built-in formulas<br>• ROI calculations<br>• Revenue projections<br>• Sortable columns<br>• 14+ data fields">
                     📊 Excel Analysis
                 </button>
-                <button class="export-btn csv" onclick="exportCSV()" data-tooltip="Export simple CSV data file with basic analysis results for quick review">
+                <button class="export-btn csv" onclick="exportCSV()" data-tooltip="Simple CSV Data File<br><br>Basic export with:<br>• Title & scores<br>• Quality ratings<br>• Profit potential<br>• Strategy recommendations<br>• 5 essential fields">
                     📋 CSV Data
                 </button>
-                <button class="export-btn report" onclick="exportFullReport()" data-tooltip="Generate complete market intelligence report with detailed analysis and strategies">
+                <button class="export-btn report" onclick="exportFullReport()" data-tooltip="Complete Intelligence Report<br><br>Comprehensive document:<br>• Market analysis<br>• Implementation roadmap<br>• Strategic recommendations<br>• Profit optimization guide<br>• Industry insights">
                     📈 Complete Report
                 </button>
-                <button class="export-btn" style="background: #fd7e14;" onclick="exportBundleGuide()" data-tooltip="Download comprehensive bundle strategy guide with pricing and marketing tactics">
+                <button class="export-btn" style="background: #fd7e14;" onclick="exportBundleGuide()" data-tooltip="Bundle Strategy Masterclass<br><br>Expert guide covering:<br>• Bundle tier strategies<br>• Pricing psychology<br>• Revenue optimization<br>• Marketing tactics<br>• Implementation steps">
                     🎁 Bundle Guide
                 </button>
             </div>
@@ -794,18 +804,63 @@
             elementsWithTooltips.forEach(element => {
                 element.addEventListener('mouseenter', (e) => {
                     const tooltipText = element.getAttribute('data-tooltip');
-                    tooltip.textContent = tooltipText;
+                    tooltip.innerHTML = tooltipText;
                     tooltip.classList.add('show');
                     
-                    const rect = element.getBoundingClientRect();
-                    tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
-                    tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+                    setTimeout(() => {
+                        updateTooltipPosition(e, tooltip);
+                    }, 10);
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    if (tooltip.classList.contains('show')) {
+                        updateTooltipPosition(e, tooltip);
+                    }
                 });
                 
                 element.addEventListener('mouseleave', () => {
                     tooltip.classList.remove('show');
+                    tooltip.classList.remove('tooltip-top', 'tooltip-bottom');
                 });
             });
+        }
+        
+        function updateTooltipPosition(e, tooltip) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const tooltipWidth = tooltipRect.width;
+            const tooltipHeight = tooltipRect.height;
+            
+            let left = mouseX + 15;
+            let top = mouseY - tooltipHeight - 15;
+            
+            if (left + tooltipWidth > viewportWidth - 20) {
+                left = mouseX - tooltipWidth - 15;
+            }
+            
+            if (left < 20) {
+                left = 20;
+            }
+            
+            if (top < 20) {
+                top = mouseY + 15;
+                tooltip.classList.remove('tooltip-top');
+                tooltip.classList.add('tooltip-bottom');
+            } else {
+                tooltip.classList.remove('tooltip-bottom');
+                tooltip.classList.add('tooltip-top');
+            }
+            
+            if (top + tooltipHeight > viewportHeight - 20) {
+                top = viewportHeight - tooltipHeight - 20;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
         }
         
         function showTab(tabName) {
@@ -927,7 +982,6 @@
                 return;
             }
             
-            // Update selected analysis options
             selectedAnalysisOptions = {
                 marketIntelligence: document.getElementById('marketIntelligence').checked,
                 qualityAssessment: document.getElementById('qualityAssessment').checked,
@@ -948,7 +1002,7 @@
                         title: file.name.replace(/\.[^/.]+$/, ""),
                         marketScore: Math.floor(Math.random() * 30) + 70,
                         qualityRating: ['Good', 'Very Good', 'Excellent'][Math.floor(Math.random() * 3)],
-                        profitPotential: `${Math.floor(Math.random() * 2000) + 500}`,
+                        profitPotential: `$${Math.floor(Math.random() * 2000) + 500}`,
                         strategy: ['Quick Launch', 'Premium Bundle', 'Upsell Package'][Math.floor(Math.random() * 3)],
                         category: 'Uploaded Content',
                         pages: Math.floor(Math.random() * 100) + 50,
@@ -978,7 +1032,6 @@
         }
         
         function updateAnalysisOptionsDisplay() {
-            // Hide/show sections based on selected analysis options
             const qualitySection = document.querySelector('.quality-section');
             const marketSection = document.querySelector('.market-section');
             const profitSection = document.querySelector('.profit-section');
@@ -1015,7 +1068,6 @@
                 optimizeSection.classList.remove('hidden-section');
             }
             
-            // Update tab visibility
             const tabs = document.querySelectorAll('.tab');
             tabs[1].style.display = selectedAnalysisOptions.qualityAssessment ? 'block' : 'none';
             tabs[2].style.display = selectedAnalysisOptions.marketIntelligence ? 'block' : 'none';
@@ -1044,13 +1096,13 @@
                 
                 <h4 style="margin-top: 20px;">💰 Profit Analysis</h4>
                 <p><strong>Profit Potential:</strong> ${item.profitPotential}</p>
-                <p><strong>Suggested Price:</strong> ${item.suggestedPrice}</p>
+                <p><strong>Suggested Price:</strong> $${item.suggestedPrice}</p>
                 <p><strong>Recommended Strategy:</strong> ${item.strategy}</p>
                 
                 <h4 style="margin-top: 20px;">🎯 Recommendations</h4>
                 <ul style="margin-left: 20px;">
                     <li>Focus on ${item.competition.toLowerCase()} competition markets</li>
-                    <li>Target price point around ${item.suggestedPrice}</li>
+                    <li>Target price point around $${item.suggestedPrice}</li>
                     <li>Implement ${item.strategy.toLowerCase()} approach</li>
                     <li>Leverage ${item.searchVolume.toLocaleString()} monthly search volume</li>
                 </ul>
@@ -1112,7 +1164,7 @@
                         <td>
                             <strong style="color: #4CAF50;">${item.profitPotential}</strong>
                             <br>
-                            <small>Suggested: ${item.suggestedPrice}</small>
+                            <small>Suggested: $${item.suggestedPrice}</small>
                         </td>
                         <td>
                             <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;">
@@ -1128,7 +1180,6 @@
                 `;
             }).join('');
             
-            // Reinitialize tooltips for new content
             initializeTooltips();
         }
         
@@ -1148,7 +1199,7 @@
             }, 0);
             
             document.getElementById('overallMarketScore').textContent = `${avgScore}/100`;
-            document.getElementById('overallProfit').textContent = `${totalProfit.toLocaleString()}`;
+            document.getElementById('overallProfit').textContent = `$${totalProfit.toLocaleString()}`;
             document.getElementById('quickWins').textContent = `${Math.floor(ultimateAnalysisData.length * 1.4)} Found`;
             document.getElementById('optimizationLevel').textContent = avgScore >= 90 ? 'High ROI' : avgScore >= 80 ? 'Medium ROI' : 'Needs Work';
         }
@@ -1194,13 +1245,13 @@
             const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
             const totalSearches = ultimateAnalysisData.reduce((sum, item) => sum + item.searchVolume, 0);
             
-            document.getElementById('avgMarketPrice').textContent = `${avgPrice}`;
+            document.getElementById('avgMarketPrice').textContent = `$${avgPrice}`;
             document.getElementById('monthlySearches').textContent = totalSearches.toLocaleString();
             document.getElementById('marketDemand').textContent = '68%';
             document.getElementById('competitionScore').textContent = '7.2';
             
             document.getElementById('targetAudience').innerHTML = '<strong>Primary Audience:</strong> Digital marketers, online entrepreneurs';
-            document.getElementById('priceRange').innerHTML = `<strong>Price Range:</strong> ${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - ${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))} (Premium positioning recommended)`;
+            document.getElementById('priceRange').innerHTML = `<strong>Price Range:</strong> $${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - $${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))} (Premium positioning recommended)`;
             document.getElementById('bestPlatforms').innerHTML = '<strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank, JVZoo';
         }
         
@@ -1220,13 +1271,13 @@
             }, 0);
             const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
             
-            document.getElementById('monthlyPotential').textContent = `${totalProfit.toLocaleString()}`;
+            document.getElementById('monthlyPotential').textContent = `$${totalProfit.toLocaleString()}`;
             document.getElementById('roiProjection').textContent = '340%';
-            document.getElementById('optimalPrice').textContent = `${avgPrice}`;
+            document.getElementById('optimalPrice').textContent = `$${avgPrice}`;
             document.getElementById('unitsPerMonth').textContent = Math.round(totalProfit / avgPrice);
             
             document.getElementById('profitRecommendations').innerHTML = `
-                <li><strong>Price at ${avgPrice}</strong> - Premium positioning with high perceived value</li>
+                <li><strong>Price at $${avgPrice}</strong> - Premium positioning with high perceived value</li>
                 <li><strong>Create bundle packages</strong> - Increase average order value by 180%</li>
                 <li><strong>Add bonus materials</strong> - Templates, checklists, video tutorials</li>
                 <li><strong>Implement upsells</strong> - Done-for-you services, consultations</li>
@@ -1245,8 +1296,8 @@
                 return total + profit;
             }, 0);
             
-            document.getElementById('premiumBundleRevenue').textContent = `${Math.round(totalProfit * 3.1).toLocaleString()}/month`;
-            document.getElementById('standardBundleRevenue').textContent = `${Math.round(totalProfit * 1.5).toLocaleString()}/month`;
+            document.getElementById('premiumBundleRevenue').textContent = `$${Math.round(totalProfit * 3.1).toLocaleString()}/month`;
+            document.getElementById('standardBundleRevenue').textContent = `$${Math.round(totalProfit * 1.5).toLocaleString()}/month`;
         }
         
         function updateOptimizationContent() {
@@ -1359,7 +1410,6 @@
             alert(`✅ Successfully uploaded ${files.length} files! Click "Start Analysis" to begin processing.`);
         }
         
-        // Export functions
         function exportPDF() {
             if (ultimateAnalysisData.length === 0) {
                 alert('⚠️ No data to export. Please load demo or upload files first.');
@@ -1425,7 +1475,7 @@ BT
 /F1 10 Tf
 (Average Market Score: ${calculateAverageScore()}) Tj
 0 -15 Td
-(Total Profit Potential: ${calculateTotalProfit()}) Tj
+(Total Profit Potential: $${calculateTotalProfit()}) Tj
 0 -15 Td
 (Recommended Strategy: Premium Bundle Approach) Tj
 0 -15 Td
@@ -1485,9 +1535,9 @@ ${ultimateAnalysisData.map(item => {
 
 SUMMARY CALCULATIONS:
 Average Market Score,${calculateAverageScore()}
-Total Profit Potential,${calculateTotalProfit()}
+Total Profit Potential,$${calculateTotalProfit()}
 Total Files Analyzed,${ultimateAnalysisData.length}
-Average Price Point,${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length)}`;
+Average Price Point,$${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length)}`;
             
             downloadFile('Ultimate-PLR-Analysis.csv', excelContent);
         }
@@ -1520,7 +1570,7 @@ ${ultimateAnalysisData.map(item =>
 Report Generated: ${new Date().toLocaleDateString()}
 Files Analyzed: ${ultimateAnalysisData.length}
 Average Market Score: ${calculateAverageScore()}/100
-Total Market Potential: ${calculateTotalProfit()}
+Total Market Potential: $${calculateTotalProfit()}
 
 🎯 KEY FINDINGS
 ===============
@@ -1562,7 +1612,7 @@ ${index + 1}. ${item.title.toUpperCase()}
    │
    └─ Profit Analysis
       • Potential: ${item.profitPotential}/month
-      • Suggested Price: ${item.suggestedPrice}
+      • Suggested Price: $${item.suggestedPrice}
       • Strategy: ${item.strategy}
 
 `).join('')}
@@ -1661,7 +1711,6 @@ Focus on customer value and clear savings messaging for maximum success.`;
             }, 0).toLocaleString();
         }
         
-        // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('detailsModal');
             if (event.target == modal) {
@@ -1669,7 +1718,6 @@ Focus on customer value and clear savings messaging for maximum success.`;
             }
         }
         
-        // Initialize tooltips when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeTooltips();
         });
