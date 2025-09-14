@@ -1316,33 +1316,113 @@
                 return;
             }
             
-            const topItem = ultimateAnalysisData[0];
-            document.getElementById('aiTitleSuggestions').innerHTML = `
-                <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
-                    "Ultimate ${topItem.category} Mastery: Premium PLR Collection That Converts"
-                </div>
-                <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
-                    "Content Creator's Goldmine: High-Converting PLR Package + Sales System"
-                </div>
-                <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
-                    "Ready-to-Profit PLR Empire: Premium Content + Marketing Materials"
-                </div>
-            `;
+            // Check if AI Title Generation was selected
+            if (selectedAnalysisOptions.aiTitleGeneration) {
+                // Display AI-generated titles for each uploaded file
+                const titlesHTML = ultimateAnalysisData.map(item => {
+                    if (item.aiTitles && item.aiTitles.length > 0) {
+                        return `
+                            <div style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border-left: 4px solid var(--success-color);">
+                                <h5 style="margin-bottom: 10px; color: var(--success-color);">📄 ${item.title}</h5>
+                                ${item.aiTitles.map(title => `
+                                    <div style="padding: 8px; background: #f8f9fa; border-radius: 6px; margin: 4px 0; cursor: pointer;" onclick="copyTitle('${title.replace(/'/g, "\\'")}')">
+                                        "${title}" <span style="float: right; color: #666; font-size: 0.8em;">Click to copy</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                    return '';
+                }).join('');
+                
+                document.getElementById('aiTitleSuggestions').innerHTML = titlesHTML || `
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        No AI titles generated. Please run analysis with AI Title Generation selected.
+                    </div>
+                `;
+            } else {
+                document.getElementById('aiTitleSuggestions').innerHTML = `
+                    <div style="padding: 10px; background: #fff3cd; border-radius: 8px; margin: 5px 0; border: 1px solid #ffeaa7;">
+                        <strong>AI Title Generation not selected.</strong><br>
+                        Enable this option and run analysis again to see custom title suggestions.
+                    </div>
+                `;
+            }
             
-            document.getElementById('quickWinActions').innerHTML = `
-                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--success-color); margin: 10px 0;">
-                    <span style="margin-right: 10px;">✅</span>
-                    <span>Add testimonials section - Increases conversion by 23%</span>
-                </div>
-                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--warning-color); margin: 10px 0;">
-                    <span style="margin-right: 10px;">⚠️</span>
-                    <span>Optimize price point - Current pricing could increase revenue by 15%</span>
-                </div>
-                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
-                    <span style="margin-right: 10px;">💡</span>
-                    <span>Create video preview - Increases sales by 67%</span>
-                </div>
-            `;
+            // Update Quick Win Actions based on selected options
+            let quickWinHTML = '';
+            
+            if (selectedAnalysisOptions.qualityAssessment) {
+                quickWinHTML += `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--success-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">✅</span>
+                        <span>Quality analysis shows content structure improvements available</span>
+                    </div>
+                `;
+            }
+            
+            if (selectedAnalysisOptions.profitOptimization) {
+                quickWinHTML += `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--warning-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">⚠️</span>
+                        <span>Optimize pricing strategy - potential 15-30% revenue increase identified</span>
+                    </div>
+                `;
+            }
+            
+            if (selectedAnalysisOptions.marketIntelligence) {
+                quickWinHTML += `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Market analysis suggests targeting specific competition gaps</span>
+                    </div>
+                `;
+            }
+            
+            if (selectedAnalysisOptions.aiTitleGeneration) {
+                quickWinHTML += `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--success-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">🎯</span>
+                        <span>AI-generated titles available above - use for better conversion rates</span>
+                    </div>
+                `;
+            }
+            
+            if (!quickWinHTML) {
+                quickWinHTML = `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Enable analysis options and run analysis to see personalized recommendations</span>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('quickWinActions').innerHTML = quickWinHTML;
+        }
+        
+        // Add function to copy titles to clipboard
+        function copyTitle(title) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(title).then(() => {
+                    // Show temporary success message
+                    const event = window.event;
+                    const target = event.target.closest('div');
+                    const originalText = target.innerHTML;
+                    target.innerHTML = `"${title}" <span style="float: right; color: green; font-size: 0.8em;">✅ Copied!</span>`;
+                    setTimeout(() => {
+                        target.innerHTML = originalText;
+                    }, 2000);
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = title;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Title copied to clipboard!');
+            }
         }
         
         function getScoreClass(score) {
