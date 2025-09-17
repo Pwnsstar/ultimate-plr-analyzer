@@ -1520,108 +1520,108 @@
                 return;
             }
             
-            const pdfContent = `%PDF-1.4
-1 0 obj
+            // Create a comprehensive text report instead of PDF
+            const report = `ULTIMATE PLR ANALYSIS REPORT
+==============================================
 
-/Type /Catalog
-/Pages 2 0 R
->>
-endobj
+📊 EXECUTIVE SUMMARY
+====================
+Report Generated: ${new Date().toLocaleDateString()}
+Total Files Analyzed: ${ultimateAnalysisData.length}
+Average Market Score: ${calculateAverageScore()}/100
+Total Profit Potential: ${calculateTotalProfit()}
 
-2 0 obj
+🎯 KEY METRICS OVERVIEW
+======================
+Market Score: ${calculateAverageScore()}/100
+Profit Potential: ${calculateTotalProfit()}
+Quick Wins: ${ultimateAnalysisData.filter(item => item.marketScore >= 85).length} Found
+Optimization Level: ${calculateAverageScore() >= 90 ? 'High ROI' : calculateAverageScore() >= 80 ? 'Medium ROI' : 'Ready'}
 
-/Type /Pages
-/Kids [3 0 R]
-/Count 1
->>
-endobj
-
-3 0 obj
-
-/Type /Page
-/Parent 2 0 R
-/Resources 
-/Font 
-/F1 4 0 R
->>
->>
-/MediaBox [0 0 612 792]
-/Contents 5 0 R
->>
-endobj
-
-4 0 obj
-
-/Type /Font
-/Subtype /Type1
-/BaseFont /Helvetica
->>
-endobj
-
-5 0 obj
-
-/Length 1000
->>
-stream
-BT
-/F1 16 Tf
-50 750 Td
-(ULTIMATE PLR ANALYSIS REPORT) Tj
-0 -30 Td
-/F1 12 Tf
-(Generated: ${new Date().toLocaleDateString()}) Tj
-0 -20 Td
-(Total Files Analyzed: ${ultimateAnalysisData.length}) Tj
-0 -40 Td
-/F1 14 Tf
-(EXECUTIVE SUMMARY) Tj
-0 -20 Td
-/F1 10 Tf
-(Average Market Score: ${calculateAverageScore()}) Tj
-0 -15 Td
-(Total Profit Potential: $${calculateTotalProfit()}) Tj
-0 -15 Td
-(Recommended Strategy: Premium Bundle Approach) Tj
-0 -15 Td
-(Market Opportunity: High-value digital products) Tj
-0 -40 Td
-/F1 14 Tf
-(DETAILED ANALYSIS) Tj
+📈 DETAILED ANALYSIS RESULTS
+============================
 ${ultimateAnalysisData.map((item, index) => `
-0 -25 Td
-/F1 10 Tf
-(${index + 1}. ${item.title}) Tj
-0 -12 Td
-(   Market Score: ${item.marketScore}/100) Tj
-0 -12 Td
-(   Quality: ${item.qualityRating}) Tj
-0 -12 Td
-(   Profit Potential: $${item.profitPotential}) Tj
-0 -12 Td
-(   Strategy: ${item.strategy}) Tj
+${index + 1}. ${item.title.toUpperCase()}
+   ════════════════════════════════════════
+   📊 Market Intelligence:
+   • Market Score: ${item.marketScore}/100
+   • Search Volume: ${item.searchVolume.toLocaleString()} monthly searches
+   • Competition Level: ${item.competition}
+   • Category: ${item.category}
+   
+   ⭐ Quality Assessment:
+   • Quality Rating: ${item.qualityRating}
+   • Content Quality: ${item.contentQuality || 'N/A'}/10
+   • Originality: ${item.originality || 'N/A'}%
+   • Page Count: ${item.pages} pages
+   
+   💰 Profit Analysis:
+   • Profit Potential: ${item.profitPotential}
+   • Suggested Price: ${item.suggestedPrice}
+   • Strategy: ${item.strategy}
+   
+   🎯 AI-Generated Titles:
+   ${generateAITitles(item.title, item.category).map(title => `   • "${title}"`).join('\n')}
+
 `).join('')}
-ET
-endstream
-endobj
 
-xref
-0 6
-0000000000 65535 f 
-0000000010 00000 n 
-0000000079 00000 n 
-0000000173 00000 n 
-0000000301 00000 n 
-0000000380 00000 n 
-trailer
+💡 STRATEGIC RECOMMENDATIONS
+============================
+1. IMMEDIATE ACTIONS:
+   • Start with highest-scoring PLR packages (${ultimateAnalysisData.filter(item => item.marketScore >= 90).length} items with 90+ scores)
+   • Focus on Upsell Package strategy for maximum profit margins
+   • Target low-competition niches for easier market penetration
 
-/Size 6
-/Root 1 0 R
->>
-startxref
-1000
-%%EOF`;
+2. PROFIT OPTIMIZATION:
+   • Implement bundle strategies to increase revenue by 180%
+   • Use premium pricing for high-quality content
+   • Create upsell sequences for 40-60% revenue boost
 
-            downloadFile('Ultimate-PLR-Analysis-Report.pdf', pdfContent);
+3. MARKET PENETRATION:
+   • Leverage AI-generated titles for better conversion rates
+   • Focus on platforms: Etsy, Gumroad, ClickBank
+   • Target audience: Digital entrepreneurs and PLR resellers
+
+📦 BUNDLE STRATEGY RECOMMENDATIONS
+=================================
+PREMIUM BUNDLE ($197):
+• Core PLR Package
+• Sales Page Templates  
+• Email Marketing Sequences
+• Social Media Graphics
+• Video Sales Letter Script
+Projected Revenue: ${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0) * 0.45).toLocaleString()}/month
+
+STANDARD BUNDLE ($97):
+• Core PLR Package
+• Basic Sales Materials
+• Email Templates
+• Social Graphics Pack
+Projected Revenue: ${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0) * 0.25).toLocaleString()}/month
+
+🚀 IMPLEMENTATION ROADMAP
+========================
+PHASE 1 (Week 1-2): Content Optimization
+• Enhance quality scores above 90
+• Implement AI-generated titles
+• Create compelling sales copy
+
+PHASE 2 (Week 3-4): Market Launch
+• Deploy premium pricing strategy
+• Launch on primary platforms
+• Implement tracking systems
+
+PHASE 3 (Month 2+): Scale & Optimize
+• Analyze performance metrics
+• Expand successful products
+• Develop additional revenue streams
+
+═══════════════════════════════════════════
+© Ultimate PLR Analysis Tool - Professional Edition
+Generated on ${new Date().toDateString()}
+Market Intelligence • Profit Optimization • Strategic Growth`;
+
+            downloadFile('Ultimate-PLR-Analysis-Report.txt', report);
         }
         
         function exportExcel() {
