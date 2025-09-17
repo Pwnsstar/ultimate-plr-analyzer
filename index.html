@@ -707,9 +707,12 @@
             
             <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
                 <h4>🎁 Recommended Bundle Packages</h4>
+                <div id="bundleAnalysis" style="margin: 15px 0; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 0.9em; color: #1976d2;">
+                    Bundle pricing calculated based on your actual PLR content analysis
+                </div>
                 
                 <div style="border: 2px solid var(--success-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
-                    <h5 style="color: var(--success-color);">💎 PREMIUM BUNDLE - $197</h5>
+                    <h5 style="color: var(--success-color);" id="premiumBundleTitle">💎 PREMIUM BUNDLE - $197</h5>
                     <ul style="margin: 10px 0 10px 20px;">
                         <li>Core PLR Package</li>
                         <li>Sales Page Templates</li>
@@ -719,11 +722,12 @@
                     </ul>
                     <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-top: 10px;">
                         <strong>Projected Revenue:</strong> <span id="premiumBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="premiumBundleROI">0%</span>
                     </div>
                 </div>
                 
                 <div style="border: 2px solid var(--info-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
-                    <h5 style="color: var(--info-color);">⭐ STANDARD BUNDLE - $97</h5>
+                    <h5 style="color: var(--info-color);" id="standardBundleTitle">⭐ STANDARD BUNDLE - $97</h5>
                     <ul style="margin: 10px 0 10px 20px;">
                         <li>Core PLR Package</li>
                         <li>Basic Sales Materials</li>
@@ -732,6 +736,20 @@
                     </ul>
                     <div style="background: #cce7ff; padding: 10px; border-radius: 5px; margin-top: 10px;">
                         <strong>Projected Revenue:</strong> <span id="standardBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="standardBundleROI">0%</span>
+                    </div>
+                </div>
+
+                <div style="border: 2px solid var(--warning-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--warning-color);" id="basicBundleTitle">🚀 BASIC BUNDLE - $47</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package Only</li>
+                        <li>Basic Branding Rights</li>
+                        <li>Simple Setup Guide</li>
+                    </ul>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> <span id="basicBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="basicBundleROI">0%</span>
                     </div>
                 </div>
             </div>
@@ -813,6 +831,55 @@
                     element.textContent = content;
                 }
             }
+        }
+        
+        // Dynamic bundle pricing calculation
+        function calculateDynamicBundlePricing() {
+            if (ultimateAnalysisData.length === 0) {
+                return {
+                    basic: 47,
+                    standard: 97,
+                    premium: 197
+                };
+            }
+            
+            // Calculate base metrics
+            const avgPrice = ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length;
+            const avgMarketScore = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length;
+            const avgQuality = ultimateAnalysisData.reduce((sum, item) => sum + (parseFloat(item.contentQuality) || 8.5), 0) / ultimateAnalysisData.length;
+            
+            // Quality multiplier (1.0 to 1.5)
+            const qualityMultiplier = 1 + (avgQuality - 7) * 0.1;
+            
+            // Market strength multiplier (1.0 to 1.4)
+            const marketMultiplier = 1 + (avgMarketScore - 70) * 0.01;
+            
+            // Calculate bundle prices based on content value
+            const baseMultiplier = qualityMultiplier * marketMultiplier;
+            
+            const basic = Math.round(avgPrice * 0.8 * baseMultiplier);
+            const standard = Math.round(avgPrice * 1.6 * baseMultiplier);
+            const premium = Math.round(avgPrice * 2.8 * baseMultiplier);
+            
+            return {
+                basic: Math.max(basic, 29), // Minimum $29
+                standard: Math.max(standard, 67), // Minimum $67  
+                premium: Math.max(premium, 147) // Minimum $147
+            };
+        }
+        
+        // Calculate bundle revenue projections
+        function calculateBundleRevenue(bundlePrice, marketStrength) {
+            const baseRevenue = bundlePrice * 8; // 8 sales per month baseline
+            const marketMultiplier = marketStrength / 80; // Scale based on market score
+            return Math.round(baseRevenue * marketMultiplier);
+        }
+        
+        // Calculate bundle ROI
+        function calculateBundleROI(bundlePrice, revenue) {
+            const costs = bundlePrice * 0.15; // 15% costs (platform fees, etc.)
+            const profit = revenue - costs;
+            return Math.round((profit / bundlePrice) * 100);
         }
         
         // Fixed demo data that matches your screenshots exactly
@@ -1000,17 +1067,56 @@
         
         function updateBundleMetrics() {
             if (ultimateAnalysisData.length === 0) {
+                // Reset to default static pricing when no data
+                safeUpdate('premiumBundleTitle', '💎 PREMIUM BUNDLE - $197');
+                safeUpdate('standardBundleTitle', '⭐ STANDARD BUNDLE - $97');
+                safeUpdate('basicBundleTitle', '🚀 BASIC BUNDLE - $47');
                 safeUpdate('premiumBundleRevenue', '$0/month');
                 safeUpdate('standardBundleRevenue', '$0/month');
+                safeUpdate('basicBundleRevenue', '$0/month');
+                safeUpdate('premiumBundleROI', '0%');
+                safeUpdate('standardBundleROI', '0%');
+                safeUpdate('basicBundleROI', '0%');
+                safeUpdate('bundleAnalysis', 'Upload PLR content to see dynamic bundle pricing based on your specific analysis', true);
                 return;
             }
             
-            const totalPotential = ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0);
-            const premiumRevenue = Math.round(totalPotential * 0.45);
-            const standardRevenue = Math.round(totalPotential * 0.25);
+            // Calculate dynamic pricing
+            const bundlePrices = calculateDynamicBundlePricing();
+            const avgMarketScore = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length;
             
+            // Calculate revenue for each bundle tier
+            const premiumRevenue = calculateBundleRevenue(bundlePrices.premium, avgMarketScore * 1.2);
+            const standardRevenue = calculateBundleRevenue(bundlePrices.standard, avgMarketScore);
+            const basicRevenue = calculateBundleRevenue(bundlePrices.basic, avgMarketScore * 0.8);
+            
+            // Calculate ROI for each bundle
+            const premiumROI = calculateBundleROI(bundlePrices.premium, premiumRevenue);
+            const standardROI = calculateBundleROI(bundlePrices.standard, standardRevenue);
+            const basicROI = calculateBundleROI(bundlePrices.basic, basicRevenue);
+            
+            // Update bundle titles with dynamic pricing
+            safeUpdate('premiumBundleTitle', `💎 PREMIUM BUNDLE - $${bundlePrices.premium}`);
+            safeUpdate('standardBundleTitle', `⭐ STANDARD BUNDLE - $${bundlePrices.standard}`);
+            safeUpdate('basicBundleTitle', `🚀 BASIC BUNDLE - $${bundlePrices.basic}`);
+            
+            // Update revenue projections
             safeUpdate('premiumBundleRevenue', `$${premiumRevenue.toLocaleString()}/month`);
             safeUpdate('standardBundleRevenue', `$${standardRevenue.toLocaleString()}/month`);
+            safeUpdate('basicBundleRevenue', `$${basicRevenue.toLocaleString()}/month`);
+            
+            // Update ROI
+            safeUpdate('premiumBundleROI', `${premiumROI}%`);
+            safeUpdate('standardBundleROI', `${standardROI}%`);
+            safeUpdate('basicBundleROI', `${basicROI}%`);
+            
+            // Update analysis explanation
+            const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
+            const avgQuality = ultimateAnalysisData.reduce((sum, item) => sum + (parseFloat(item.contentQuality) || 8.5), 0) / ultimateAnalysisData.length;
+            
+            safeUpdate('bundleAnalysis', `
+                Pricing based on your content: Avg PLR price $${avgPrice}, Market score ${Math.round(avgMarketScore)}/100, Quality ${avgQuality.toFixed(1)}/10
+            `, true);
         }
         
         function updateOptimizationContent() {
@@ -1051,6 +1157,7 @@
             const highScoreItems = ultimateAnalysisData.filter(item => item.marketScore >= 90).length;
             const upsellItems = ultimateAnalysisData.filter(item => item.strategy === 'Upsell Package').length;
             const lowCompItems = ultimateAnalysisData.filter(item => item.competition === 'Low competition').length;
+            const bundlePrices = calculateDynamicBundlePricing();
             
             safeUpdate('quickWinActions', `
                 <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #4CAF50; margin: 10px 0; background: #f0f8ff;">
@@ -1067,7 +1174,7 @@
                 </div>
                 <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #9c27b0; margin: 10px 0; background: #f3e5f5;">
                     <span style="margin-right: 10px;">🚀</span>
-                    <span>Total profit potential: $${ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0).toLocaleString()} across all products</span>
+                    <span>Recommended bundle pricing: Basic $${bundlePrices.basic}, Standard $${bundlePrices.standard}, Premium $${bundlePrices.premium}</span>
                 </div>
             `, true);
         }
@@ -1584,6 +1691,8 @@
                 return;
             }
             
+            const bundlePrices = calculateDynamicBundlePricing();
+            
             // Create HTML content for PDF generation
             const htmlContent = `
             <!DOCTYPE html>
@@ -1659,9 +1768,10 @@
                 </ul>
 
                 <div class="summary-box">
-                    <h3>📦 BUNDLE STRATEGY RECOMMENDATIONS</h3>
-                    <p><strong>PREMIUM BUNDLE ($197):</strong> Projected Revenue $${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0) * 0.45).toLocaleString()}/month</p>
-                    <p><strong>STANDARD BUNDLE ($97):</strong> Projected Revenue $${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0) * 0.25).toLocaleString()}/month</p>
+                    <h3>📦 DYNAMIC BUNDLE PRICING STRATEGY</h3>
+                    <p><strong>PREMIUM BUNDLE ($${bundlePrices.premium}):</strong> Based on your content analysis</p>
+                    <p><strong>STANDARD BUNDLE ($${bundlePrices.standard}):</strong> Optimized for market penetration</p>
+                    <p><strong>BASIC BUNDLE ($${bundlePrices.basic}):</strong> Entry-level pricing strategy</p>
                 </div>
             </body>
             </html>`;
@@ -1689,18 +1799,23 @@
                 return;
             }
             
-            const excelContent = `Title,Market Score,Quality Rating,Profit Potential,Strategy,Category,Pages,Search Volume,Competition,Suggested Price,Content Quality,Originality,ROI Calculation,Revenue Projection
+            const bundlePrices = calculateDynamicBundlePricing();
+            
+            const excelContent = `Title,Market Score,Quality Rating,Profit Potential,Strategy,Category,Pages,Search Volume,Competition,Suggested Price,Content Quality,Originality,ROI Calculation,Revenue Projection,Basic Bundle Price,Standard Bundle Price,Premium Bundle Price
 ${ultimateAnalysisData.map(item => {
                 const roiCalc = `=((${item.suggestedPrice}*12)-50)/${item.suggestedPrice}*100`;
                 const revProj = `=${item.suggestedPrice}*45`;
-                return `"${item.title}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}","${item.strategy}","${item.category}",${item.pages},${item.searchVolume},"${item.competition}",${item.suggestedPrice},"${item.contentQuality || 'N/A'}","${item.originality || 'N/A'}%","${roiCalc}","${revProj}"`;
+                return `"${item.title}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}","${item.strategy}","${item.category}",${item.pages},${item.searchVolume},"${item.competition}",${item.suggestedPrice},"${item.contentQuality || 'N/A'}","${item.originality || 'N/A'}%","${roiCalc}","${revProj}",${bundlePrices.basic},${bundlePrices.standard},${bundlePrices.premium}`;
             }).join('\n')}
 
 SUMMARY CALCULATIONS:
 Average Market Score,${calculateAverageScore()}
 Total Profit Potential,$${calculateTotalProfit()}
 Total Files Analyzed,${ultimateAnalysisData.length}
-Average Price Point,$${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length)}`;
+Average Price Point,$${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length)}
+Recommended Basic Bundle,${bundlePrices.basic}
+Recommended Standard Bundle,${bundlePrices.standard}
+Recommended Premium Bundle,${bundlePrices.premium}`;
             
             downloadFile('Ultimate-PLR-Analysis.csv', excelContent);
         }
@@ -1725,6 +1840,8 @@ ${ultimateAnalysisData.map(item =>
                 return;
             }
             
+            const bundlePrices = calculateDynamicBundlePricing();
+            
             const report = `ULTIMATE PLR MARKET INTELLIGENCE REPORT
 ===============================================
 
@@ -1742,22 +1859,12 @@ Total Market Potential: $${calculateTotalProfit()}
 - High-quality content commands premium pricing
 - Market demand strong across all categories
 
-💰 PROFIT OPTIMIZATION STRATEGIES
-=================================
-1. PREMIUM POSITIONING
-   - Price point: $67-$197 range
-   - Bundle approach increases AOV
-   - Quality content justifies premium pricing
-
-2. MARKET PENETRATION
-   - Focus on underserved niches
-   - Leverage high search volume keywords
-   - Target medium-competition markets
-
-3. REVENUE MAXIMIZATION
-   - Create tiered product offerings
-   - Implement upsell sequences
-   - Develop subscription models
+💰 DYNAMIC PRICING STRATEGY
+===========================
+Based on your specific PLR content analysis:
+- Basic Bundle: $${bundlePrices.basic}
+- Standard Bundle: $${bundlePrices.standard}  
+- Premium Bundle: $${bundlePrices.premium}
 
 📈 DETAILED MARKET ANALYSIS
 ===========================
@@ -1788,7 +1895,7 @@ PHASE 1: Content Optimization (Week 1-2)
 - Create compelling sales copy
 
 PHASE 2: Market Launch (Week 3-4)
-- Deploy premium pricing strategy
+- Deploy dynamic pricing strategy
 - Launch on primary platforms
 - Implement tracking systems
 
@@ -1799,7 +1906,7 @@ PHASE 3: Scale & Optimize (Month 2+)
 
 ═══════════════════════════════════════════
 © Ultimate PLR Analysis Tool - Professional Edition
-Market Intelligence • Profit Optimization • Strategic Growth`;
+Market Intelligence • Profit Optimization • Dynamic Pricing`;
 
             downloadFile('Complete-PLR-Intelligence-Report.txt', report);
         }
@@ -1808,40 +1915,56 @@ Market Intelligence • Profit Optimization • Strategic Growth`;
             const bundleGuide = `🎁 ULTIMATE PLR BUNDLE STRATEGY GUIDE
 ========================================
 
-💎 PREMIUM BUNDLE MASTERY
+💎 DYNAMIC BUNDLE MASTERY
 =========================
 The Ultimate Bundle Formula:
 Core Content + Sales Materials + Bonus Items = Maximum Profit
 
-📦 BUNDLE TIER STRATEGY
-=======================
-TIER 1: STARTER BUNDLE ($47-$97)
-- 3-5 Core PLR Products
-- Basic Sales Page Template
-- Email Series (5-7 emails)
-- Social Media Graphics Pack
-Target: New marketers, budget-conscious buyers
-
-TIER 2: PROFESSIONAL BUNDLE ($97-$197)
-- 8-12 Premium PLR Products
-- Complete Sales Funnel
-- Advanced Email Sequences
-- Video Sales Letter Scripts
-Target: Serious marketers, established businesses
-
-TIER 3: ENTERPRISE BUNDLE ($197-$397)
-- 20+ Premium PLR Products
-- Done-For-You Marketing Campaigns
-- Private Label Software/Tools
-- Exclusive Video Training Course
-Target: Power users, agencies, resellers
-
-🎯 BUNDLE OPTIMIZATION SECRETS
+📦 INTELLIGENT PRICING STRATEGY
 ==============================
-1. VALUE STACKING TECHNIQUE
-2. PRICING PSYCHOLOGY
-3. BONUS AMPLIFICATION
-4. SEASONAL STRATEGIES
+Our analysis calculates optimal bundle prices based on:
+- Average PLR content value
+- Market demand scores  
+- Quality assessments
+- Competition levels
+DYNAMIC PRICING BENEFITS:
+- Prices reflect actual content value
+- Higher conversion rates vs fixed pricing
+- Maximum profit optimization
+- Market-responsive adjustments
+
+TIER 1: BASIC BUNDLE
+- Pricing: 80% of average PLR value
+- Target: Budget-conscious buyers
+- Contents: Core PLR + basic materials
+- ROI: 200-300%
+
+TIER 2: STANDARD BUNDLE  
+- Pricing: 160% of average PLR value
+- Target: Serious marketers
+- Contents: Core PLR + marketing materials
+- ROI: 400-500%
+
+TIER 3: PREMIUM BUNDLE
+- Pricing: 280% of average PLR value
+- Target: Power users & agencies
+- Contents: Complete marketing system
+- ROI: 600-800%
+
+🎯 IMPLEMENTATION STEPS
+======================
+1. Analyze your PLR content quality
+2. Research competitor pricing
+3. Calculate dynamic bundle prices
+4. Test market response
+5. Adjust based on performance
+
+💡 PRO TIPS
+===========
+- Always justify price with value
+- Create clear upgrade paths
+- Use scarcity and urgency ethically
+- Monitor and adjust regularly
 
 Focus on customer value and clear savings messaging for maximum success.`;
 
