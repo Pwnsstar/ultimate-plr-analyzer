@@ -803,14 +803,14 @@
             aiTitleGeneration: true
         };
         
-        // Null-safe element update function
-        function safeUpdate(elementId, content) {
+        // Fixed safeUpdate function to handle HTML properly
+        function safeUpdate(elementId, content, isHTML = false) {
             const element = document.getElementById(elementId);
             if (element) {
-                if (typeof content === 'string') {
-                    element.textContent = content;
-                } else {
+                if (isHTML) {
                     element.innerHTML = content;
+                } else {
+                    element.textContent = content;
                 }
             }
         }
@@ -950,9 +950,9 @@
                 safeUpdate('monthlySearches', '0');
                 safeUpdate('marketDemand', '0%');
                 safeUpdate('competitionScore', '0');
-                safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Upload content for analysis');
-                safeUpdate('priceRange', '<strong>Price Range:</strong> Upload content for recommendations');
-                safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Upload content for platform analysis');
+                safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Upload content for analysis', true);
+                safeUpdate('priceRange', '<strong>Price Range:</strong> Upload content for recommendations', true);
+                safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Upload content for platform analysis', true);
                 return;
             }
             
@@ -965,9 +965,9 @@
             safeUpdate('marketDemand', `${avgMarketScore}%`);
             safeUpdate('competitionScore', '72');
             
-            safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Digital entrepreneurs and PLR resellers');
-            safeUpdate('priceRange', `<strong>Price Range:</strong> $${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - $${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))}`);
-            safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank');
+            safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Digital entrepreneurs and PLR resellers', true);
+            safeUpdate('priceRange', `<strong>Price Range:</strong> $${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - $${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))}`, true);
+            safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank', true);
         }
         
         function updateProfitMetrics() {
@@ -976,7 +976,7 @@
                 safeUpdate('roiProjection', '0%');
                 safeUpdate('optimalPrice', '$0');
                 safeUpdate('unitsPerMonth', '0');
-                safeUpdate('profitRecommendations', '<li>Upload content to see profit optimization strategies</li>');
+                safeUpdate('profitRecommendations', '<li>Upload content to see profit optimization strategies</li>', true);
                 return;
             }
             
@@ -995,7 +995,7 @@
                 <li>Implement upsell strategies for 40-60% revenue increase</li>
                 <li>Create bundle packages for maximum revenue</li>
                 <li>Target optimal price point of $${avgPrice}</li>
-            `);
+            `, true);
         }
         
         function updateBundleMetrics() {
@@ -1019,13 +1019,13 @@
                     <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
                         ${ultimateAnalysisData.length === 0 ? 'Upload content to generate AI-powered title suggestions' : 'AI Title Generation is disabled. Enable it in Analysis Options and run analysis again.'}
                     </div>
-                `);
+                `, true);
                 safeUpdate('quickWinActions', `
                     <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
                         <span style="margin-right: 10px;">💡</span>
                         <span>Upload content to see personalized quick win recommendations</span>
                     </div>
-                `);
+                `, true);
                 return;
             }
             
@@ -1045,7 +1045,7 @@
                 `;
             }).join('');
             
-            safeUpdate('aiTitleSuggestions', aiTitlesHTML);
+            safeUpdate('aiTitleSuggestions', aiTitlesHTML, true);
             
             // Dynamic quick wins based on actual data
             const highScoreItems = ultimateAnalysisData.filter(item => item.marketScore >= 90).length;
@@ -1069,7 +1069,7 @@
                     <span style="margin-right: 10px;">🚀</span>
                     <span>Total profit potential: $${ultimateAnalysisData.reduce((sum, item) => sum + item.profitPotential, 0).toLocaleString()} across all products</span>
                 </div>
-            `);
+            `, true);
         }
         
         // Generate AI titles for each PLR package
@@ -1492,7 +1492,7 @@
                     <li>Consider adding more visual elements for engagement</li>
                     <li>Readability score is optimal for target audience</li>
                     <li>Keyword density is well-optimized for search engines</li>
-                `);
+                `, true);
             } else {
                 safeUpdate('qualityRecommendations', `
                     <li>Content shows excellent structure and readability scores</li>
@@ -1500,7 +1500,7 @@
                     <li>Keyword density is well-optimized for search engines</li>
                     <li>Consider adding more visual elements to enhance engagement</li>
                     <li>Overall quality qualifies for premium pricing strategy</li>
-                `);
+                `, true);
             }
         }
         
