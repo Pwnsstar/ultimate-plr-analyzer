@@ -273,7 +273,6 @@
         .score-average { background: #fff3cd; color: #856404; }
         .score-poor { background: #f8d7da; color: #721c24; }
         
-        /* Niche badge styles */
         .niche-badge {
             display: inline-block;
             padding: 4px 10px;
@@ -292,7 +291,6 @@
         .niche-education { background: #f3e5f5; color: #6a1b9a; }
         .niche-other { background: #f5f5f5; color: #616161; }
         
-        /* Strategy badge styles */
         .strategy-badge {
             display: inline-block;
             padding: 4px 8px;
@@ -494,7 +492,6 @@
             display: none !important;
         }
 
-        /* Keyword tag styles */
         .keyword-tag {
             background: var(--primary-gradient);
             color: white;
@@ -773,7 +770,6 @@
                 </div>
             </div>
             
-            <!-- Realistic Pricing Suggestions -->
             <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" id="pricingSuggestions">
                 <h4 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🏷️ Market-Realistic Pricing Suggestions</h4>
                 
@@ -798,105 +794,6 @@
                         <li><strong>Bundle pricing:</strong> 20-30% discount vs individual prices to encourage larger purchases</li>
                         <li><strong>Test pricing:</strong> Start competitive, then gradually increase based on sales data</li>
                         <li><strong>Value-add:</strong> Enhanced graphics, better organization, or bonus materials justify higher prices</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Etsy Seller Calculator -->
-            <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h4 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🛒 Etsy Digital Product Calculator</h4>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <!-- Input Section -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h5 style="margin-bottom: 15px; color: #333;">💰 Cost Inputs</h5>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">PLR License Cost:</label>
-                            <input type="number" id="plrCost" placeholder="0.00" step="0.01" min="0" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;" oninput="calculateEtsyProfit()">
-                        </div>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Desired Sale Price:</label>
-                            <input type="number" id="salePrice" placeholder="0.00" step="0.01" min="0" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;" oninput="calculateEtsyProfit()">
-                        </div>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Expected Monthly Sales:</label>
-                            <input type="number" id="monthlySales" placeholder="10" min="1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;" oninput="calculateEtsyProfit()">
-                        </div>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: flex; align-items: center; font-weight: 500;">
-                                <input type="checkbox" id="useEtsyAds" style="margin-right: 8px;" onchange="calculateEtsyProfit()"> Include Etsy Ads (5% of sales)
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Results Section -->
-                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;">
-                        <h5 style="margin-bottom: 15px;">📊 Profit Breakdown</h5>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                            <span>Sale Price:</span>
-                            <span id="displaySalePrice">$0.00</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                            <span>PLR Cost:</span>
-                            <span id="displayPlrCost">$0.00</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                            <span>Etsy Listing Fee:</span>
-                            <span id="listingFee">$0.20</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                            <span>Transaction Fee (6.5%):</span>
-                            <span id="transactionFee">$0.00</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                            <span>Payment Fee (3% + $0.25):</span>
-                            <span id="paymentFee">$0.00</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between;" id="adsRow" style="display: none;">
-                            <span>Etsy Ads (5%):</span>
-                            <span id="adsFee">$0.00</span>
-                        </div>
-                        
-                        <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em;">
-                            <span>Net Profit per Sale:</span>
-                            <span id="netProfit" style="color: #4CAF50;">$0.00</span>
-                        </div>
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; font-weight: bold;">
-                            <span>Profit Margin:</span>
-                            <span id="profitMargin">0%</span>
-                        </div>
-                        
-                        <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
-                        
-                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em;">
-                            <span>Monthly Profit:</span>
-                            <span id="monthlyProfit" style="color: #ffed4e;">$0.00</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Fee Breakdown Explanation -->
-                <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 0.9em;">
-                    <h6 style="margin-bottom: 10px; color: #1976d2;">📋 Etsy Fee Structure (Digital Products)</h6>
-                    <ul style="margin-left: 20px; line-height: 1.6;">
-                        <li><strong>Listing Fee:</strong> $0.20 per listing (lasts 4 months or until sold)</li>
-                        <li><strong>Transaction Fee:</strong> 6.5% of sale price (no shipping for digital products)</li>
-                        <li><strong>Payment Processing:</strong> 3% + $0.25 per transaction</li>
-                        <li><strong>Etsy Ads:</strong> Optional - typically 5-15% of sales (average 5%)</li>
-                        <li><strong>No shipping costs</strong> for digital downloads</li>
                     </ul>
                 </div>
             </div>
@@ -968,58 +865,61 @@
             <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
                 <h4>🤖 AI Title Suggestions</h4>
                 <div id="aiTitleSuggestions" style="margin: 15px 0;">
-                    <!-- This will be populated with actual suggestions -->
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        Upload content to generate AI-powered title suggestions
+                    </div>
                 </div>
             </div>
             
             <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
                 <h4>⚡ Quick Win Actions</h4>
                 <div id="quickWinActions" style="margin: 15px 0;">
-                    <!-- This will be populated with actual quick win actions -->
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Upload content to see personalized quick win recommendations</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- NEW KEYWORDS TAB -->
         <div id="keywords" class="tab-content keywords-section">
             <h3>🔍 Etsy SEO Keyword Generator</h3>
             
             <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h4 style="color: #667eea; margin-bottom: 20px;">📈 Trending Keywords by Niche</h4>
                 <div id="keywordsByNiche" style="margin-bottom: 20px;">
-                    <!-- This will be populated with keyword suggestions -->
+                    Upload PLR content to see niche-specific keyword suggestions
                 </div>
                 
                 <h4 style="color: #667eea; margin-bottom: 20px;">🎯 Optimized Title Generator</h4>
                 <div id="seoTitleSuggestions" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <!-- This will be populated with SEO title suggestions -->
+                    SEO-optimized titles will appear here after analysis
                 </div>
                 
                 <h4 style="color: #667eea; margin-bottom: 20px;">🏷️ Etsy Tags Generator</h4>
                 <div id="etsyTagSuggestions" style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                    <!-- This will be populated with Etsy tag suggestions -->
+                    Recommended Etsy tags will appear here
                 </div>
             </div>
         </div>
 
-        <!-- NEW COMPETITORS TAB -->
         <div id="competitors" class="tab-content competitors-section">
             <h3>📊 Competitor Price Tracking</h3>
             
             <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 <h4 style="color: #667eea; margin-bottom: 20px;">💰 Market Price Analysis</h4>
                 <div id="competitorPricing" style="margin-bottom: 20px;">
-                    <!-- This will be populated with competitor pricing data -->
+                    Upload PLR content to see current market pricing
                 </div>
                 
                 <h4 style="color: #667eea; margin-bottom: 20px;">🎯 Pricing Opportunities</h4>
                 <div id="pricingOpportunities" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <!-- This will be populated with pricing opportunities -->
+                    Price gap opportunities will appear here
                 </div>
                 
                 <h4 style="color: #667eea; margin-bottom: 20px;">📊 Market Saturation</h4>
                 <div id="marketSaturation" style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                    <!-- This will be populated with market saturation data -->
+                    Market saturation analysis will appear here
                 </div>
             </div>
         </div>
@@ -1057,6 +957,7 @@
     <div id="tooltip" class="tooltip"></div>
     
     <script>
+        // Global variables
         let ultimateAnalysisData = [];
         let uploadedFiles = [];
         let selectedAnalysisOptions = {
@@ -1143,7 +1044,7 @@
             }
         };
         
-        // Fixed safeUpdate function to handle HTML properly
+        // CORE FUNCTIONS
         function safeUpdate(elementId, content, isHTML = false) {
             const element = document.getElementById(elementId);
             if (element) {
@@ -1155,7 +1056,6 @@
             }
         }
         
-        // Determine niche from filename and content
         function determineNiche(fileName, content = '') {
             const text = (fileName + ' ' + content).toLowerCase();
             
@@ -1170,14 +1070,12 @@
             return 'other';
         }
         
-        // Determine strategy based on niche, quality, and market score
         function determineStrategy(niche, qualityScore, marketScore) {
             const nicheData = niches[niche];
             if (!nicheData) return 'quick';
             
             const availableStrategies = nicheData.strategies;
             
-            // Logic for strategy selection
             if (qualityScore >= 85 && marketScore >= 80) {
                 return availableStrategies.includes('premium') ? 'premium' : availableStrategies[0];
             } else if (qualityScore >= 70 && marketScore >= 70) {
@@ -1191,8 +1089,10 @@
             }
         }
         
-        // Fixed demo data that matches your screenshots exactly
+        // DEMO FUNCTION
         function loadUltimateDemo() {
+            console.log('Loading demo data...');
+            
             ultimateAnalysisData = [
                 {
                     title: "Facebook Advertising",
@@ -1276,7 +1176,7 @@
                 }
             ];
             
-            // Ensure all analysis options are enabled for demo
+            // Update all analysis options to enabled
             selectedAnalysisOptions = {
                 marketIntelligence: true,
                 qualityAssessment: true,
@@ -1287,7 +1187,7 @@
                 competitorTracking: true
             };
             
-            // Update checkboxes to reflect enabled options
+            // Update checkboxes
             const checkboxes = ['marketIntelligence', 'qualityAssessment', 'profitOptimization', 'bundleStrategies', 'aiTitleGeneration', 'etsySEO', 'competitorTracking'];
             checkboxes.forEach(id => {
                 const checkbox = document.getElementById(id);
@@ -1310,114 +1210,26 @@
             alert('Ultimate demo loaded successfully! All analysis features are enabled.');
         }
         
-        function updateResultsTable() {
-            const tbody = document.getElementById('resultsBody');
-            if (!tbody) return;
+        // FILE UPLOAD FUNCTIONS
+        function handleFileUpload(files) {
+            if (files.length === 0) return;
             
-            if (ultimateAnalysisData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
-                            📋 Upload PLR content or load demo to see professional analysis
-                        </td>
-                    </tr>
+            files.forEach(file => {
+                if (!uploadedFiles.find(f => f.name === file.name)) {
+                    uploadedFiles.push(file);
+                }
+            });
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>Files Uploaded:</strong> ${files.length} files ready for analysis</span>
+                    <span>Total files: ${uploadedFiles.length}</span>
                 `;
-                return;
             }
             
-            tbody.innerHTML = ultimateAnalysisData.map((item, index) => {
-                const scoreClass = getScoreClass(item.marketScore);
-                const qualityClass = getQualityClass(item.qualityRating);
-                
-                // Get niche info
-                const nicheData = niches[item.niche] || { name: 'Other' };
-                const nicheClass = 'niche-' + item.niche;
-                
-                // Get strategy info
-                const strategyData = strategies[item.strategy] || { name: item.strategyName || 'Quick Launch', class: 'strategy-quick' };
-                
-                return `
-                    <tr>
-                        <td>
-                            <strong>${item.title}</strong>
-                            <br>
-                            <small style="color: #666;">${item.category} • ${item.pages} pages</small>
-                        </td>
-                        <td>
-                            <span class="niche-badge ${nicheClass}">${nicheData.name}</span>
-                        </td>
-                        <td>
-                            <span class="strategy-badge ${strategyData.class}">${strategyData.name}</span>
-                        </td>
-                        <td>
-                            <span class="score-badge ${scoreClass}">${item.marketScore}/100</span>
-                            <br>
-                            <small>${item.searchVolume.toLocaleString()} monthly searches</small>
-                        </td>
-                        <td>
-                            <span class="score-badge ${qualityClass}">${item.qualityRating}</span>
-                            <br>
-                            <small>${item.competition}</small>
-                        </td>
-                        <td>
-                            <strong style="color: #4CAF50;">$${item.profitPotential}</strong>
-                            <br>
-                            <small>Suggested: $${item.suggestedPrice}</small>
-                        </td>
-                        <td>
-                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;" data-tooltip="${getStrategyTooltip(item.strategyName || 'Quick Launch')}">
-                                ${item.strategyName || 'Quick Launch'}
-                            </span>
-                        </td>
-                        <td>
-                            <button onclick="showDetails(${index})" style="background: #4CAF50; color: white; border: none; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 0.8em;" data-tooltip="View Detailed Analysis<br><br>Opens popup with:<br>• Complete market data<br>• Quality breakdown<br>• Profit analysis<br>• Specific recommendations<br>• Strategic insights">
-                                📊 Details
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-            
-            initializeTooltips();
-        }
-        
-        function getStrategyTooltip(strategy) {
-            switch(strategy) {
-                case 'Upsell Package':
-                    return 'UPSELL PACKAGE: Create a higher-priced bundle by combining this PLR with complementary products like workbooks, checklists, or video courses. Typical upsell increases revenue by 40-60% per customer.';
-                case 'Quick Launch':
-                    return 'QUICK LAUNCH: Fast-track this PLR to market with minimal editing. Focus on immediate revenue generation with basic rebranding and quick listing setup. Ideal for testing market demand quickly.';
-                case 'Premium Product':
-                    return 'PREMIUM PRODUCT: Position as high-value offering with extensive enhancements, professional design, and comprehensive marketing materials. Commands premium pricing.';
-                case 'Bundle Strategy':
-                    return 'BUNDLE STRATEGY: Combine with related PLR products to create themed collections. Increases perceived value and average order value.';
-                case 'Template System':
-                    return 'TEMPLATE SYSTEM: Convert to customizable templates that customers can personalize. Popular for planners, worksheets, and business documents.';
-                default:
-                    return 'STRATEGIC APPROACH: Recommended marketing and pricing strategy based on market analysis, competition level, and profit optimization calculations.';
-            }
-        }
-        
-        // Fixed calculation functions with null checks
-        function updateOverviewMetrics() {
-            if (ultimateAnalysisData.length === 0) {
-                safeUpdate('overallMarketScore', '0/100');
-                safeUpdate('overallProfit', '$0');
-                safeUpdate('quickWins', '0 Found');
-                safeUpdate('optimizationLevel', 'None');
-                return;
-            }
-            
-            const avgScore = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length);
-            const totalProfit = ultimateAnalysisData.reduce((total, item) => {
-                return total + item.profitPotential;
-            }, 0);
-            const quickWinsCount = ultimateAnalysisData.filter(item => item.marketScore >= 85).length;
-            
-            safeUpdate('overallMarketScore', `${avgScore}/100`);
-            safeUpdate('overallProfit', `$${totalProfit.toLocaleString()}`);
-            safeUpdate('quickWins', `${quickWinsCount} Found`);
-            safeUpdate('optimizationLevel', avgScore >= 90 ? 'High ROI' : avgScore >= 80 ? 'Medium ROI' : 'Ready');
+            alert(`Successfully uploaded ${files.length} files! Click "Start Analysis" to begin processing.`);
         }
         
         function startAnalysis() {
@@ -1487,7 +1299,149 @@
             }, 2000);
         }
         
-        // Keep all other functions from your original code
+        // CLEAR DATA FUNCTION
+        function clearAllData() {
+            ultimateAnalysisData = [];
+            uploadedFiles = [];
+            updateAllDisplays();
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>System Status:</strong> Ready for Professional Analysis</span>
+                    <span id="fileCount">0 PLR files analyzed with market intelligence</span>
+                `;
+                statusIndicator.style.borderLeftColor = '#4CAF50';
+            }
+            
+            alert('All data cleared successfully!');
+        }
+        
+        // TAB NAVIGATION
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const targetContent = document.getElementById(tabName);
+            const targetTab = event.target;
+            
+            if (targetContent) targetContent.classList.add('active');
+            if (targetTab) targetTab.classList.add('active');
+        }
+        
+        // UPDATE FUNCTIONS
+        function updateResultsTable() {
+            const tbody = document.getElementById('resultsBody');
+            if (!tbody) return;
+            
+            if (ultimateAnalysisData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                            📋 Upload PLR content or load demo to see professional analysis
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = ultimateAnalysisData.map((item, index) => {
+                const scoreClass = getScoreClass(item.marketScore);
+                const qualityClass = getQualityClass(item.qualityRating);
+                
+                const nicheData = niches[item.niche] || { name: 'Other' };
+                const nicheClass = 'niche-' + item.niche;
+                
+                const strategyData = strategies[item.strategy] || { name: item.strategyName || 'Quick Launch', class: 'strategy-quick' };
+                
+                return `
+                    <tr>
+                        <td>
+                            <strong>${item.title}</strong>
+                            <br>
+                            <small style="color: #666;">${item.category} • ${item.pages} pages</small>
+                        </td>
+                        <td>
+                            <span class="niche-badge ${nicheClass}">${nicheData.name}</span>
+                        </td>
+                        <td>
+                            <span class="strategy-badge ${strategyData.class}">${strategyData.name}</span>
+                        </td>
+                        <td>
+                            <span class="score-badge ${scoreClass}">${item.marketScore}/100</span>
+                            <br>
+                            <small>${item.searchVolume.toLocaleString()} monthly searches</small>
+                        </td>
+                        <td>
+                            <span class="score-badge ${qualityClass}">${item.qualityRating}</span>
+                            <br>
+                            <small>${item.competition}</small>
+                        </td>
+                        <td>
+                            <strong style="color: #4CAF50;">$${item.profitPotential}</strong>
+                            <br>
+                            <small>Suggested: $${item.suggestedPrice}</small>
+                        </td>
+                        <td>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;" data-tooltip="${getStrategyTooltip(item.strategyName || 'Quick Launch')}">
+                                ${item.strategyName || 'Quick Launch'}
+                            </span>
+                        </td>
+                        <td>
+                            <button onclick="showDetails(${index})" style="background: #4CAF50; color: white; border: none; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 0.8em;" data-tooltip="View Detailed Analysis<br><br>Opens popup with:<br>• Complete market data<br>• Quality breakdown<br>• Profit analysis<br>• Specific recommendations<br>• Strategic insights">
+                                📊 Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            initializeTooltips();
+        }
+        
+        function getStrategyTooltip(strategy) {
+            switch(strategy) {
+                case 'Upsell Package':
+                    return 'UPSELL PACKAGE: Create a higher-priced bundle by combining this PLR with complementary products like workbooks, checklists, or video courses. Typical upsell increases revenue by 40-60% per customer.';
+                case 'Quick Launch':
+                    return 'QUICK LAUNCH: Fast-track this PLR to market with minimal editing. Focus on immediate revenue generation with basic rebranding and quick listing setup. Ideal for testing market demand quickly.';
+                case 'Premium Product':
+                    return 'PREMIUM PRODUCT: Position as high-value offering with extensive enhancements, professional design, and comprehensive marketing materials. Commands premium pricing.';
+                case 'Bundle Strategy':
+                    return 'BUNDLE STRATEGY: Combine with related PLR products to create themed collections. Increases perceived value and average order value.';
+                case 'Template System':
+                    return 'TEMPLATE SYSTEM: Convert to customizable templates that customers can personalize. Popular for planners, worksheets, and business documents.';
+                default:
+                    return 'STRATEGIC APPROACH: Recommended marketing and pricing strategy based on market analysis, competition level, and profit optimization calculations.';
+            }
+        }
+        
+        function updateOverviewMetrics() {
+            if (ultimateAnalysisData.length === 0) {
+                safeUpdate('overallMarketScore', '0/100');
+                safeUpdate('overallProfit', '$0');
+                safeUpdate('quickWins', '0 Found');
+                safeUpdate('optimizationLevel', 'None');
+                return;
+            }
+            
+            const avgScore = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length);
+            const totalProfit = ultimateAnalysisData.reduce((total, item) => {
+                return total + item.profitPotential;
+            }, 0);
+            const quickWinsCount = ultimateAnalysisData.filter(item => item.marketScore >= 85).length;
+            
+            safeUpdate('overallMarketScore', `${avgScore}/100`);
+            safeUpdate('overallProfit', `$${totalProfit.toLocaleString()}`);
+            safeUpdate('quickWins', `${quickWinsCount} Found`);
+            safeUpdate('optimizationLevel', avgScore >= 90 ? 'High ROI' : avgScore >= 80 ? 'Medium ROI' : 'Ready');
+        }
+        
         function updateAnalysisOptionsDisplay() {
             const sections = ['quality-section', 'market-section', 'profit-section', 'bundle-section', 'optimize-section', 'keywords-section', 'competitors-section'];
             const options = ['qualityAssessment', 'marketIntelligence', 'profitOptimization', 'bundleStrategies', 'aiTitleGeneration', 'etsySEO', 'competitorTracking'];
@@ -1505,7 +1459,6 @@
             
             // Show/hide tabs based on options
             const tabs = document.querySelectorAll('.tab');
-            // Overview tab (index 0) is always visible
             if (tabs[1]) tabs[1].style.display = selectedAnalysisOptions.qualityAssessment ? 'flex' : 'none';
             if (tabs[2]) tabs[2].style.display = selectedAnalysisOptions.marketIntelligence ? 'flex' : 'none';
             if (tabs[3]) tabs[3].style.display = selectedAnalysisOptions.profitOptimization ? 'flex' : 'none';
@@ -1514,21 +1467,17 @@
             if (tabs[6]) tabs[6].style.display = selectedAnalysisOptions.etsySEO ? 'flex' : 'none';
             if (tabs[7]) tabs[7].style.display = selectedAnalysisOptions.competitorTracking ? 'flex' : 'none';
             
-            // If current active tab is hidden, switch to overview
             const activeTab = document.querySelector('.tab.active');
-            
             if (activeTab && activeTab.style.display === 'none') {
-                // Switch to overview tab
                 document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
                 
-                if (tabs[0]) tabs[0].classList.add('active'); // Overview tab
+                if (tabs[0]) tabs[0].classList.add('active');
                 const overviewContent = document.getElementById('overview');
                 if (overviewContent) overviewContent.classList.add('active');
             }
         }
         
-        // NEW FUNCTION: Update Optimize Tab with actual content
         function updateOptimizeTab() {
             if (ultimateAnalysisData.length === 0) {
                 safeUpdate('aiTitleSuggestions', `
@@ -1627,7 +1576,6 @@
             return actions.slice(0, 4);
         }
         
-        // NEW FUNCTION: Update Keywords Tab
         function updateKeywordsTab() {
             if (ultimateAnalysisData.length === 0) {
                 safeUpdate('keywordsByNiche', 'Upload PLR content to see niche-specific keyword suggestions', false);
@@ -1757,10 +1705,9 @@
             };
             
             const specificTags = nicheTags[item.niche] || ['guide', 'tips', 'strategies'];
-            return [...baseTags, ...specificTags].slice(0, 13); // Etsy allows max 13 tags
+            return [...baseTags, ...specificTags].slice(0, 13);
         }
         
-        // NEW FUNCTION: Update Competitors Tab
         function updateCompetitorsTab() {
             if (ultimateAnalysisData.length === 0) {
                 safeUpdate('competitorPricing', 'Upload PLR content to see current market pricing', false);
@@ -1780,11 +1727,11 @@
                         
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px;">
                             <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
-                                <div style="font-size: 1.2em; font-weight: bold; color: #4CAF50;">${marketData.avgPrice}</div>
+                                <div style="font-size: 1.2em; font-weight: bold; color: #4CAF50;">$${marketData.avgPrice}</div>
                                 <small>Average Price</small>
                             </div>
                             <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
-                                <div style="font-size: 1.2em; font-weight: bold; color: #2196F3;">${marketData.minPrice} - ${marketData.maxPrice}</div>
+                                <div style="font-size: 1.2em; font-weight: bold; color: #2196F3;">$${marketData.minPrice} - $${marketData.maxPrice}</div>
                                 <small>Price Range</small>
                             </div>
                             <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
@@ -1796,7 +1743,7 @@
                         <div style="background: #f0f8ff; padding: 15px; border-radius: 8px;">
                             <strong>Top Competitor Prices:</strong>
                             <ul style="margin: 10px 0; padding-left: 20px;">
-                                ${marketData.topCompetitors.map(comp => `<li>${comp.name}: ${comp.price}</li>`).join('')}
+                                ${marketData.topCompetitors.map(comp => `<li>${comp.name}: $${comp.price}</li>`).join('')}
                             </ul>
                         </div>
                     </div>
@@ -1854,9 +1801,8 @@
         }
         
         function generateMarketData(item) {
-            // Simulate market research data
             const basePrice = item.suggestedPrice;
-            const variance = 0.3; // 30% variance
+            const variance = 0.3;
             
             return {
                 avgPrice: Math.round(basePrice * (1 + (Math.random() * variance - variance/2))),
@@ -1921,7 +1867,7 @@
         function generateSaturationAnalysis() {
             const niches = ['Health & Wellness', 'Business & Marketing', 'Lifestyle & Personal', 'Technology & Digital', 'Education & Learning'];
             return niches.map(niche => {
-                const saturation = Math.floor(Math.random() * 80) + 20; // 20-100% saturation
+                const saturation = Math.floor(Math.random() * 80) + 20;
                 let recommendation;
                 
                 if (saturation > 70) {
@@ -1940,7 +1886,6 @@
             });
         }
         
-        // Include all other functions from your original code unchanged
         function updateMarketMetrics() {
             if (ultimateAnalysisData.length === 0) {
                 safeUpdate('avgMarketPrice', '$0');
@@ -1994,7 +1939,6 @@
                 <li>Target optimal price point of ${avgPrice}</li>
             `, true);
             
-            // Update realistic pricing suggestions
             updateRealisticPricingSuggestions();
         }
         
@@ -2005,16 +1949,15 @@
                 return;
             }
             
-            // Calculate individual pricing with realistic multipliers
             const individualPricing = ultimateAnalysisData.map(item => {
-                const plrCost = 4; // Assume average PLR cost of $4
+                const plrCost = 4;
                 const qualityMultiplier = item.qualityRating === 'Excellent' ? 6 : item.qualityRating === 'Very Good' ? 5 : 4;
                 const nicheMultiplier = getNicheMultiplier(item.niche);
                 const competitionMultiplier = item.competition === 'Low competition' ? 1.2 : item.competition === 'Medium competition' ? 1.0 : 0.8;
                 
                 const realisticPrice = Math.round(plrCost * qualityMultiplier * nicheMultiplier * competitionMultiplier);
-                const minPrice = Math.max(plrCost * 3, 12); // Minimum 3x multiplier
-                const maxPrice = plrCost * 6; // Maximum 6x multiplier
+                const minPrice = Math.max(plrCost * 3, 12);
+                const maxPrice = plrCost * 6;
                 
                 return {
                     ...item,
@@ -2023,7 +1966,6 @@
                 };
             });
             
-            // Update individual pricing display
             let individualHTML = individualPricing.map(item => {
                 const nicheData = niches[item.niche] || { name: 'Other' };
                 return `
@@ -2043,7 +1985,6 @@
             
             safeUpdate('individualPriceList', individualHTML, true);
             
-            // Generate bundle suggestions
             const bundleSuggestions = generateSmartBundles(individualPricing);
             updateBundleSuggestionsDisplay(bundleSuggestions);
         }
@@ -2076,7 +2017,6 @@
             
             const bundles = [];
             
-            // Group by niche
             const nicheGroups = {};
             pricingData.forEach(item => {
                 if (!nicheGroups[item.niche]) {
@@ -2085,12 +2025,11 @@
                 nicheGroups[item.niche].push(item);
             });
             
-            // Create niche-specific bundles
             Object.entries(nicheGroups).forEach(([nicheKey, items]) => {
                 if (items.length >= 2) {
                     const nicheData = niches[nicheKey] || { name: 'Other' };
                     const totalValue = items.reduce((sum, item) => sum + item.realisticPrice, 0);
-                    const bundlePrice = Math.round(totalValue * 0.75); // 25% discount
+                    const bundlePrice = Math.round(totalValue * 0.75);
                     const savings = totalValue - bundlePrice;
                     
                     bundles.push({
@@ -2105,11 +2044,10 @@
                 }
             });
             
-            // Create quality-based bundles
             const highQuality = pricingData.filter(item => item.qualityRating === 'Excellent');
             if (highQuality.length >= 2) {
                 const totalValue = highQuality.reduce((sum, item) => sum + item.realisticPrice, 0);
-                const bundlePrice = Math.round(totalValue * 0.7); // 30% discount
+                const bundlePrice = Math.round(totalValue * 0.7);
                 const savings = totalValue - bundlePrice;
                 
                 bundles.push({
@@ -2123,10 +2061,9 @@
                 });
             }
             
-            // Create "Everything Bundle"
             if (pricingData.length >= 3) {
                 const totalValue = pricingData.reduce((sum, item) => sum + item.realisticPrice, 0);
-                const bundlePrice = Math.round(totalValue * 0.6); // 40% discount
+                const bundlePrice = Math.round(totalValue * 0.6);
                 const savings = totalValue - bundlePrice;
                 
                 bundles.push({
@@ -2140,7 +2077,7 @@
                 });
             }
             
-            return bundles.slice(0, 3); // Return top 3 bundle suggestions
+            return bundles.slice(0, 3);
         }
         
         function updateBundleSuggestionsDisplay(bundles) {
@@ -2185,7 +2122,6 @@
         
         function updateBundleMetrics() {
             if (ultimateAnalysisData.length === 0) {
-                // Reset to default static pricing when no data
                 safeUpdate('premiumBundleTitle', '💎 PREMIUM BUNDLE - $197');
                 safeUpdate('standardBundleTitle', '⭐ STANDARD BUNDLE - $97');
                 safeUpdate('basicBundleTitle', '🚀 BASIC BUNDLE - $47');
@@ -2199,7 +2135,6 @@
                 return;
             }
             
-            // Calculate dynamic pricing based on content
             const avgPrice = ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length;
             const avgMarketScore = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length;
             
@@ -2207,12 +2142,10 @@
             const standard = Math.max(Math.round(avgPrice * 1.6), 67);
             const premium = Math.max(Math.round(avgPrice * 2.8), 147);
             
-            // Calculate revenue projections
             const basicRevenue = Math.round(basic * 8 * (avgMarketScore / 80));
             const standardRevenue = Math.round(standard * 8 * (avgMarketScore / 80));
             const premiumRevenue = Math.round(premium * 8 * (avgMarketScore / 80) * 1.2);
             
-            // Update titles and metrics
             safeUpdate('premiumBundleTitle', `💎 PREMIUM BUNDLE - ${premium}`);
             safeUpdate('standardBundleTitle', `⭐ STANDARD BUNDLE - ${standard}`);
             safeUpdate('basicBundleTitle', `🚀 BASIC BUNDLE - ${basic}`);
@@ -2266,39 +2199,6 @@
             if (quality === 'Very Good') return 'score-good';
             if (quality === 'Good') return 'score-average';
             return 'score-poor';
-        }
-        
-        function clearAllData() {
-            ultimateAnalysisData = [];
-            uploadedFiles = [];
-            updateAllDisplays();
-            
-            const statusIndicator = document.querySelector('.status-indicator');
-            if (statusIndicator) {
-                statusIndicator.innerHTML = `
-                    <div class="status-dot"></div>
-                    <span><strong>System Status:</strong> Ready for Professional Analysis</span>
-                    <span id="fileCount">0 PLR files analyzed with market intelligence</span>
-                `;
-                statusIndicator.style.borderLeftColor = '#4CAF50';
-            }
-            
-            alert('All data cleared successfully!');
-        }
-        
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            const targetContent = document.getElementById(tabName);
-            const targetTab = event.target;
-            
-            if (targetContent) targetContent.classList.add('active');
-            if (targetTab) targetTab.classList.add('active');
         }
         
         function showDetails(index) {
@@ -2372,3 +2272,243 @@
             updateKeywordsTab();
             updateCompetitorsTab();
         }
+        
+        // TOOLTIP FUNCTIONS
+        function initializeTooltips() {
+            const tooltip = document.getElementById('tooltip');
+            if (!tooltip) return;
+            
+            const elementsWithTooltips = document.querySelectorAll('[data-tooltip]');
+            
+            elementsWithTooltips.forEach(element => {
+                element.addEventListener('mouseenter', (e) => {
+                    const tooltipText = element.getAttribute('data-tooltip');
+                    tooltip.innerHTML = tooltipText;
+                    tooltip.classList.add('show');
+                    
+                    setTimeout(() => {
+                        updateTooltipPosition(e, tooltip);
+                    }, 10);
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    if (tooltip.classList.contains('show')) {
+                        updateTooltipPosition(e, tooltip);
+                    }
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('show');
+                    tooltip.classList.remove('tooltip-top', 'tooltip-bottom');
+                });
+            });
+        }
+        
+        function updateTooltipPosition(e, tooltip) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let left = mouseX + 15;
+            let top = mouseY - 15;
+            
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const tooltipWidth = tooltipRect.width;
+            const tooltipHeight = tooltipRect.height;
+            
+            if (left + tooltipWidth > viewportWidth - 20) {
+                left = mouseX - tooltipWidth - 15;
+            }
+            if (left < 20) {
+                left = 20;
+            }
+            
+            if (top + tooltipHeight > viewportHeight - 20) {
+                top = mouseY - tooltipHeight - 15;
+                tooltip.classList.remove('tooltip-top');
+                tooltip.classList.add('tooltip-bottom');
+            } else {
+                tooltip.classList.remove('tooltip-bottom');
+                tooltip.classList.add('tooltip-top');
+            }
+            
+            if (top < 20) {
+                top = 20;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // EXPORT FUNCTIONS
+        function exportPDF() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const htmlContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Ultimate PLR Analysis Report</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                    h1 { color: #667eea; text-align: center; margin-bottom: 30px; }
+                    h2 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+                    th { background: #667eea; color: white; }
+                </style>
+            </head>
+            <body>
+                <h1>🚀 ULTIMATE PLR ANALYSIS REPORT</h1>
+                
+                <h2>📊 ANALYSIS RESULTS</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PLR Content</th>
+                            <th>Niche</th>
+                            <th>Strategy</th>
+                            <th>Market Score</th>
+                            <th>Quality</th>
+                            <th>Profit Potential</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${ultimateAnalysisData.map(item => {
+                            const nicheData = niches[item.niche] || { name: 'Other' };
+                            const strategyData = strategies[item.strategy] || { name: 'Quick Launch' };
+                            return `
+                                <tr>
+                                    <td>${item.title}</td>
+                                    <td>${nicheData.name}</td>
+                                    <td>${strategyData.name}</td>
+                                    <td>${item.marketScore}/100</td>
+                                    <td>${item.qualityRating}</td>
+                                    <td>${item.profitPotential}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </body>
+            </html>`;
+
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(htmlContent);
+                printWindow.document.close();
+                
+                printWindow.onload = function() {
+                    setTimeout(() => {
+                        printWindow.print();
+                    }, 500);
+                };
+            }
+            
+            alert('PDF generation started! Use your browser\'s print dialog to save as PDF.');
+        }
+        
+        function exportExcel() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const excelContent = `Title,Niche,Strategy,Market Score,Quality Rating,Profit Potential,Suggested Price,Search Volume,Competition
+${ultimateAnalysisData.map(item => {
+                const nicheData = niches[item.niche] || { name: 'Other' };
+                const strategyData = strategies[item.strategy] || { name: 'Quick Launch' };
+                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","${item.profitPotential}",${item.suggestedPrice},${item.searchVolume},"${item.competition}"`;
+            }).join('\n')}`;
+            
+            downloadFile('Ultimate-PLR-Analysis.csv', excelContent);
+        }
+        
+        function exportCSV() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const csvContent = `Title,Niche,Strategy,Market Score,Quality Rating,Profit Potential
+${ultimateAnalysisData.map(item => {
+                const nicheData = niches[item.niche] || { name: 'Other' };
+                const strategyData = strategies[item.strategy] || { name: 'Quick Launch' };
+                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","${item.profitPotential}"`;
+            }).join('\n')}`;
+            
+            downloadFile('PLR-Analysis-Data.csv', csvContent);
+        }
+        
+        function exportFullReport() {
+            alert('Full report export feature coming soon!');
+        }
+        
+        function exportBundleGuide() {
+            alert('Bundle guide export feature coming soon!');
+        }
+        
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadArea && fileInput) {
+                uploadArea.addEventListener('click', () => fileInput.click());
+                
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    
+                    const files = Array.from(e.dataTransfer.files);
+                    handleFileUpload(files);
+                });
+                
+                fileInput.addEventListener('change', (e) => {
+                    const files = Array.from(e.target.files);
+                    handleFileUpload(files);
+                });
+            }
+            
+            initializeTooltips();
+        });
+        
+        // Modal click outside handler
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        console.log('Ultimate PLR Analysis Tool loaded successfully!');
+    </script>
+</body>
+</html>
