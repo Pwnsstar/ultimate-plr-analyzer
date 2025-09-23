@@ -1,304 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ultimate PLR Analyzer — Local Troubleshooter</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ultimate PLR Analyzer</title>
 <style>
   :root{
-    --grad: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-    --ink:#111; --muted:#666; --soft:#f6f7fb; --card:#ffffff;
-    --ok:#2e7d32; --warn:#ef6c00; --bad:#c62828; --line:#e5e7eb;
+    --bg: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    --gold: linear-gradient(45deg,#ffd700,#ffed4e);
+    --ink:#0f172a; --muted:#64748b; --card:#ffffff; --line:#e5e7eb;
+    --accent:#6366f1; --accent2:#22c55e; --alert:#ef4444; --soft:#f8fafc;
   }
   *{box-sizing:border-box}
-  body{margin:0;font:15px/1.5 system-ui,Segoe UI,Roboto,Arial;background:var(--soft);color:var(--ink)}
-  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-  .hero{background:var(--grad);color:#fff;border-radius:14px;padding:22px 20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
-  .hero h1{margin:0 0 8px;font-size:24px}
-  .hero p{margin:0;opacity:.95}
-  .grid{display:grid;gap:14px;grid-template-columns:1fr 1fr}
-  @media (max-width:900px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-  .upload{border:2px dashed var(--line);border-radius:12px;background:#fff;text-align:center;padding:20px;cursor:pointer}
-  .upload:hover{background:#f0f4ff;border-color:#bcd}
-  .muted{color:var(--muted)}
-  .btn{display:inline-block;border:0;border-radius:20px;padding:10px 14px;background:#4f46e5;color:#fff;font-weight:600;cursor:pointer}
-  .btn.alt{background:#0ea5e9}
-  .btn.warn{background:#ef4444}
-  .btn:disabled{opacity:.6;cursor:not-allowed}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-  th{background:#f3f4f6}
-  .pill{display:inline-block;padding:3px 8px;border-radius:999px;background:#eef;border:1px solid #ccd;margin:2px 6px 2px 0;font-size:12px}
-  .score.ok{color:var(--ok)} .score.warn{color:var(--warn)} .score.bad{color:var(--bad)}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:8px;padding:10px}
-  .small{font-size:12px}
+  body{margin:0;background:var(--soft);color:var(--ink);font:15px/1.55 system-ui,Segoe UI,Roboto,Arial}
+  .wrap{max-width:1200px;margin:28px auto;padding:0 18px}
+  .hero{
+    background:var(--bg); color:#fff; border-radius:16px; padding:26px 22px; position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.2); overflow:hidden;
+  }
+  .hero:before{
+    content:""; position:absolute; inset:-40% -40% auto auto; width:140%; height:140%;
+    background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.12),transparent 55%);
+    transform:rotate(12deg);
+  }
+  .title{margin:0 0 6px; font-size:28px; letter-spacing:.2px; text-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .sub{margin:0 0 10px; opacity:.95}
+  .badge{
+    display:inline-block; padding:7px 14px; border-radius:999px; font-weight:700; letter-spacing:.4px;
+    color:#111; background:var(--gold); box-shadow:0 6px 18px rgba(255,215,0,.35);
+  }
+
+  .grid{display:grid; gap:16px; grid-template-columns:2fr 1fr; margin-top:16px}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px;
+        box-shadow:0 6px 22px rgba(15,23,42,.06)}
+  .upload{
+    border:2px dashed #d8dbe2; border-radius:14px; background:#fff; text-align:center; padding:26px; cursor:pointer;
+    transition:.2s ease;
+  }
+  .upload:hover{border-color:#b1b6c9; background:#f5f7ff}
+  .small{font-size:12px; color:var(--muted)}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px}
+  .btn{border:0; border-radius:10px; padding:10px 14px; font-weight:600; cursor:pointer}
+  .btn.primary{background:linear-gradient(45deg,#4f46e5,#7c3aed); color:#fff}
+  .btn.alt{background:linear-gradient(45deg,#22c55e,#16a34a); color:#fff}
+  .btn.warn{background:#ef4444; color:#fff}
+  .btn:disabled{opacity:.55; cursor:not-allowed}
+
+  .tabs{display:flex; gap:8px; background:#f1f5f9; border-radius:12px; padding:6px; margin:18px 0 10px; flex-wrap:wrap}
+  .tab{border:1px solid #e2e8f0; background:#fff; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600}
+  .tab.active{background:var(--bg); color:#fff; border-color:transparent; box-shadow:0 6px 18px rgba(99,102,241,.3)}
+  .panel{display:none; animation:fade .3s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+  table{width:100%; border-collapse:collapse; margin-top:8px; background:#fff; border-radius:12px; overflow:hidden}
+  th,td{padding:12px; border-bottom:1px solid #eef2f7; text-align:left; vertical-align:top}
+  th{background:linear-gradient(135deg,#747cf0 0%,#8d6ad3 100%); color:#fff; font-weight:700}
+  tr:hover{background:#f8fafc}
+  .pill{display:inline-block; padding:4px 8px; border-radius:999px; background:#eef2ff; border:1px solid #c7d2fe; margin:2px 6px 2px 0; font-size:12px}
+  textarea{width:100%; min-height:110px; border:1px solid #e2e8f0; border-radius:10px; padding:10px}
+  .score.ok{color:#16a34a} .score.mid{color:#f59e0b} .score.low{color:#dc2626}
 </style>
 </head>
 <body>
 <div class="wrap">
   <section class="hero">
-    <h1>Ultimate PLR Analyzer — Local Troubleshooter</h1>
-    <p>Drop your PLR files, get instant insights for Etsy. Works offline for .txt. PDF and DOCX are stubbed so you can wire your own extractor.</p>
+    <h1 class="title">Ultimate PLR Analyzer</h1>
+    <p class="sub">Professional market checks, quality notes, and Etsy listing helpers. Local preview build for your PLR ebooks.</p>
+    <span class="badge">Premium Edition</span>
   </section>
 
-  <div class="grid">
+  <section class="grid">
     <div class="card">
       <div id="drop" class="upload">
-        <strong>Drop PLR files here</strong><br>
-        <span class="muted">TXT first for full in-browser analysis. PDF and DOCX show placeholders you can replace with your own extraction.</span><br><br>
-        <input id="fileInput" type="file" multiple />
+        <strong>Upload PLR Content</strong><br>
+        <span class="small">Drag and drop or click to browse. TXT is fully analyzed locally. PDF and DOCX are stubbed for now.</span><br><br>
+        <input id="fileInput" type="file" multiple/>
       </div>
-      <div class="row" style="margin-top:10px">
-        <button id="exportCsv" class="btn" disabled>Export CSV</button>
+      <div class="row">
+        <button id="demo" class="btn alt">Load Demo</button>
+        <button id="exportCsv" class="btn primary" disabled>Export CSV</button>
         <button id="clear" class="btn warn" disabled>Clear</button>
-        <span id="status" class="muted"></span>
+        <span id="status" class="small"></span>
       </div>
     </div>
-
     <div class="card">
-      <strong>Notes</strong>
-      <ul class="small">
-        <li>TXT files are parsed locally. No uploads leave your machine.</li>
-        <li>PDF and DOCX rows include a note to plug in your extractor. You can connect pdf.js or a server endpoint when ready.</li>
-        <li>Outputs include word count, reading time, top keywords, draft Etsy title, and tags.</li>
-      </ul>
-      <div class="muted small">Tip: keep your session focused to avoid tool context resets. This file runs standalone, so no platform limits here.</div>
+      <strong>Status</strong>
+      <div id="statusBox" class="small" style="margin-top:6px">Ready. 0 files queued.</div>
+      <div class="small" style="margin-top:10px">Files stay on your machine. No uploads. Use this to test looks and logic before wiring heavy extractors.</div>
     </div>
-  </div>
+  </section>
 
-  <div class="card" style="margin-top:14px">
-    <strong>Results</strong>
-    <table id="tbl">
-      <thead>
-        <tr>
-          <th>File</th>
-          <th>Stats</th>
-          <th>Top Keywords</th>
-          <th>Etsy Draft</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody id="tbody">
-        <tr><td colspan="5" class="muted">No files yet</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="quality">Quality</button>
+    <button class="tab" data-tab="market">Market</button>
+    <button class="tab" data-tab="profit">Profit</button>
+    <button class="tab" data-tab="keywords">Keywords</button>
+    <button class="tab" data-tab="report">Report</button>
+  </nav>
+
+  <section id="overview" class="panel active">
+    <div class="card">
+      <strong>Analysis Dashboard</strong>
+      <table>
+        <thead>
+          <tr>
+            <th>PLR File</th>
+            <th>Stats</th>
+            <th>Top Keywords</th>
+            <th>Etsy Draft</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5" class="small" style="color:var(--muted)">No files yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="quality" class="panel">
+    <div class="card">
+      <strong>Quality Assessment</strong>
+      <p class="small" style="margin-top:8px">Word count, structure, readability notes will surface here as you analyze files.</p>
+      <textarea readonly id="qualityBox" placeholder="Run an analysis to populate quality notes..."></textarea>
+    </div>
+  </section>
+
+  <section id="market" class="panel">
+    <div class="card">
+      <strong>Market Intelligence</strong>
+      <p class="small" style="margin-top:8px">When wired up, add pricing comps, competition density, and demand scores here.</p>
+    </div>
+  </section>
+
+  <section id="profit" class="panel">
+    <div class="card">
+      <strong>Profit Optimization</strong>
+      <p class="small" style="margin-top:8px">Add bundle suggestions, upsell ideas, and ROI estimates here.</p>
+    </div>
+  </section>
+
+  <section id="keywords" class="panel">
+    <div class="card">
+      <strong>Etsy SEO Keywords</strong>
+      <p class="small" style="margin-top:8px">Trending keywords and optimized titles and tags will appear here.</p>
+      <textarea readonly id="kwBox" placeholder="Run an analysis to populate keyword ideas..."></textarea>
+    </div>
+  </section>
+
+  <section id="report" class="panel">
+    <div class="card">
+      <strong>Export</strong>
+      <p class="small" style="margin-top:8px">Use Export CSV above. PDF and DOCX reports can be added later.</p>
+    </div>
+  </section>
 </div>
 
 <script>
-  // Simple state
-  const state = { rows: [] };
+  // Tabs
+  document.getElementById("tabs").addEventListener("click", e=>{
+    const b = e.target.closest(".tab"); if(!b) return;
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.tab).classList.add("active");
+  });
 
-  // Helpers
+  // State
+  const state = { rows: [] };
+  const tbody = document.getElementById("tbody");
+  const statusBox = document.getElementById("statusBox");
+  const status = document.getElementById("status");
+  const exportBtn = document.getElementById("exportCsv");
+  const clearBtn = document.getElementById("clear");
+  const qualityBox = document.getElementById("qualityBox");
+  const kwBox = document.getElementById("kwBox");
+
+  function enableControls(){
+    const has = state.rows.length>0;
+    exportBtn.disabled = !has;
+    clearBtn.disabled = !has;
+  }
+
+  // Upload
+  const drop = document.getElementById("drop");
+  const fileInput = document.getElementById("fileInput");
+  drop.addEventListener("dragover", e=>{e.preventDefault(); drop.style.background="#f5f7ff"});
+  drop.addEventListener("dragleave", ()=>{drop.style.background="#fff"});
+  drop.addEventListener("drop", async e=>{
+    e.preventDefault(); drop.style.background="#fff";
+    await handleFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", async e=>{ await handleFiles(e.target.files); });
+
+  // Demo
+  document.getElementById("demo").addEventListener("click", ()=>{
+    const fake = new File([`Chapter 1: Getting Started
+This PLR guide helps you plan meals. It includes weekly planners, grocery lists, and simple recipes for busy people.
+Bullet points:
+- 7 day plan
+- printable templates
+- shopping checklist
+- nutrition tips
+`], "Demo-PLR.txt", {type:"text/plain"});
+    handleFiles([fake]);
+  });
+
+  async function handleFiles(list){
+    const files = Array.from(list||[]);
+    if(!files.length) return;
+    status.textContent = `Queued ${files.length} file(s)`;
+    statusBox.textContent = `Processing...`;
+    for(const f of files){
+      const t = f.type || "";
+      if (/\.txt$/i.test(f.name) || t==="text/plain"){ await analyzeTxt(f); continue; }
+      if (/\.pdf$/i.test(f.name)){ await analyzePdf(f); continue; }
+      if (/\.docx$/i.test(f.name)){ await analyzeDocx(f); continue; }
+      addRow({
+        name:f.name, type:t||"unknown",
+        stats:"Unsupported type in this local build",
+        keywords:[], etsy:{title:"",tags:[]},
+        note:"Convert to TXT for offline preview", scoreClass:"low", scoreText:"No analysis"
+      });
+    }
+    status.textContent = `Analyzed ${state.rows.length} file(s)`;
+    statusBox.textContent = `Ready. ${state.rows.length} result(s).`;
+    enableControls();
+  }
+
+  // Analysis helpers
   function toWords(txt){
-    return (txt || "")
-      .toLowerCase()
-      .replace(/[^a-z0-9\s'-]/g," ")
-      .split(/\s+/)
-      .filter(Boolean);
+    return (txt||"").toLowerCase().replace(/[^a-z0-9\s'-]/g," ").split(/\s+/).filter(Boolean);
   }
   function wordCount(txt){ return toWords(txt).length; }
-  function readingTimeMinutes(words){ return Math.max(1, Math.round(words / 200)); }
-
-  // Keyword frequency
-  function topKeywords(txt, limit = 12){
-    const stop = new Set(["the","and","for","you","your","to","a","of","in","on","or","is","it","with","as","by","be","are","this","that","an","at","from","can","will","how","into","over","up","down","out","we","our","their","they","them","but"]);
-    const freq = new Map();
-    for(const w of toWords(txt)){
-      if (stop.has(w) || w.length < 3) continue;
-      freq.set(w, (freq.get(w) || 0) + 1);
-    }
-    return [...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,limit);
+  function readingMinutes(words){ return Math.max(1, Math.round(words/200)); }
+  function topKeywords(txt, n=12){
+    const stop = new Set(["the","and","for","you","your","to","a","of","in","on","or","is","it","with","as","by","be","are","this","that","an","at","from","can","will","how","into","over","out","we","our","their","they","them","but"]);
+    const map = new Map();
+    for(const w of toWords(txt)){ if(stop.has(w) || w.length<3) continue; map.set(w,(map.get(w)||0)+1); }
+    return [...map.entries()].sort((a,b)=>b[1]-a[1]).slice(0,n);
   }
-
-  // Quick quality checks
+  function scoreByWords(w){
+    if(w>=6000) return {cls:"ok", txt:"Good length for a premium PLR pack"};
+    if(w>=2500) return {cls:"mid", txt:"Decent length. Consider worksheets or bonus pages"};
+    return {cls:"low", txt:"Short. Consider expanding chapters or bundling"};
+  }
   function qualitySummary(txt){
-    const words = wordCount(txt);
-    const minutes = readingTimeMinutes(words);
-    const paragraphs = (txt.trim().match(/\n\s*\n/g) || []).length + 1;
-    const hasHeadings = /(^|\n)\s*#{1,3}\s+|(^|\n)\s*(chapter|section|lesson)\s+\d+/i.test(txt);
-    const bullets = (txt.match(/(^|\n)\s*[-*•]\s+/g) || []).length;
-
-    const checks = [];
-    checks.push(`Words: ${words}  •  Est. reading: ${minutes} min`);
-    checks.push(`Paragraphs: ${paragraphs}  •  Bullets: ${bullets}`);
-    checks.push(`Headings detected: ${hasHeadings ? "yes" : "no"}`);
-    return checks.join("<br>");
+    const w = wordCount(txt);
+    const mins = readingMinutes(w);
+    const paras = (txt.trim().match(/\n\s*\n/g)||[]).length + 1;
+    const bullets = (txt.match(/(^|\n)\s*[-*•]\s+/g)||[]).length;
+    const hasHead = /(^|\n)\s*#{1,3}\s+|(^|\n)\s*(chapter|section|lesson)\s+\d+/i.test(txt);
+    const lines = [
+      `Words: ${w} • Reading: ${mins} min`,
+      `Paragraphs: ${paras} • Bullets: ${bullets}`,
+      `Headings detected: ${hasHead ? "yes" : "no"}`
+    ];
+    return lines.join("<br>");
   }
-
-  // Etsy title and tags generator
-  function generateEtsy(txt){
-    const kws = topKeywords(txt, 13).map(k=>k[0]);
+  function etsyDraft(txt){
+    const kws = topKeywords(txt,13).map(k=>k[0]);
     const titleCore = kws.slice(0,4).map(w=>w[0].toUpperCase()+w.slice(1)).join(" ");
-    const title = (titleCore ? titleCore : "Digital Guide") + " Printable Template, Instant Download";
-    const tags = kws.slice(0,13).map(k=>k.replace(/[^a-z0-9 ]/gi,"")).filter(Boolean);
-    while(tags.length < 13) tags.push("digital download");
-    return { title, tags: tags.slice(0,13) };
+    const title = (titleCore || "Digital Guide") + " Printable, Instant Download";
+    const tags = kws.slice(0,13);
+    while(tags.length<13) tags.push("digital download");
+    return {title, tags};
   }
 
-  // Render a row
-  function renderRow(res){
-    const tbody = document.getElementById("tbody");
-    if (state.rows.length === 1) tbody.innerHTML = "";
+  // Render rows
+  function addRow(r){
+    if(state.rows.length===0) tbody.innerHTML="";
+    state.rows.push(r);
     const tr = document.createElement("tr");
-
-    const statsHtml = `
-      <div>${res.stats}</div>
-      <div class="score ${res.scoreClass}">${res.scoreText}</div>
-    `;
-
-    const kwHtml = res.keywords.length
-      ? res.keywords.map(([w,c])=>`<span class="pill">${w} · ${c}</span>`).join(" ")
-      : `<span class="muted">n/a</span>`;
-
+    const kwHtml = r.keywords.length ? r.keywords.map(([w,c])=>`<span class="pill">${w} · ${c}</span>`).join(" ") : `<span class="small" style="color:var(--muted)">n/a</span>`;
     const etsyHtml = `
-      <div><strong>Title</strong>: ${res.etsy.title}</div>
-      <div><strong>Tags</strong>: ${res.etsy.tags.map(t=>`<span class="pill">${t}</span>`).join(" ")}</div>
-      <details style="margin-top:6px"><summary class="muted">Preview listing description</summary>
-        <div class="small" style="margin-top:6px">
-          This printable digital product includes thoughtfully organized content for your niche. Perfect for Etsy shoppers who want instant access and a clean, modern layout. Files are delivered as digital downloads.
-        </div>
-      </details>
+      <div><strong>Title</strong>: ${r.etsy.title}</div>
+      <div><strong>Tags</strong>: ${r.etsy.tags.map(t=>`<span class="pill">${t}</span>`).join(" ")}</div>
     `;
-
     tr.innerHTML = `
-      <td><strong>${res.name}</strong><br><span class="small muted">${res.type}</span></td>
-      <td>${statsHtml}</td>
+      <td><strong>${r.name}</strong><br><span class="small" style="color:var(--muted)">${r.type}</span></td>
+      <td>
+        <div>${r.stats}</div>
+        <div class="score ${r.scoreClass}">${r.scoreText}</div>
+      </td>
       <td>${kwHtml}</td>
       <td>${etsyHtml}</td>
-      <td class="small">${res.note}</td>
+      <td class="small">${r.note}</td>
     `;
     tbody.appendChild(tr);
   }
 
-  // Score simple quality based on word count
-  function scoreForWords(w){
-    if (w >= 6000) return { cls:"ok", txt:"Good length for a premium PLR pack" };
-    if (w >= 2500) return { cls:"warn", txt:"Decent length. Consider adding worksheets or bonus pages" };
-    return { cls:"bad", txt:"Short. Consider expanding chapters or bundling" };
-  }
-
-  // Analyze TXT
   async function analyzeTxt(file){
     const text = await file.text();
-    const words = wordCount(text);
-    const q = scoreForWords(words);
-
-    const res = {
-      name: file.name,
-      type: "text/plain",
-      stats: qualitySummary(text),
-      keywords: topKeywords(text, 12),
-      etsy: generateEtsy(text),
-      scoreClass: q.cls,
-      scoreText: q.txt,
-      note: "Parsed locally. Ready for listing enrichment"
+    const w = wordCount(text);
+    const q = scoreByWords(w);
+    const row = {
+      name:file.name, type:"text/plain",
+      stats:qualitySummary(text),
+      keywords:topKeywords(text,12),
+      etsy:etsyDraft(text),
+      note:"Parsed locally. Ready for listing enrichment.",
+      scoreClass:q.cls, scoreText:q.txt
     };
-    state.rows.push(res);
-    renderRow(res);
+    addRow(row);
+    qualityBox.value = `Quality notes for ${file.name}\n\n` + row.stats.replace(/<br>/g,"\n");
+    kwBox.value = row.etsy.tags.join(", ");
   }
 
-  // Stub for PDF and DOCX so you can wire your extractor
+  // Stubs that match original flow. Replace with pdf.js or server extractor later.
   async function analyzePdf(file){
-    const res = {
-      name: file.name,
-      type: "application/pdf",
-      stats: "PDF parsing not enabled in this offline build",
-      keywords: [],
-      etsy: generateEtsy(file.name.replace(/\.pdf$/i,"")),
-      scoreClass: "warn",
-      scoreText: "Needs text extraction before accurate analysis",
-      note: "Plug in pdf.js or send to your server to extract text, then call the same analyzers"
+    const row = {
+      name:file.name, type:"application/pdf",
+      stats:"PDF parsing not enabled in this local preview",
+      keywords:[], etsy:etsyDraft(file.name.replace(/\.pdf$/i,"")),
+      note:"Add pdf.js or server extraction. Then reuse TXT analyzers.",
+      scoreClass:"mid", scoreText:"Needs extraction"
     };
-    state.rows.push(res); renderRow(res);
+    addRow(row);
   }
   async function analyzeDocx(file){
-    const res = {
-      name: file.name,
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      stats: "DOCX parsing not enabled in this offline build",
-      keywords: [],
-      etsy: generateEtsy(file.name.replace(/\.docx$/i,"")),
-      scoreClass: "warn",
-      scoreText: "Needs text extraction before accurate analysis",
-      note: "Use a small server with mammoth or docx parser, return plain text, then reuse the analyzers"
+    const row = {
+      name:file.name, type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      stats:"DOCX parsing not enabled in this local preview",
+      keywords:[], etsy:etsyDraft(file.name.replace(/\.docx$/i,"")),
+      note:"Use a small server with mammoth to extract text.",
+      scoreClass:"mid", scoreText:"Needs extraction"
     };
-    state.rows.push(res); renderRow(res);
-  }
-
-  // Drag and drop + input
-  const drop = document.getElementById("drop");
-  const fileInput = document.getElementById("fileInput");
-  const status = document.getElementById("status");
-  const exportBtn = document.getElementById("exportCsv");
-  const clearBtn = document.getElementById("clear");
-
-  function enableControls(){
-    exportBtn.disabled = state.rows.length === 0;
-    clearBtn.disabled = state.rows.length === 0;
-  }
-
-  drop.addEventListener("dragover", e => { e.preventDefault(); drop.style.background = "#eef3ff"; });
-  drop.addEventListener("dragleave", e => { drop.style.background = "#fff"; });
-  drop.addEventListener("drop", async e => {
-    e.preventDefault(); drop.style.background = "#fff";
-    await handleFiles(e.dataTransfer.files);
-  });
-  fileInput.addEventListener("change", async e => {
-    await handleFiles(e.target.files);
-  });
-
-  async function handleFiles(fileList){
-    const files = Array.from(fileList || []);
-    if (!files.length) return;
-    status.textContent = `Queued ${files.length} file(s)`;
-    for(const f of files){
-      const type = f.type || "";
-      if (/\.(txt|md)$/i.test(f.name) || type === "text/plain"){ await analyzeTxt(f); continue; }
-      if (/\.pdf$/i.test(f.name) || type === "application/pdf"){ await analyzePdf(f); continue; }
-      if (/\.docx$/i.test(f.name)){ await analyzeDocx(f); continue; }
-      // Fallback for other types
-      state.rows.push({
-        name: f.name, type: type || "unknown",
-        stats: "Unsupported type in this offline build",
-        keywords: [], etsy: { title:"", tags:[] },
-        scoreClass: "bad", scoreText: "No analysis",
-        note: "Convert to TXT for instant local parsing"
-      });
-      renderRow(state.rows[state.rows.length-1]);
-    }
-    enableControls();
-    status.textContent = `Analyzed ${state.rows.length} file(s)`;
+    addRow(row);
   }
 
   // Export CSV
-  exportBtn.addEventListener("click", () => {
-    const rows = [
-      ["file","type","words","reading_minutes","keywords","etsy_title","etsy_tags","quality_note","notes"]
-    ];
+  document.getElementById("exportCsv").addEventListener("click", ()=>{
+    const rows = [["file","type","words","reading_minutes","keywords","etsy_title","etsy_tags","quality_note","notes"]];
     for(const r of state.rows){
-      const words = (r.stats.match(/Words:\s*(\d+)/) || [,"0"])[1];
-      const mins = (r.stats.match(/Est\. reading:\s*(\d+)/) || [,"0"])[1];
+      const words = (r.stats.match(/Words:\s*(\d+)/)||[,"0"])[1];
+      const mins = (r.stats.match(/Reading:\s*(\d+)/)||[,"0"])[1];
       const kws = r.keywords.map(k=>k[0]).join("|");
       const tags = r.etsy.tags.join("|");
-      rows.push([r.name, r.type, words, mins, kws, r.etsy.title, tags, r.scoreText, r.note]);
+      rows.push([r.name,r.type,words,mins,kws,r.etsy.title,tags,r.scoreText,r.note]);
     }
-    const csv = rows.map(r=>r.map(x => `"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");
-    const blob = new Blob([csv], {type:"text/csv"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "plr_analysis.csv";
-    a.click();
+    const csv = rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv],{type:"text/csv"});
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="plr_analysis.csv"; a.click();
   });
 
   // Clear
-  clearBtn.addEventListener("click", () => {
+  document.getElementById("clear").addEventListener("click", ()=>{
     state.rows = [];
-    document.getElementById("tbody").innerHTML = '<tr><td colspan="5" class="muted">No files yet</td></tr>';
-    enableControls();
-    status.textContent = "";
+    tbody.innerHTML = '<tr><td colspan="5" class="small" style="color:var(--muted)">No files yet</td></tr>';
+    status.textContent = ""; statusBox.textContent = "Ready. 0 files queued.";
+    qualityBox.value = ""; kwBox.value = ""; enableControls();
     fileInput.value = "";
   });
 
