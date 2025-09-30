@@ -2911,321 +2911,333 @@ ${new Date().toLocaleDateString()}
         });
         
         console.log('Ultimate PLR Analysis Tool loaded successfully!');
-    </script><script>
+ <script>
 (function(){
-  if (window.__UPAT_addon_loaded__) return; // guard against double-inject
-  window.__UPAT_addon_loaded__ = true;
+  if (window.__UPAT_enhancements_loaded__) return;
+  window.__UPAT_enhancements_loaded__ = true;
 
-  // Stop the browser from navigating on accidental file drops outside the dropzone
-  ['dragover','drop'].forEach(function(evt){
-    window.addEventListener(evt, function(e){ e.preventDefault(); }, false);
-  });
+  // Small helpers
+  function $id(id){ return document.getElementById(id); }
+  function download(filename, text, type){
+    var blob = new Blob([text], { type: type || "text/plain" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(a.href);
+    a.remove();
+  }
 
-  document.addEventListener('DOMContentLoaded', function(){
-    var uploadArea  = document.getElementById('uploadArea');
-    var fileInput   = document.getElementById('fileInput');
-    var fileCountEl = document.getElementById('fileCount');
+  document.addEventListener("DOMContentLoaded", function(){
 
-    function updateFileCount(n){
-      if (!fileCountEl) return;
-      var text = fileCountEl.textContent || '';
-      var firstNum = text.match(/^\d+/);
-      if (firstNum){
-        fileCountEl.textContent = n + text.slice(firstNum[0].length);
+    /* ===============================
+       2) Busy UI: top bar + button spin
+       =============================== */
+    (function(){
+      // inject progress bar once
+      var bar = document.createElement("div");
+      bar.id = "upatTopProgress";
+      bar.style.cssText = "position:fixed;left:0;top:0;height:3px;width:0;background:#667eea;z-index:99999;transition:width .25s ease,opacity .25s ease;opacity:0;";
+      document.body.appendChild(bar);
+
+      function startBusy(btn, msg){
+        if (btn){
+          btn.dataset.originalText = btn.textContent;
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          btn.textContent = (msg || "Working") + "…";
+        }
+        bar.style.opacity = "1";
+        bar.style.width = "30%";
+        // simple ramp
+        var i = 30;
+        var tick = setInterval(function(){
+          i = Math.min(i + 7, 85);
+          bar.style.width = i + "%";
+        }, 250);
+        return function stopBusy(){
+          clearInterval(tick);
+          bar.style.width = "100%";
+          setTimeout(function(){
+            bar.style.opacity = "0";
+            bar.style.width = "0";
+          }, 300);
+          if (btn){
+            btn.disabled = false;
+            btn.style.opacity = "";
+            btn.textContent = btn.dataset.originalText || "Start Analysis";
+          }
+        };
+      }
+
+      // wrap Start Analysis if present
+      var startBtn;
+      // try to find the Start Analysis button by text
+      Array.prototype.slice.call(document.querySelectorAll("button")).forEach(function(b){
+        if ((b.textContent || "").trim().match(/^🔄?\s*Start Analysis/i)) startBtn = b;
+      });
+      if (typeof window.startAnalysis === "function"){
+        var originalStart = window.startAnalysis;
+        window.startAnalysis = function(){
+          var stop = startBusy(startBtn, "Analyzing");
+          try {
+            var r = originalStart.apply(this, arguments);
+            // handle promise or sync
+            if (r && typeof r.then === "function"){
+              return r.then(function(x){ stop(); return x; })
+                      .catch(function(e){ stop(); throw e; });
+            }
+            stop();
+            return r;
+          } catch(e){
+            stop();
+            throw e;
+          }
+        };
+      }
+    })();
+
+    /* ===============================
+       6) Tab routing with deep links
+       =============================== */
+    (function(){
+      function activateTab(name){
+        // fall back to overview
+        name = name || "overview";
+        var contents = document.querySelectorAll(".tab-content");
+        var buttons  = document.querySelectorAll(".tab");
+        contents.forEach(function(c){ c.classList.remove("active"); });
+        var target = $id(name);
+        if (target) target.classList.add("active");
+        buttons.forEach(function(btn){
+          var label = (btn.textContent || "").toLowerCase();
+          if (label.indexOf(String(name).toLowerCase()) !== -1) btn.classList.add("active");
+          else btn.classList.remove("active");
+        });
+      }
+      if (typeof window.showTab !== "function"){
+        window.showTab = function(tabName){
+          history.replaceState(null, "", "#" + tabName);
+          activateTab(tabName);
+        };
       } else {
-        fileCountEl.textContent = n + ' files selected';
+        // wrap existing to also update hash
+        var origShow = window.showTab;
+        window.showTab = function(tabName){
+          try { origShow.apply(this, arguments); } catch(_){}
+          history.replaceState(null, "", "#" + tabName);
+          activateTab(tabName);
+        };
       }
-    }
+      // open the right tab on load and on hash changes
+      var hash = (location.hash || "").replace(/^#/, "");
+      activateTab(hash || "overview");
+      window.addEventListener("hashchange", function(){
+        activateTab((location.hash || "").replace(/^#/, ""));
+      });
+    })();
 
-    function callHandle(files){
-      var list = Array.from(files || []);
-      if (typeof window.handleFileUpload === 'function'){
-        try { window.handleFileUpload(list); } catch(err){ console.error('handleFileUpload error:', err); }
-      } else {
-        // Minimal fallback so the UI can proceed without errors
-        window.uploadedFiles = (window.uploadedFiles || []).concat(list);
-        document.dispatchEvent(new CustomEvent('filesReady', { detail: { files: list } }));
-        console.warn('No handleFileUpload found. Stored files in window.uploadedFiles.');
+    /* ===============================
+       8) Mobile niceties
+       =============================== */
+    (function(){
+      // tap target sizes and modal body lock
+      var style = document.createElement("style");
+      style.textContent =
+        ".tab, .export-btn, .demo-button, .clear-button{min-height:44px;}" +
+        ".details-modal{overscroll-behavior:contain;}" +
+        "body.upat-modal-open{overflow:hidden; touch-action:none;}";
+      document.head.appendChild(style);
+
+      // enhance existing modal open/close to lock body scroll
+      if (typeof window.showDetails === "function"){
+        var o = window.showDetails;
+        window.showDetails = function(){
+          var r = o.apply(this, arguments);
+          document.body.classList.add("upat-modal-open");
+          return r;
+        };
       }
-      updateFileCount((window.uploadedFiles && window.uploadedFiles.length) || list.length);
-    }
-
-    // Wire the upload area without changing your HTML
-   <script>
-(function(){
-  if (window.__UPAT_addon_loaded__) return;
-  window.__UPAT_addon_loaded__ = true;
-
-  ['dragover','drop'].forEach(function(evt){
-    window.addEventListener(evt, function(e){ e.preventDefault(); }, false);
-  });
-
-  document.addEventListener('DOMContentLoaded', function(){
-    var uploadArea  = document.getElementById('uploadArea');
-    var fileInput   = document.getElementById('fileInput');
-    var fileCountEl = document.getElementById('fileCount');
-
-    // --- re-open guard ---
-    var openLock = false;
-    function safeOpenPicker(){
-      if (openLock) return;
-      openLock = true;
-      // reset input so selecting the same file triggers 'change'
-      if (fileInput) fileInput.value = '';
-      fileInput.click();
-      // release the lock shortly after dialog closes
-      setTimeout(function(){ openLock = false; }, 400);
-    }
-
-    function updateFileCount(n){
-      if (!fileCountEl) return;
-      var text = fileCountEl.textContent || '';
-      var firstNum = text.match(/^\d+/);
-      fileCountEl.textContent = firstNum ? (n + text.slice(firstNum[0].length)) : (n + ' files selected');
-    }
-
-    function callHandle(files){
-      var list = Array.from(files || []);
-      if (typeof window.handleFileUpload === 'function'){
-        try { window.handleFileUpload(list); } catch(err){ console.error('handleFileUpload error:', err); }
-      } else {
-        window.uploadedFiles = (window.uploadedFiles || []).concat(list);
-        document.dispatchEvent(new CustomEvent('filesReady', { detail: { files: list } }));
-        console.warn('No handleFileUpload function found. Stored files in window.uploadedFiles.');
+      if (typeof window.closeDetailsModal === "function"){
+        var c = window.closeDetailsModal;
+        window.closeDetailsModal = function(){
+          var r = c.apply(this, arguments);
+          document.body.classList.remove("upat-modal-open");
+          return r;
+        };
       }
-      updateFileCount((window.uploadedFiles && window.uploadedFiles.length) || list.length);
-      // make sure lock is off after a successful selection
-      openLock = false;
-    }
-
-    if (uploadArea && fileInput){
-      // prevent bubbling clicks from re-triggering picker
-      fileInput.addEventListener('click', function(e){ e.stopPropagation(); });
-
-      uploadArea.addEventListener('click', function(e){
-        e.preventDefault();
-        safeOpenPicker();
-      });
-
-      uploadArea.addEventListener('dragover', function(e){
-        e.preventDefault();
-        uploadArea.classList.add('dragover');
-      });
-      uploadArea.addEventListener('dragleave', function(){
-        uploadArea.classList.remove('dragover');
-      });
-      uploadArea.addEventListener('drop', function(e){
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){
-          callHandle(e.dataTransfer.files);
+      // Esc closes modal if present
+      document.addEventListener("keydown", function(e){
+        if (e.key === "Escape"){
+          var m = document.querySelector(".details-modal");
+          if (m && m.style.display === "flex" && typeof window.closeDetailsModal === "function"){
+            window.closeDetailsModal();
+          }
         }
       });
+    })();
 
-      fileInput.addEventListener('change', function(e){
-        if (e.target && e.target.files && e.target.files.length){
-          callHandle(e.target.files);
-        }
-      });
-    }
+    /* ===============================
+       10) Persist session to localStorage
+       =============================== */
+    (function(){
+      var KEY = "UPAT.session.v1";
 
-    // keep the rest of the add-on as-is...
-  });
-})();
-<script>
-(function(){
-  if (window.__UPAT_addon_loaded__) return;
-  window.__UPAT_addon_loaded__ = true;
-
-  // Prevent accidental page navigation on file drops
-  ['dragover','drop'].forEach(function(evt){
-    window.addEventListener(evt, function(e){ e.preventDefault(); }, false);
-  });
-
-  document.addEventListener('DOMContentLoaded', function(){
-    var uploadArea  = document.getElementById('uploadArea');
-    var fileInput   = document.getElementById('fileInput');
-    var fileCountEl = document.getElementById('fileCount');
-
-    // ===== FIXED UPLOAD WIRING =====
-    var openLock = false;
-    function safeOpenPicker(){
-      if (openLock) return;
-      openLock = true;
-      if (fileInput) fileInput.value = '';
-      fileInput.click();
-      setTimeout(function(){ openLock = false; }, 400);
-    }
-
-    function updateFileCount(n){
-      if (!fileCountEl) return;
-      var text = fileCountEl.textContent || '';
-      var firstNum = text.match(/^\d+/);
-      fileCountEl.textContent = firstNum ? (n + text.slice(firstNum[0].length)) : (n + ' files selected');
-    }
-
-    function callHandle(files){
-      var list = Array.from(files || []);
-      if (typeof window.handleFileUpload === 'function'){
-        try { window.handleFileUpload(list); } catch(err){ console.error('handleFileUpload error:', err); }
-      } else {
-        window.uploadedFiles = (window.uploadedFiles || []).concat(list);
-        document.dispatchEvent(new CustomEvent('filesReady', { detail: { files: list } }));
-        console.warn('No handleFileUpload function found. Stored files in window.uploadedFiles.');
+      function save(){
+        try{
+          var items = (window.uploadedFiles || []).map(function(f){
+            return { name: f && f.name ? f.name : String(f), size: f && f.size ? f.size : undefined };
+          });
+          var opts = {
+            marketIntelligence: $id("marketIntelligence")?.checked,
+            qualityAssessment:  $id("qualityAssessment")?.checked,
+            profitOptimization: $id("profitOptimization")?.checked,
+            bundleStrategies:   $id("bundleStrategies")?.checked,
+            aiTitleGeneration:  $id("aiTitleGeneration")?.checked,
+            etsySEO:            $id("etsySEO")?.checked,
+            competitorTracking: $id("competitorTracking")?.checked
+          };
+          var active = document.querySelector(".tab-content.active");
+          var activeId = active ? active.id : "overview";
+          localStorage.setItem(KEY, JSON.stringify({ files: items, options: opts, tab: activeId }));
+        } catch(e){ /* ignore */ }
       }
-      updateFileCount((window.uploadedFiles && window.uploadedFiles.length) || list.length);
-      openLock = false;
-    }
 
-    if (uploadArea && fileInput){
-      fileInput.addEventListener('click', function(e){ e.stopPropagation(); });
+      // restore on load
+      (function restore(){
+        try{
+          var raw = localStorage.getItem(KEY);
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          if (data.files && data.files.length){
+            window.uploadedFiles = data.files.map(function(f){ return { name: f.name, size: f.size }; });
+            var ev = new CustomEvent("filesReady", { detail: { files: window.uploadedFiles }});
+            document.dispatchEvent(ev);
+            // update basic UI counts if helper exists
+            var fc = $id("fileCount");
+            if (fc){
+              var text = fc.textContent || "";
+              var firstNum = text.match(/^\d+/);
+              fc.textContent = firstNum ? (data.files.length + text.slice(firstNum[0].length))
+                                        : (data.files.length + " files selected");
+            }
+          }
+          if (data.options){
+            Object.keys(data.options).forEach(function(k){
+              var el = $id(k);
+              if (el && "checked" in el) el.checked = !!data.options[k];
+            });
+          }
+          if (data.tab) {
+            if (typeof window.showTab === "function") window.showTab(data.tab);
+          }
+        } catch(e){ /* ignore */ }
+      })();
 
-      uploadArea.addEventListener('click', function(e){
-        e.preventDefault();
-        safeOpenPicker();
-      });
+      // watch checkbox changes
+      ["marketIntelligence","qualityAssessment","profitOptimization","bundleStrategies","aiTitleGeneration","etsySEO","competitorTracking"]
+        .forEach(function(id){
+          var el = $id(id);
+          if (el) el.addEventListener("change", save);
+        });
 
-      uploadArea.addEventListener('dragover', function(e){
-        e.preventDefault();
-        uploadArea.classList.add('dragover');
-      });
-
-      uploadArea.addEventListener('dragleave', function(){
-        uploadArea.classList.remove('dragover');
-      });
-
-      uploadArea.addEventListener('drop', function(e){
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){
-          callHandle(e.dataTransfer.files);
-        }
-      });
-
-      fileInput.addEventListener('change', function(e){
-        if (e.target && e.target.files && e.target.files.length){
-          callHandle(e.target.files);
-        }
-      });
-    }
-
-    // ===== SAFE STUBS =====
-    ['exportPDF','exportExcel','exportCSV','exportFullReport','exportBundleGuide','showDetails','closeDetailsModal','updateAllDisplays','updateOptimizeTab','calculatePLRProfit']
-      .forEach(function(name){
-        if (typeof window[name] !== 'function'){
-          window[name] = function(){ console.warn(name + ' is not implemented yet.'); };
-        }
-      });
-
-    // ===== START ANALYSIS, DEMO, AND CLEAR DATA =====
-    function __setFileCount(count){
-      var el = document.getElementById('fileCount');
-      if (!el) return;
-      var text = el.textContent || '';
-      var firstNum = text.match(/^\d+/);
-      el.textContent = firstNum ? (count + text.slice(firstNum[0].length)) : (count + ' files selected');
-    }
-
-    function __renderResults(items){
-      var tbody = document.getElementById('resultsBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      if (!items || !items.length){
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 40px; color:#666;">📋 Upload PLR content or load demo to see professional analysis</td></tr>';
-        return;
+      // save when we think files changed
+      document.addEventListener("filesReady", save);
+      var sA = window.startAnalysis;
+      if (typeof sA === "function"){
+        window.startAnalysis = function(){
+          save();
+          return sA.apply(this, arguments);
+        };
       }
-      items.forEach(function(file, idx){
-        var name = (file && file.name) || ('PLR Package ' + (idx+1));
-        var row = document.createElement('tr');
-        row.innerHTML =
-          '<td>' + name + '</td>' +
-          '<td><span class="niche-badge niche-other">TBD</span></td>' +
-          '<td><span class="strategy-badge strategy-quick">Quick</span></td>' +
-          '<td><span class="score-badge score-good">72</span></td>' +
-          '<td>⭐⭐⭐</td>' +
-          '<td>$100</td>' +
-          '<td>Quick Launch</td>' +
-          '<td><button class="export-btn report" onclick="showDetails(\'' + name.replace(/'/g, "\\'") + '\')">Details</button></td>';
-        tbody.appendChild(row);
-      });
+      var cD = window.clearAllData;
+      if (typeof cD === "function"){
+        window.clearAllData = function(){
+          var r = cD.apply(this, arguments);
+          save();
+          return r;
+        };
+      }
+      var lD = window.loadUltimateDemo;
+      if (typeof lD === "function"){
+        window.loadUltimateDemo = function(){
+          var r = lD.apply(this, arguments);
+          save();
+          return r;
+        };
+      }
+    })();
 
-      var set = function(id, val){ var el = document.getElementById(id); if (el) el.textContent = val; };
-      set('overallMarketScore', '72/100');
-      set('overallProfit', '$1,200');
-      set('quickWins', items.length + ' Found');
-      set('optimizationLevel', 'Medium');
-      set('avgMarketPrice', '$27');
-      set('monthlySearches', '3,200');
-      set('marketDemand', '68%');
-      set('competitionScore', '44');
-    }
+    /* ===============================
+       11) Quick exports: CSV and JSON
+       =============================== */
+    (function(){
+      function tableToRows(){
+        var rows = [];
+        var tbody = document.querySelector("#resultsBody");
+        if (!tbody) return rows;
+        tbody.querySelectorAll("tr").forEach(function(tr){
+          var cells = tr.querySelectorAll("td");
+          if (cells.length < 8) return; // skip placeholder row
+          rows.push({
+            content: cells[0].innerText.trim(),
+            niche: cells[1].innerText.trim(),
+            strategy: cells[2].innerText.trim(),
+            marketScore: cells[3].innerText.trim(),
+            quality: cells[4].innerText.trim(),
+            profit: cells[5].innerText.trim(),
+            bestStrategy: cells[6].innerText.trim()
+          });
+        });
+        return rows;
+      }
 
-    if (typeof window.startAnalysis !== 'function'){
-      window.startAnalysis = function(){
-        var items = window.uploadedFiles || [];
-        if (!items.length){
-          alert('Please upload at least one file or load the demo first.');
-          return;
-        }
-        __renderResults(items);
+      function toCSV(rows){
+        if (!rows || !rows.length) return "";
+        var head = ["PLR Content","Niche","Strategy","Market Score","Quality Rating","Profit Potential","Best Strategy"];
+        var escape = function(v){
+          v = String(v == null ? "" : v);
+          if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+          return v;
+        };
+        var out = [head.map(escape).join(",")];
+        rows.forEach(function(r){
+          out.push([
+            r.content, r.niche, r.strategy, r.marketScore, r.quality, r.profit, r.bestStrategy
+          ].map(escape).join(","));
+        });
+        return out.join("\n");
+      }
+
+      // Implement exportCSV if not already implemented
+      window.exportCSV = function(){
+        var rows = tableToRows();
+        if (!rows.length){ alert("No results to export yet."); return; }
+        var csv = toCSV(rows);
+        download("plr-analysis.csv", csv, "text/csv;charset=utf-8");
       };
-    }
 
-    if (typeof window.clearAllData !== 'function'){
-      window.clearAllData = function(){
-        window.uploadedFiles = [];
-        __setFileCount(0);
-        __renderResults([]);
-        var set = function(id, val){ var el = document.getElementById(id); if (el) el.textContent = val; };
-        set('overallMarketScore', '0/100');
-        set('overallProfit', '$0');
-        set('quickWins', '0 Found');
-        set('optimizationLevel', 'None');
-        set('avgMarketPrice', '$0');
-        set('monthlySearches', '0');
-        set('marketDemand', '0%');
-        set('competitionScore', '0');
-        var calc = document.getElementById('calculatorResults');
-        if (calc) calc.style.display = 'none';
+      // Implement exportFullReport as JSON dump
+      window.exportFullReport = function(){
+        var payload = {
+          generatedAt: new Date().toISOString(),
+          files: (window.uploadedFiles || []).map(function(f){ return { name: f.name || String(f), size: f.size || null }; }),
+          options: {
+            marketIntelligence: $id("marketIntelligence")?.checked,
+            qualityAssessment:  $id("qualityAssessment")?.checked,
+            profitOptimization: $id("profitOptimization")?.checked,
+            bundleStrategies:   $id("bundleStrategies")?.checked,
+            aiTitleGeneration:  $id("aiTitleGeneration")?.checked,
+            etsySEO:            $id("etsySEO")?.checked,
+            competitorTracking: $id("competitorTracking")?.checked
+          },
+          results: tableToRows()
+        };
+        download("plr-analysis.json", JSON.stringify(payload, null, 2), "application/json");
       };
-    }
+    })();
 
-    if (typeof window.loadUltimateDemo !== 'function'){
-      window.loadUltimateDemo = function(){
-        var demo = [
-          { name: 'Mindfulness Starter Kit.pdf' },
-          { name: 'Keto Meal Planner.docx' },
-          { name: '30-Day Fitness Journal.zip' },
-          { name: 'Budget Master Tracker.xlsx' },
-          { name: 'Productivity Cheatsheet.txt' }
-        ];
-        window.uploadedFiles = demo;
-        __setFileCount(demo.length);
-        __renderResults(demo);
-      };
-    }
-
-    if (typeof window.showDetails !== 'function'){
-      window.showDetails = function(title){
-        var modal = document.querySelector('.details-modal');
-        var content = document.querySelector('.modal-content');
-        if (modal && content){
-          content.innerHTML = '<span class="close-modal" onclick="closeDetailsModal()">&times;</span>' +
-                              '<h3 style="margin-bottom:10px;">' + (title || 'Selected Item') + '</h3>' +
-                              '<p>This is a placeholder details panel. Replace with your real analysis output when ready.</p>';
-          modal.style.display = 'flex';
-        } else {
-          alert('Details for: ' + (title || 'Selected Item'));
-        }
-      };
-    }
-
-    if (typeof window.closeDetailsModal !== 'function'){
-      window.closeDetailsModal = function(){
-        var modal = document.querySelector('.details-modal');
-        if (modal) modal.style.display = 'none';
-      };
-    }
   });
 })();
 </script>
