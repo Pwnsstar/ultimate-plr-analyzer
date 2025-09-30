@@ -488,66 +488,444 @@
         .hidden-section {
             display: none !important;
         }
+
+        .keyword-tag {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            margin: 5px;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .keyword-tag.high-volume {
+            background: var(--success-color);
+        }
+
+        .keyword-tag.long-tail {
+            background: var(--info-color);
+        }
+
+        .keyword-tag.etsy-tag {
+            background: #d35400;
+        }
+
+        .competition-indicator {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .competition-low { background: #d4edda; color: #155724; }
+        .competition-medium { background: #fff3cd; color: #856404; }
+        .competition-high { background: #f8d7da; color: #721c24; }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                min-width: auto;
+            }
+            
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-button, .clear-button {
+                display: block;
+                margin: 10px auto;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Your existing header, controls, tabs, and content stay intact -->
-        <!-- I did not change your layout or styles -->
+        <div class="header">
+            <h1>🚀 Ultimate PLR Analysis Tool</h1>
+            <div class="subtitle">Professional Market Research & Profit Optimization Suite</div>
+            <span class="premium-badge">💎 PREMIUM EDITION</span>
+        </div>
+        
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span><strong>System Status:</strong> Ready for Professional Analysis</span>
+            <span id="fileCount">0 PLR files analyzed with market intelligence</span>
+        </div>
+        
+        <div class="demo-section">
+            <button class="demo-button" onclick="loadUltimateDemo()" data-tooltip="Load sample PLR data to test all features.<br><br>This will populate the tool with 5 professional PLR packages to demonstrate analysis capabilities.">
+                ⚡ Load Ultimate Demo
+            </button>
+            <button class="clear-button" onclick="clearAllData()" data-tooltip="Remove all analyzed data and reset tool.<br><br>This will clear all uploaded files and analysis results, returning to the initial state.">
+                🗑️ Clear Data
+            </button>
+            <p style="margin-top: 10px; color: #666;">Experience the full power of professional PLR analysis</p>
+        </div>
+        
+        <div class="control-panel">
+            <div class="upload-area" id="uploadArea" data-tooltip="Upload PLR files for comprehensive analysis.<br><br>Supported formats:<br>• PDF documents<br>• DOC/DOCX files<br>• TXT plain text<br>• ZIP archives<br><br>You can upload multiple files at once.">
+                <div style="font-size: 2em; margin-bottom: 10px;">📁</div>
+                <h3>Upload PLR Content</h3>
+                <p>Drag & drop files or click to browse</p>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    Supports: PDF, DOC, TXT, ZIP (Multiple files)
+                </p>
+                <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.zip" style="display: none;">
+            </div>
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 15px;">
+                <h3 style="margin-bottom: 15px;">Analysis Options</h3>
+                
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Market Intelligence Analysis<br><br>Analyzes:<br>• Market demand levels<br>• Competition analysis<br>• Search volume data<br>• Pricing benchmarks<br>• Target audience insights">
+                    <input type="checkbox" id="marketIntelligence" checked> Market Intelligence
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Quality Assessment Review<br><br>Evaluates:<br>• Content structure & flow<br>• Originality percentage<br>• Readability scores<br>• Professional standards<br>• Improvement recommendations">
+                    <input type="checkbox" id="qualityAssessment" checked> Quality Assessment
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Profit Optimization Calculator<br><br>Calculates:<br>• Revenue projections<br>• Optimal pricing strategies<br>• ROI estimates<br>• Sales volume predictions<br>• Profit maximization tactics">
+                    <input type="checkbox" id="profitOptimization" checked> Profit Optimization
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Bundle Strategy Generator<br><br>Creates:<br>• Package combinations<br>• Pricing tier recommendations<br>• Revenue multipliers<br>• Value stacking methods<br>• Upsell opportunities">
+                    <input type="checkbox" id="bundleStrategies" checked> Bundle Strategies
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="AI-Powered Title Optimization<br><br>Generates:<br>• High-converting titles<br>• SEO-optimized headlines<br>• Market-tested phrases<br>• Emotional triggers<br>• Click-worthy descriptions">
+                    <input type="checkbox" id="aiTitleGeneration" checked> AI Title Generation
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Etsy SEO Keyword Research<br><br>Provides:<br>• Trending keywords<br>• Long-tail suggestions<br>• Optimization tips<br>• Tag recommendations<br>• Competition analysis">
+                    <input type="checkbox" id="etsySEO" checked> Etsy SEO Keywords
+                </label>
+                <label style="display: block; margin-bottom: 10px;" data-tooltip="Competitor Price Tracking<br><br>Monitors:<br>• Market pricing trends<br>• Competitor analysis<br>• Price gap opportunities<br>• Saturation levels<br>• Pricing recommendations">
+                    <input type="checkbox" id="competitorTracking" checked> Competitor Tracking
+                </label>
+                
+                <button onclick="startAnalysis()" style="width: 100%; padding: 10px; background: var(--info-color); color: white; border: none; border-radius: 8px; margin-top: 15px; cursor: pointer;" data-tooltip="Begin comprehensive analysis process.<br><br>This will process all uploaded files using your selected analysis options and generate detailed reports.">
+                    🔄 Start Analysis
+                </button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')" data-tooltip="Analysis Overview Dashboard<br><br>Shows:<br>• Key performance metrics<br>• Summary statistics<br>• Complete results table<br>• Overall recommendations">📊 Overview</button>
+            <button class="tab" onclick="showTab('quality')" data-tooltip="Quality Assessment Report<br><br>Displays:<br>• Content quality scores<br>• Originality percentages<br>• Readability analysis<br>• Improvement suggestions">⭐ Quality</button>
+            <button class="tab" onclick="showTab('market')" data-tooltip="Market Intelligence Analysis<br><br>Provides:<br>• Competition analysis<br>• Search volume data<br>• Price benchmarking<br>• Target audience insights">📈 Market</button>
+            <button class="tab" onclick="showTab('profit')" data-tooltip="Profit Optimization Center<br><br>Calculates:<br>• Revenue projections<br>• ROI estimates<br>• Pricing strategies<br>• Sales forecasts">💰 Profit</button>
+            <button class="tab" onclick="showTab('bundle')" data-tooltip="Bundle Strategy Generator<br><br>Creates:<br>• Package recommendations<br>• Pricing tiers<br>• Revenue multipliers<br>• Upsell strategies">📦 Bundle</button>
+            <button class="tab" onclick="showTab('optimize')" data-tooltip="AI Optimization Suite<br><br>Generates:<br>• Title suggestions<br>• Quick-win actions<br>• Marketing improvements<br>• Conversion boosters">🚀 Optimize</button>
+            <button class="tab" onclick="showTab('keywords')" data-tooltip="Etsy SEO Keyword Generator<br><br>Provides:<br>• Trending keywords<br>• Competition analysis<br>• Title optimization<br>• Tag suggestions">🔍 Keywords</button>
+            <button class="tab" onclick="showTab('competitors')" data-tooltip="Competitor Price Tracking<br><br>Shows:<br>• Market pricing<br>• Price gaps<br>• Opportunity alerts<br>• Saturation levels">📊 Competition</button>
+        </div>
+        
+        <div id="overview" class="tab-content active">
+            <div class="analysis-summary">
+                <h3 style="text-align: center; margin-bottom: 20px;">Ultimate Analysis Dashboard</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-icon">📊</div>
+                        <h4>Market Score</h4>
+                        <div id="overallMarketScore" style="font-size: 1.5em; color: var(--success-color); font-weight: bold;">0/100</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">💰</div>
+                        <h4>Profit Potential</h4>
+                        <div id="overallProfit" style="font-size: 1.5em; color: var(--success-color); font-weight: bold;">$0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">⚡</div>
+                        <h4>Quick Wins</h4>
+                        <div id="quickWins" style="font-size: 1.5em; color: var(--info-color); font-weight: bold;">0 Found</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon">🎯</div>
+                        <h4>Optimization</h4>
+                        <div id="optimizationLevel" style="font-size: 1.5em; color: var(--warning-color); font-weight: bold;">None</div>
+                    </div>
+                </div>
+            </div>
+            
+            <table class="results-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>PLR Content</th>
+                        <th>Niche</th>
+                        <th>Strategy</th>
+                        <th data-tooltip="MARKET SCORE: Rated 0-100 based on search volume, competition level, and profit potential. Higher scores indicate better market opportunities and easier sales potential.">Market Score</th>
+                        <th data-tooltip="QUALITY RATING: Content assessment based on readability, originality, formatting, and market value. Higher ratings mean less editing required and better customer satisfaction.">Quality Rating</th>
+                        <th data-tooltip="PROFIT POTENTIAL: Estimated revenue opportunity based on market demand, competition analysis, and pricing research. Shows suggested selling price and expected monthly earnings.">Profit Potential</th>
+                        <th data-tooltip="BEST STRATEGY: Recommended approach for maximum profitability - either Quick Launch for fast revenue, or Upsell Package for higher long-term profits.">Best Strategy</th>
+                        <th data-tooltip="ACTION: Next steps to implement this PLR product. Details button provides comprehensive implementation guide with specific steps and timelines.">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                            📋 Upload PLR content or load demo to see professional analysis
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="quality" class="tab-content">
+            <h3>Quality Assessment Report</h3>
+            <div id="qualityContent">
+                <p>Upload PLR files to view detailed quality assessment including readability, originality, and content flow.</p>
+            </div>
+        </div>
+        
+        <div id="market" class="tab-content">
+            <h3>Market Intelligence Analysis</h3>
+            <div id="marketContent">
+                <p>Upload PLR files to analyze competition, demand, and market trends.</p>
+            </div>
+        </div>
+        
+        <div id="profit" class="tab-content">
+            <h3>Profit Optimization Center</h3>
+            <div style="margin: 20px 0;">
+                <label for="pricingModel">Select Pricing Model:</label>
+                <select id="pricingModel" style="margin-left: 10px; padding: 5px;">
+                    <option value="basic">Basic</option>
+                    <option value="premium">Premium</option>
+                    <option value="subscription">Subscription</option>
+                </select>
+            </div>
+            <div id="profitContent">
+                <p>Upload PLR files to calculate profit potential and pricing strategies.</p>
+            </div>
+        </div>
+        
+        <div id="bundle" class="tab-content">
+            <h3>Bundle Strategy Generator</h3>
+            <div id="bundleContent">
+                <p>Upload PLR files to generate bundle strategies and upsell opportunities.</p>
+            </div>
+        </div>
+        
+        <div id="optimize" class="tab-content">
+            <h3>AI Optimization Suite</h3>
+            <div id="optimizeContent">
+                <p>Upload PLR files to receive AI-powered optimization suggestions.</p>
+            </div>
+        </div>
+        
+        <div id="keywords" class="tab-content">
+            <h3>Etsy SEO Keyword Generator</h3>
+            <div id="keywordsContent">
+                <p>Upload PLR files to generate trending keywords and Etsy SEO suggestions.</p>
+            </div>
+        </div>
+        
+        <div id="competitors" class="tab-content">
+            <h3>Competitor Price Tracking</h3>
+            <div id="competitorsContent">
+                <p>Upload PLR files to monitor competitor pricing and market saturation levels.</p>
+            </div>
+        </div>
+        
+        <div class="export-section">
+            <h3 style="text-align: center; margin-bottom: 20px;">Export Analysis Results</h3>
+            <div class="export-buttons">
+                <button class="export-btn pdf" onclick="exportPDF()" data-tooltip="Export full analysis report as professional PDF document.">📄 Export PDF</button>
+                <button class="export-btn excel" onclick="exportExcel()" data-tooltip="Export analysis results as Excel spreadsheet with full metrics and calculations.">📊 Export Excel</button>
+                <button class="export-btn csv" onclick="exportCSV()" data-tooltip="Export data as CSV file for compatibility with any spreadsheet or database system.">🗂️ Export CSV</button>
+                <button class="export-btn report" onclick="generateReport()" data-tooltip="Generate professional report with executive summary, detailed findings, and recommendations.">📝 Generate Report</button>
+            </div>
+        </div>
     </div>
-
-    <!-- ✅ Final unified script block -->
+    
+    <!-- Modal for Details -->
+    <div id="detailsModal" class="details-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeDetailsModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
     <script>
-    // All your original JavaScript logic consolidated here
-    // Includes fixes for double-open file dialog, drag & drop handling,
-    // Start Analysis workflow, tab switching, and safe stubs.
+    // ===============================
+    // Utility Functions
+    // ===============================
+    function showTab(tabId) {
+        document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const uploadArea = document.getElementById("uploadArea");
-        const fileInput = document.getElementById("fileInput");
+    function clearAllData() {
+        document.getElementById('resultsBody').innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                    📋 Upload PLR content or load demo to see professional analysis
+                </td>
+            </tr>`;
+        document.getElementById('fileCount').textContent = "0 PLR files analyzed with market intelligence";
+    }
 
-        if (uploadArea && fileInput) {
-            // Clicking upload box opens file dialog
-            uploadArea.addEventListener("click", () => fileInput.click());
+    // ===============================
+    // File Upload Handling
+    // ===============================
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
 
-            // Prevent duplicate open bug
-            fileInput.addEventListener("click", e => { e.stopPropagation(); });
+    uploadArea.addEventListener('click', () => fileInput.click());
 
-            // Drag and drop support
-            ["dragenter","dragover"].forEach(evt =>
-                uploadArea.addEventListener(evt, e => {
-                    e.preventDefault();
-                    uploadArea.classList.add("dragover");
-                })
-            );
-            ["dragleave","drop"].forEach(evt =>
-                uploadArea.addEventListener(evt, e => {
-                    e.preventDefault();
-                    uploadArea.classList.remove("dragover");
-                })
-            );
-            uploadArea.addEventListener("drop", e => {
-                e.preventDefault();
-                fileInput.files = e.dataTransfer.files;
-            });
-        }
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
 
-        // Tabs
-        document.querySelectorAll(".tab").forEach(tab => {
-            tab.addEventListener("click", () => {
-                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-                document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-                tab.classList.add("active");
-                const target = tab.getAttribute("onclick").match(/'(.*?)'/)[1];
-                document.getElementById(target).classList.add("active");
-            });
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', () => {
+        handleFiles(fileInput.files);
+    });
+
+    function handleFiles(files) {
+        if (!files.length) return;
+
+        document.getElementById('fileCount').textContent = `${files.length} PLR files uploaded for analysis`;
+
+        const tbody = document.getElementById('resultsBody');
+        tbody.innerHTML = '';
+
+        Array.from(files).forEach(file => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${file.name}</td>
+                <td><span class="niche-badge niche-other">Uncategorized</span></td>
+                <td><span class="strategy-badge strategy-quick">Quick</span></td>
+                <td><span class="score-badge score-average">50/100</span></td>
+                <td><span class="score-badge score-good">Good</span></td>
+                <td>$100</td>
+                <td>Quick Launch</td>
+                <td><button onclick="viewDetails('${file.name}')">Details</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // ===============================
+    // Demo Loader
+    // ===============================
+    function loadUltimateDemo() {
+        const demoFiles = ["Health Guide.pdf", "Business Plan.docx", "Lifestyle Tips.txt", "Creative Writing.zip", "Tech Trends.pdf"];
+        document.getElementById('fileCount').textContent = `${demoFiles.length} demo PLR files analyzed`;
+
+        const tbody = document.getElementById('resultsBody');
+        tbody.innerHTML = '';
+
+        demoFiles.forEach((file, idx) => {
+            const scores = [85, 72, 64, 90, 78];
+            const profits = ["$1200", "$850", "$540", "$1500", "$970"];
+            const strategies = ["Upsell", "Quick", "Bundle", "Premium", "Quick"];
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${file}</td>
+                <td><span class="niche-badge niche-business">Business</span></td>
+                <td><span class="strategy-badge strategy-${strategies[idx].toLowerCase()}">${strategies[idx]}</span></td>
+                <td><span class="score-badge score-excellent">${scores[idx]}/100</span></td>
+                <td><span class="score-badge score-good">Good</span></td>
+                <td>${profits[idx]}</td>
+                <td>${strategies[idx]}</td>
+                <td><button onclick="viewDetails('${file}')">Details</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    // ===============================
+    // Analysis Stub (Placeholder)
+    // ===============================
+    function startAnalysis() {
+        alert("Analysis started... (stub). Replace with real analysis logic.");
+    }
+
+    // ===============================
+    // Details Modal
+    // ===============================
+    function viewDetails(fileName) {
+        const modal = document.getElementById('detailsModal');
+        const content = document.getElementById('modalBody');
+        content.innerHTML = `
+            <h3>Details for ${fileName}</h3>
+            <p>Full analysis report will go here...</p>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('detailsModal').style.display = 'none';
+    }
+
+    // ===============================
+    // Profit Calculator
+    // ===============================
+    function calculatePLRProfit() {
+        const cost = parseFloat(document.getElementById('calcPLRCost').value) || 0;
+        const price = parseFloat(document.getElementById('calcSellingPrice').value) || 0;
+        const sales = parseInt(document.getElementById('calcMonthlySales').value) || 0;
+
+        const revenue = price * sales;
+        const profit = (price - cost) * sales;
+        const margin = price > 0 ? ((price - cost) / price) * 100 : 0;
+        const roi = cost > 0 ? (profit / cost).toFixed(2) : 0;
+
+        document.getElementById('calcMonthlyRevenue').textContent = `$${revenue}`;
+        document.getElementById('calcMonthlyProfit').textContent = `$${profit}`;
+        document.getElementById('calcProfitMargin').textContent = `${margin.toFixed(1)}%`;
+        document.getElementById('calcROIMultiplier').textContent = `${roi}x`;
+        document.getElementById('calcAnnualProjection').textContent = `$${profit * 12}`;
+
+        document.getElementById('calculatorResults').style.display = 'block';
+    }
+
+    // ===============================
+    // Tooltip System
+    // ===============================
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    document.body.appendChild(tooltip);
+
+    document.querySelectorAll('[data-tooltip]').forEach(el => {
+        el.addEventListener('mouseenter', (e) => {
+            tooltip.innerHTML = e.target.getAttribute('data-tooltip');
+            tooltip.classList.add('show');
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.top = rect.bottom + window.scrollY + 10 + 'px';
+            tooltip.style.left = rect.left + 'px';
         });
 
-        // Safe stubs for demo buttons
-        window.loadUltimateDemo = () => alert("Demo data would be loaded here.");
-        window.clearAllData = () => alert("All data cleared.");
-        window.startAnalysis = () => alert("Analysis started.");
+        el.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('show');
+        });
     });
     </script>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="details-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody">Details go here...</div>
+        </div>
+    </div>
 </body>
 </html>
