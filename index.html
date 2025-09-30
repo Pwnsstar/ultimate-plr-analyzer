@@ -770,6 +770,61 @@
                 </div>
             </div>
             
+            <!-- PLR/MRR PROFIT CALCULATOR -->
+            <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h4 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🧮 PLR/MRR Profit Calculator</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">PLR Product:</label>
+                        <select id="calcProductSelect" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                            <option value="">Select a product</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">PLR Cost ($):</label>
+                        <input type="number" id="calcPLRCost" placeholder="10" min="0" step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Selling Price ($):</label>
+                        <input type="number" id="calcSellingPrice" placeholder="47" min="0" step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Monthly Sales:</label>
+                        <input type="number" id="calcMonthlySales" placeholder="20" min="0" step="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <button onclick="calculatePLRProfit()" style="width: 100%; padding: 12px; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1em;">
+                    Calculate Profit
+                </button>
+                
+                <div id="calculatorResults" style="display: none; margin-top: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Monthly Revenue</div>
+                            <div id="calcMonthlyRevenue" style="font-size: 2em; font-weight: bold;">$0</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Monthly Profit</div>
+                            <div id="calcMonthlyProfit" style="font-size: 2em; font-weight: bold;">$0</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #2196F3, #1976d2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Profit Margin</div>
+                            <div id="calcProfitMargin" style="font-size: 2em; font-weight: bold;">0%</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">ROI Multiplier</div>
+                            <div id="calcROIMultiplier" style="font-size: 2em; font-weight: bold;">0x</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #9c27b0, #7b1fa2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Annual Projection</div>
+                            <div id="calcAnnualProjection" style="font-size: 2em; font-weight: bold;">$0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" id="pricingSuggestions">
                 <h4 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🏷️ Market-Realistic Pricing Suggestions</h4>
                 
@@ -1334,6 +1389,55 @@
             if (targetTab) targetTab.classList.add('active');
         }
         
+        // PLR PROFIT CALCULATOR FUNCTIONS
+        function calculatePLRProfit() {
+            const plrCost = parseFloat(document.getElementById('calcPLRCost').value) || 0;
+            const sellingPrice = parseFloat(document.getElementById('calcSellingPrice').value) || 0;
+            const monthlySales = parseInt(document.getElementById('calcMonthlySales').value) || 0;
+            
+            if (plrCost === 0 || sellingPrice === 0 || monthlySales === 0) {
+                alert('Please fill in all calculator fields');
+                return;
+            }
+            
+            const monthlyRevenue = sellingPrice * monthlySales;
+            const monthlyCost = plrCost * monthlySales;
+            const monthlyProfit = monthlyRevenue - monthlyCost;
+            const profitMargin = ((monthlyProfit / monthlyRevenue) * 100).toFixed(1);
+            const roiMultiplier = (sellingPrice / plrCost).toFixed(1);
+            const annualProjection = monthlyRevenue * 12;
+            
+            document.getElementById('calcMonthlyRevenue').textContent = '$' + monthlyRevenue.toLocaleString();
+            document.getElementById('calcMonthlyProfit').textContent = '$' + monthlyProfit.toLocaleString();
+            document.getElementById('calcProfitMargin').textContent = profitMargin + '%';
+            document.getElementById('calcROIMultiplier').textContent = roiMultiplier + 'x';
+            document.getElementById('calcAnnualProjection').textContent = '$' + annualProjection.toLocaleString();
+            
+            document.getElementById('calculatorResults').style.display = 'block';
+        }
+        
+        function updateCalculatorDropdown() {
+            const select = document.getElementById('calcProductSelect');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">Select a product</option>';
+            
+            ultimateAnalysisData.forEach((item, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = item.title;
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', function() {
+                const index = parseInt(this.value);
+                if (!isNaN(index) && ultimateAnalysisData[index]) {
+                    const item = ultimateAnalysisData[index];
+                    document.getElementById('calcSellingPrice').value = item.suggestedPrice;
+                }
+            });
+        }
+        
         // UPDATE FUNCTIONS
         function updateResultsTable() {
             const tbody = document.getElementById('resultsBody');
@@ -1716,7 +1820,7 @@
                 return;
             }
             
-            // Generate Competitor Pricing
+            // Generate CompetitorPricing
             let competitorPricingHTML = '';
             ultimateAnalysisData.forEach(item => {
                 const marketData = generateMarketData(item);
@@ -1902,13 +2006,13 @@
             const totalSearches = ultimateAnalysisData.reduce((sum, item) => sum + item.searchVolume, 0);
             const avgMarketScore = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length);
             
-            safeUpdate('avgMarketPrice', `${avgPrice}`);
+            safeUpdate('avgMarketPrice', `$${avgPrice}`);
             safeUpdate('monthlySearches', totalSearches.toLocaleString());
             safeUpdate('marketDemand', `${avgMarketScore}%`);
             safeUpdate('competitionScore', '72');
             
             safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Digital entrepreneurs and PLR resellers', true);
-            safeUpdate('priceRange', `<strong>Price Range:</strong> ${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - ${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))}`, true);
+            safeUpdate('priceRange', `<strong>Price Range:</strong> $${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - $${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))}`, true);
             safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank', true);
         }
         
@@ -1927,16 +2031,16 @@
             const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
             const estimatedUnits = Math.round(monthlyPotential / avgPrice);
             
-            safeUpdate('monthlyPotential', `${monthlyPotential.toLocaleString()}`);
+            safeUpdate('monthlyPotential', `$${monthlyPotential.toLocaleString()}`);
             safeUpdate('roiProjection', '385%');
-            safeUpdate('optimalPrice', `${avgPrice}`);
+            safeUpdate('optimalPrice', `$${avgPrice}`);
             safeUpdate('unitsPerMonth', estimatedUnits.toString());
             
             safeUpdate('profitRecommendations', `
                 <li>Focus on high-scoring PLR packages first</li>
                 <li>Implement upsell strategies for 40-60% revenue increase</li>
                 <li>Create bundle packages for maximum revenue</li>
-                <li>Target optimal price point of ${avgPrice}</li>
+                <li>Target optimal price point of $${avgPrice}</li>
             `, true);
             
             updateRealisticPricingSuggestions();
@@ -1976,8 +2080,8 @@
                             <small style="color: #666;">${nicheData.name} • Quality: ${item.qualityRating} • ${item.competition}</small>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 1.2em; font-weight: bold; color: #4CAF50;">${item.realisticPrice}</div>
-                            <small style="color: #666;">PLR Cost: ${item.plrCost} (${Math.round(item.realisticPrice/item.plrCost)}x)</small>
+                            <div style="font-size: 1.2em; font-weight: bold; color: #4CAF50;">$${item.realisticPrice}</div>
+                            <small style="color: #666;">PLR Cost: $${item.plrCost} (${Math.round(item.realisticPrice/item.plrCost)}x)</small>
                         </div>
                     </div>
                 `;
@@ -2106,8 +2210,8 @@
                                 <small style="color: #888;">Includes: ${bundle.items.join(', ')}</small>
                             </div>
                             <div style="text-align: right; min-width: 120px;">
-                                <div style="text-decoration: line-through; color: #999; font-size: 0.9em;">${bundle.totalValue}</div>
-                                <div style="font-size: 1.3em; font-weight: bold; color: #4CAF50;">${bundle.bundlePrice}</div>
+                                <div style="text-decoration: line-through; color: #999; font-size: 0.9em;">$${bundle.totalValue}</div>
+                                <div style="font-size: 1.3em; font-weight: bold; color: #4CAF50;">$${bundle.bundlePrice}</div>
                                 <div style="background: #4CAF50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em;">
                                     Save ${savingsPercent}%
                                 </div>
@@ -2146,20 +2250,20 @@
             const standardRevenue = Math.round(standard * 8 * (avgMarketScore / 80));
             const premiumRevenue = Math.round(premium * 8 * (avgMarketScore / 80) * 1.2);
             
-            safeUpdate('premiumBundleTitle', `💎 PREMIUM BUNDLE - ${premium}`);
-            safeUpdate('standardBundleTitle', `⭐ STANDARD BUNDLE - ${standard}`);
-            safeUpdate('basicBundleTitle', `🚀 BASIC BUNDLE - ${basic}`);
+            safeUpdate('premiumBundleTitle', `💎 PREMIUM BUNDLE - $${premium}`);
+            safeUpdate('standardBundleTitle', `⭐ STANDARD BUNDLE - $${standard}`);
+            safeUpdate('basicBundleTitle', `🚀 BASIC BUNDLE - $${basic}`);
             
-            safeUpdate('premiumBundleRevenue', `${premiumRevenue.toLocaleString()}/month`);
-            safeUpdate('standardBundleRevenue', `${standardRevenue.toLocaleString()}/month`);
-            safeUpdate('basicBundleRevenue', `${basicRevenue.toLocaleString()}/month`);
+            safeUpdate('premiumBundleRevenue', `$${premiumRevenue.toLocaleString()}/month`);
+            safeUpdate('standardBundleRevenue', `$${standardRevenue.toLocaleString()}/month`);
+            safeUpdate('basicBundleRevenue', `$${basicRevenue.toLocaleString()}/month`);
             
             safeUpdate('premiumBundleROI', `${Math.round((premiumRevenue / premium) * 100)}%`);
             safeUpdate('standardBundleROI', `${Math.round((standardRevenue / standard) * 100)}%`);
             safeUpdate('basicBundleROI', `${Math.round((basicRevenue / basic) * 100)}%`);
             
             safeUpdate('bundleAnalysis', `
-                Pricing based on your content: Avg PLR price ${Math.round(avgPrice)}, Market score ${Math.round(avgMarketScore)}/100
+                Pricing based on your content: Avg PLR price $${Math.round(avgPrice)}, Market score ${Math.round(avgMarketScore)}/100
             `, true);
         }
         
@@ -2234,14 +2338,14 @@
                     <p><strong>Page Count:</strong> ${item.pages} pages</p>
                     
                     <h4 style="margin-top: 20px;">💰 Profit Analysis</h4>
-                    <p><strong>Profit Potential:</strong> ${item.profitPotential}</p>
-                    <p><strong>Suggested Price:</strong> ${item.suggestedPrice}</p>
+                    <p><strong>Profit Potential:</strong> $${item.profitPotential}</p>
+                    <p><strong>Suggested Price:</strong> $${item.suggestedPrice}</p>
                     <p><strong>Recommended Strategy:</strong> ${item.strategyName || 'Quick Launch'}</p>
                     
                     <h4 style="margin-top: 20px;">🎯 Recommendations</h4>
                     <ul style="margin-left: 20px;">
                         <li>Focus on ${item.competition.toLowerCase()} markets</li>
-                        <li>Target price point around ${item.suggestedPrice}</li>
+                        <li>Target price point around $${item.suggestedPrice}</li>
                         <li>Implement ${(item.strategyName || 'quick launch').toLowerCase()} approach</li>
                         <li>Leverage ${item.searchVolume.toLocaleString()} monthly search volume</li>
                     </ul>
@@ -2271,6 +2375,7 @@
             updateOptimizeTab();
             updateKeywordsTab();
             updateCompetitorsTab();
+            updateCalculatorDropdown();
         }
         
         // TOOLTIP FUNCTIONS
@@ -2389,7 +2494,7 @@
                                     <td>${strategyData.name}</td>
                                     <td>${item.marketScore}/100</td>
                                     <td>${item.qualityRating}</td>
-                                    <td>${item.profitPotential}</td>
+                                    <td>$${item.profitPotential}</td>
                                 </tr>
                             `;
                         }).join('')}
@@ -2423,7 +2528,7 @@
 ${ultimateAnalysisData.map(item => {
                 const nicheData = niches[item.niche] || { name: 'Other' };
                 const strategyData = strategies[item.strategy] || { name: 'Quick Launch' };
-                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","${item.profitPotential}",${item.suggestedPrice},${item.searchVolume},"${item.competition}"`;
+                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}",${item.suggestedPrice},${item.searchVolume},"${item.competition}"`;
             }).join('\n')}`;
             
             downloadFile('Ultimate-PLR-Analysis.csv', excelContent);
@@ -2439,7 +2544,7 @@ ${ultimateAnalysisData.map(item => {
 ${ultimateAnalysisData.map(item => {
                 const nicheData = niches[item.niche] || { name: 'Other' };
                 const strategyData = strategies[item.strategy] || { name: 'Quick Launch' };
-                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","${item.profitPotential}"`;
+                return `"${item.title}","${nicheData.name}","${strategyData.name}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}"`;
             }).join('\n')}`;
             
             downloadFile('PLR-Analysis-Data.csv', csvContent);
@@ -2462,9 +2567,9 @@ ${ultimateAnalysisData.map(item => {
 
 **Analysis Date:** ${new Date().toLocaleDateString()}
 **Files Analyzed:** ${ultimateAnalysisData.length}
-**Total Profit Potential:** ${totalProfit.toLocaleString()}
+**Total Profit Potential:** $${totalProfit.toLocaleString()}
 **Average Market Score:** ${avgMarketScore}/100
-**Recommended Average Price:** ${avgPrice}
+**Recommended Average Price:** $${avgPrice}
 
 ## KEY FINDINGS
 
@@ -2472,7 +2577,7 @@ ${ultimateAnalysisData.map(item => {
 ${ultimateAnalysisData.filter(item => item.marketScore >= 85).map(item => `
 - **${item.title}**
   - Market Score: ${item.marketScore}/100
-  - Profit Potential: ${item.profitPotential}
+  - Profit Potential: $${item.profitPotential}
   - Strategy: ${item.strategyName || 'Quick Launch'}
   - Competition: ${item.competition}
 `).join('')}
@@ -2493,8 +2598,8 @@ ${ultimateAnalysisData.map(item => {
 - **${item.title}** (${nicheData.name})
   - Search Volume: ${item.searchVolume.toLocaleString()} monthly
   - Competition Level: ${item.competition}
-  - Suggested Price: ${item.suggestedPrice}
-  - Revenue Opportunity: ${item.profitPotential}
+  - Suggested Price: $${item.suggestedPrice}
+  - Revenue Opportunity: $${item.profitPotential}
 `;
 }).join('')}
 
@@ -2531,13 +2636,13 @@ ${ultimateAnalysisData.map(item => {
 **Quality Rating:** ${item.qualityRating}
 **Search Volume:** ${item.searchVolume.toLocaleString()} monthly
 **Competition:** ${item.competition}
-**Suggested Price:** ${item.suggestedPrice}
-**Profit Potential:** ${item.profitPotential}
+**Suggested Price:** $${item.suggestedPrice}
+**Profit Potential:** $${item.profitPotential}
 
 **Recommended Actions:**
 - ${strategyData.description}
 - Focus on ${item.competition.toLowerCase()} market positioning
-- Target monthly revenue of ${Math.round(item.profitPotential * 0.3)}
+- Target monthly revenue of $${Math.round(item.profitPotential * 0.3)}
 
 ---
 `;
@@ -2545,7 +2650,7 @@ ${ultimateAnalysisData.map(item => {
 
 ## CONCLUSION
 
-Based on comprehensive analysis of ${ultimateAnalysisData.length} PLR products, the total estimated profit potential is ${totalProfit.toLocaleString()}. The average market score of ${avgMarketScore}/100 indicates ${avgMarketScore >= 80 ? 'excellent' : avgMarketScore >= 60 ? 'good' : 'moderate'} market opportunities.
+Based on comprehensive analysis of ${ultimateAnalysisData.length} PLR products, the total estimated profit potential is $${totalProfit.toLocaleString()}. The average market score of ${avgMarketScore}/100 indicates ${avgMarketScore >= 80 ? 'excellent' : avgMarketScore >= 60 ? 'good' : 'moderate'} market opportunities.
 
 **Next Steps:**
 1. Implement recommendations for high-scoring products first
@@ -2593,8 +2698,8 @@ ${Object.entries(ultimateAnalysisData.reduce((groups, item) => {
         return `
 **${niche} Complete Collection**
 - Products: ${items.map(item => item.title).join(', ')}
-- Individual Value: ${totalValue}
-- Bundle Price: ${bundlePrice} (25% discount)
+- Individual Value: $${totalValue}
+- Bundle Price: $${bundlePrice} (25% discount)
 - Revenue Increase: ${Math.round((bundlePrice / totalValue) * 100)}% of individual pricing`;
     }
     return '';
@@ -2626,9 +2731,9 @@ ${Object.entries(ultimateAnalysisData.reduce((groups, item) => {
 
 **Your Recommended Bundle Prices:**
 ${ultimateAnalysisData.length >= 3 ? `
-- **Starter Bundle** (2-3 products): ${Math.round(ultimateAnalysisData.slice(0, 3).reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.75)}
-- **Professional Bundle** (4-5 products): ${Math.round(ultimateAnalysisData.slice(0, 5).reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.7)}
-- **Ultimate Bundle** (All products): ${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.6)}
+- **Starter Bundle** (2-3 products): $${Math.round(ultimateAnalysisData.slice(0, 3).reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.75)}
+- **Professional Bundle** (4-5 products): $${Math.round(ultimateAnalysisData.slice(0, 5).reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.7)}
+- **Ultimate Bundle** (All products): $${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) * 0.6)}
 ` : 'Upload more PLR files to see bundle recommendations'}
 
 ## BUNDLE MARKETING PSYCHOLOGY
