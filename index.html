@@ -2951,10 +2951,69 @@ ${new Date().toLocaleDateString()}
     }
 
     // Wire the upload area without changing your HTML
+   <script>
+(function(){
+  if (window.__UPAT_addon_loaded__) return;
+  window.__UPAT_addon_loaded__ = true;
+
+  ['dragover','drop'].forEach(function(evt){
+    window.addEventListener(evt, function(e){ e.preventDefault(); }, false);
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var uploadArea  = document.getElementById('uploadArea');
+    var fileInput   = document.getElementById('fileInput');
+    var fileCountEl = document.getElementById('fileCount');
+
+    // --- re-open guard ---
+    var openLock = false;
+    function safeOpenPicker(){
+      if (openLock) return;
+      openLock = true;
+      // reset input so selecting the same file triggers 'change'
+      if (fileInput) fileInput.value = '';
+      fileInput.click();
+      // release the lock shortly after dialog closes
+      setTimeout(function(){ openLock = false; }, 400);
+    }
+
+    function updateFileCount(n){
+      if (!fileCountEl) return;
+      var text = fileCountEl.textContent || '';
+      var firstNum = text.match(/^\d+/);
+      fileCountEl.textContent = firstNum ? (n + text.slice(firstNum[0].length)) : (n + ' files selected');
+    }
+
+    function callHandle(files){
+      var list = Array.from(files || []);
+      if (typeof window.handleFileUpload === 'function'){
+        try { window.handleFileUpload(list); } catch(err){ console.error('handleFileUpload error:', err); }
+      } else {
+        window.uploadedFiles = (window.uploadedFiles || []).concat(list);
+        document.dispatchEvent(new CustomEvent('filesReady', { detail: { files: list } }));
+        console.warn('No handleFileUpload function found. Stored files in window.uploadedFiles.');
+      }
+      updateFileCount((window.uploadedFiles && window.uploadedFiles.length) || list.length);
+      // make sure lock is off after a successful selection
+      openLock = false;
+    }
+
     if (uploadArea && fileInput){
-      uploadArea.addEventListener('click', function(){ fileInput.click(); });
-      uploadArea.addEventListener('dragover', function(e){ e.preventDefault(); uploadArea.classList.add('dragover'); });
-      uploadArea.addEventListener('dragleave', function(){ uploadArea.classList.remove('dragover'); });
+      // prevent bubbling clicks from re-triggering picker
+      fileInput.addEventListener('click', function(e){ e.stopPropagation(); });
+
+      uploadArea.addEventListener('click', function(e){
+        e.preventDefault();
+        safeOpenPicker();
+      });
+
+      uploadArea.addEventListener('dragover', function(e){
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      uploadArea.addEventListener('dragleave', function(){
+        uploadArea.classList.remove('dragover');
+      });
       uploadArea.addEventListener('drop', function(e){
         e.preventDefault();
         uploadArea.classList.remove('dragover');
@@ -2962,12 +3021,19 @@ ${new Date().toLocaleDateString()}
           callHandle(e.dataTransfer.files);
         }
       });
+
       fileInput.addEventListener('change', function(e){
         if (e.target && e.target.files && e.target.files.length){
           callHandle(e.target.files);
         }
       });
     }
+
+    // keep the rest of the add-on as-is...
+  });
+})();
+</script>
+
 
     // Harden showTab while respecting your original function
     if (typeof window.showTab === 'function'){
