@@ -923,101 +923,376 @@
         </div>
         
         <div id="tooltip" class="tooltip"></div>
-    <script>
-        // ====== SAFE STUBS ======
-        function loadUltimateDemo(){ console.log("Demo loading not yet implemented"); }
-        function clearAllData(){ document.getElementById("resultsBody").innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:#666;">📋 Upload PLR content or load demo to see professional analysis</td></tr>'; }
-        function startAnalysis(){ console.log("Analysis started"); alert("Analysis started (stub)."); }
-        function exportToCSV(){ console.log("Export to CSV triggered"); }
-        function exportToPDF(){ console.log("Export to PDF triggered"); }
+   <script>
+(function () {
+  "use strict";
 
-        // ====== TAB SWITCHING ======
-        function showTab(tabId) {
-            document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
+  // ---------- App state ----------
+  const state = {
+    files: [],            // [{name, size, type}]
+    results: [],          // table rows after analysis
+    options: {
+      marketIntelligence: true,
+      qualityAssessment: true,
+      profitOptimization: true,
+      bundleStrategies: true,
+      aiTitleGeneration: true,
+      etsySEO: true,
+      competitorTracking: true
+    }
+  };
 
-        // ====== UPLOAD HANDLING ======
-        const uploadArea = document.getElementById("uploadArea");
-        const fileInput = document.getElementById("fileInput");
+  // ---------- Dom helpers ----------
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-        uploadArea.addEventListener("click", () => fileInput.click());
-        uploadArea.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            uploadArea.classList.add("dragover");
-        });
-        uploadArea.addEventListener("dragleave", () => uploadArea.classList.remove("dragover"));
-        uploadArea.addEventListener("drop", (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove("dragover");
-            handleFiles(e.dataTransfer.files);
-        });
-        fileInput.addEventListener("change", () => handleFiles(fileInput.files));
+  const fileCountEl = $("#fileCount");
+  const uploadArea  = $("#uploadArea");
+  const fileInput   = $("#fileInput");
+  const resultsBody = $("#resultsBody");
+  const tooltipEl   = $("#tooltip");
 
-        function handleFiles(files) {
-            document.getElementById("fileCount").textContent = files.length + " PLR files ready for analysis";
-            console.log("Files received:", files);
-        }
+  // Guard against multiple bindings if script is ever injected twice
+  if (window.__UPAT_booted__) return;
+  window.__UPAT_booted__ = true;
 
-        // ====== PROFIT CALCULATOR ======
-        function calculatePLRProfit() {
-            const cost = parseFloat(document.getElementById("calcPLRCost").value) || 0;
-            const price = parseFloat(document.getElementById("calcSellingPrice").value) || 0;
-            const sales = parseInt(document.getElementById("calcMonthlySales").value) || 0;
+  // ---------- Tabs ----------
+  window.showTab = function showTab(tabId) {
+    $$(".tab").forEach(b => b.classList.remove("active"));
+    $$(".tab-content").forEach(c => c.classList.remove("active"));
+    const tabBtn = $(`.tab[onclick="showTab('${tabId}')"]`);
+    const tab    = document.getElementById(tabId);
+    if (tabBtn) tabBtn.classList.add("active");
+    if (tab) tab.classList.add("active");
+  };
 
-            const revenue = price * sales;
-            const profit = revenue - (cost * sales);
-            const margin = price ? Math.round((profit / revenue) * 100) : 0;
-            const roi = cost ? ((price - cost) / cost).toFixed(1) : 0;
-            const annual = profit * 12;
+  // ---------- Tooltips ----------
+  $("[data-tooltip]") && $$("[data-tooltip]").forEach(el => {
+    on(el, "mouseenter", e => {
+      tooltipEl.innerHTML = el.dataset.tooltip;
+      tooltipEl.classList.add("show");
+      tooltipEl.style.top  = (e.clientY + 15) + "px";
+      tooltipEl.style.left = (e.clientX + 15) + "px";
+    });
+    on(el, "mousemove", e => {
+      tooltipEl.style.top  = (e.clientY + 15) + "px";
+      tooltipEl.style.left = (e.clientX + 15) + "px";
+    });
+    on(el, "mouseleave", () => tooltipEl.classList.remove("show"));
+  });
 
-            document.getElementById("calcMonthlyRevenue").textContent = "$" + revenue.toFixed(2);
-            document.getElementById("calcMonthlyProfit").textContent = "$" + profit.toFixed(2);
-            document.getElementById("calcProfitMargin").textContent = margin + "%";
-            document.getElementById("calcROIMultiplier").textContent = roi + "x";
-            document.getElementById("calcAnnualProjection").textContent = "$" + annual.toFixed(2);
+  // ---------- Upload wiring (click + drag and drop) ----------
+  let openLock = false; // prevents double file dialog
+  on(uploadArea, "click", () => {
+    if (openLock) return;
+    openLock = true;
+    fileInput.value = "";
+    fileInput.click();
+    setTimeout(() => openLock = false, 300);
+  });
 
-            document.getElementById("calculatorResults").style.display = "block";
-        }
+  ["dragover", "drop"].forEach(ev =>
+    on(window, ev, e => e.preventDefault(), { passive: false })
+  );
 
-        // ====== BACKUP SYSTEM ======
-        function saveBackup() {
-            const content = document.querySelector(".container").innerHTML;
-            localStorage.setItem("plrBackup", content);
-            alert("Backup saved!");
-        }
-        function loadBackup() {
-            const content = localStorage.getItem("plrBackup");
-            if(content) {
-                document.querySelector(".container").innerHTML = content;
-                alert("Backup loaded!");
-            } else {
-                alert("No backup found.");
-            }
-        }
+  on(uploadArea, "dragover", () => uploadArea.classList.add("dragover"));
+  on(uploadArea, "dragleave", () => uploadArea.classList.remove("dragover"));
+  on(uploadArea, "drop", e => {
+    uploadArea.classList.remove("dragover");
+    handleFiles(e.dataTransfer.files);
+  });
+  on(fileInput, "change", () => handleFiles(fileInput.files));
 
-        // ====== MODALS ======
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
+  function handleFiles(fileList) {
+    const arr = Array.from(fileList || []);
+    const mapped = arr.map(f => ({ name: f.name, size: f.size || 0, type: f.type || "unknown" }));
+    state.files = mapped;
+    updateFileCount();
+    // Inform any listeners downstream if you add them later
+    // document.dispatchEvent(new CustomEvent("filesReady", { detail: { files: mapped }}));
+    placeholderResults();
+  }
 
-        // ====== TOOLTIP ======
-        const tooltip = document.getElementById("tooltip");
-        document.querySelectorAll("[data-tooltip]").forEach(el => {
-            el.addEventListener("mouseenter", (e) => {
-                tooltip.innerHTML = el.dataset.tooltip;
-                tooltip.classList.add("show");
-                tooltip.style.top = (e.clientY + 15) + "px";
-                tooltip.style.left = (e.clientX + 15) + "px";
-            });
-            el.addEventListener("mousemove", (e) => {
-                tooltip.style.top = (e.clientY + 15) + "px";
-                tooltip.style.left = (e.clientX + 15) + "px";
-            });
-            el.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
-        });
-    </script>
+  function updateFileCount() {
+    const n = state.files.length;
+    if (!fileCountEl) return;
+    const text = fileCountEl.textContent;
+    const firstNum = (text.match(/^\d+/) || ["0"])[0];
+    fileCountEl.textContent = text.replace(firstNum, String(n));
+  }
+
+  // ---------- Demo loader ----------
+  window.loadUltimateDemo = function loadUltimateDemo() {
+    const demo = [
+      { name: "Mindfulness Starter Kit.pdf", size: 512000, type: "application/pdf" },
+      { name: "Keto Meal Planner.docx",      size: 256000, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+      { name: "30-Day Fitness Journal.zip",  size: 1024000, type: "application/zip" },
+      { name: "Budget Master Tracker.xlsx",  size: 192000, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+      { name: "Productivity Cheatsheet.txt", size: 24000,  type: "text/plain" }
+    ];
+    state.files = demo;
+    updateFileCount();
+    placeholderResults();
+  };
+
+  // ---------- Clear data ----------
+  window.clearAllData = function clearAllData() {
+    state.files = [];
+    state.results = [];
+    updateFileCount();
+    resultsBody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center; padding:40px; color:#666;">
+          📋 Upload PLR content or load demo to see professional analysis
+        </td>
+      </tr>`;
+  };
+
+  // ---------- Analysis (simple deterministic mock so UI fully works) ----------
+  window.startAnalysis = function startAnalysis() {
+    if (!state.files.length) {
+      alert("Please upload files or load the demo first.");
+      return;
+    }
+
+    // Example scoring logic. Replace later with your real pipeline.
+    state.results = state.files.map((f, i) => {
+      const base = 55 + ((i * 13) % 40);                         // 55..94
+      const quality = 60 + ((f.size % 7) * 5);                   // 60..95
+      const profit = 15 + ((f.size % 11) * 7);                   // $.. range
+      const strat = ["Quick", "Upsell", "Premium", "Bundle"][i % 4];
+      const best = strat === "Quick" ? "Quick Launch" :
+                   strat === "Upsell" ? "Upsell Package" :
+                   strat === "Premium" ? "Premium Offer" : "Bundle Play";
+      return {
+        name: f.name,
+        niche: guessNiche(f.name),
+        strategy: strat,
+        marketScore: Math.min(100, base),
+        qualityRating: Math.min(100, quality),
+        profitPotential: `$${(profit * 10).toFixed(0)}`,
+        bestStrategy: best
+      };
+    });
+
+    renderResultsTable();
+    updateOverviewSummary();
+    alert("Analysis complete.");
+  };
+
+  function guessNiche(name = "") {
+    const n = name.toLowerCase();
+    if (n.includes("keto") || n.includes("fitness")) return "Health";
+    if (n.includes("budget") || n.includes("finance")) return "Finance";
+    if (n.includes("mindful") || n.includes("journal")) return "Lifestyle";
+    return "Business";
+  }
+
+  function renderResultsTable() {
+    if (!resultsBody) return;
+    if (!state.results.length) { clearAllData(); return; }
+
+    resultsBody.innerHTML = state.results.map(r => `
+      <tr>
+        <td>${escapeHTML(r.name)}</td>
+        <td><span class="niche-badge niche-${r.niche.toLowerCase()}">${r.niche}</span></td>
+        <td><span class="strategy-badge strategy-${r.strategy.toLowerCase()}">${r.strategy}</span></td>
+        <td><span class="score-badge ${scoreClass(r.marketScore)}">${r.marketScore}</span></td>
+        <td><span class="score-badge ${scoreClass(r.qualityRating)}">${r.qualityRating}</span></td>
+        <td>${r.profitPotential}</td>
+        <td><button onclick="showDetails('${escapeAttr(r.name)}')">Details</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function scoreClass(n) {
+    if (n >= 85) return "score-excellent";
+    if (n >= 70) return "score-good";
+    if (n >= 50) return "score-average";
+    return "score-poor";
+  }
+
+  function updateOverviewSummary() {
+    const marketAvg = avg(state.results.map(r => r.marketScore));
+    const qualityAvg = avg(state.results.map(r => r.qualityRating));
+    const quickWins = state.results.filter(r => r.marketScore >= 80).length;
+
+    const overallMarketScore = $("#overallMarketScore");
+    const overallProfit = $("#overallProfit");
+    const quickWinsEl = $("#quickWins");
+    const optLevel = $("#optimizationLevel");
+
+    if (overallMarketScore) overallMarketScore.textContent = `${Math.round(marketAvg)}/100`;
+    if (overallProfit) overallProfit.textContent = `$${(qualityAvg * 10).toFixed(0)}`;
+    if (quickWinsEl) quickWinsEl.textContent = `${quickWins} Found`;
+    if (optLevel) optLevel.textContent = marketAvg >= 80 ? "High" : marketAvg >= 65 ? "Medium" : "Low";
+  }
+
+  function avg(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+
+  // ---------- Details modal ----------
+  window.showDetails = function showDetails(title) {
+    let modal = document.getElementById("detailsModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "detailsModal";
+      modal.className = "details-modal";
+      modal.innerHTML = `
+        <div class="modal-content">
+          <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
+          <h3 id="modalTitle">Details</h3>
+          <div id="modalContent"></div>
+        </div>`;
+      document.body.appendChild(modal);
+    }
+    const content = $("#modalContent", modal);
+    const row = state.results.find(r => r.name === title);
+    content.innerHTML = row
+      ? `<p><strong>File:</strong> ${escapeHTML(row.name)}</p>
+         <p><strong>Niche:</strong> ${row.niche}</p>
+         <p><strong>Market score:</strong> ${row.marketScore}</p>
+         <p><strong>Quality rating:</strong> ${row.qualityRating}</p>
+         <p><strong>Profit potential:</strong> ${row.profitPotential}</p>
+         <p><strong>Best strategy:</strong> ${row.bestStrategy}</p>`
+      : `<p>${escapeHTML(title)}</p>`;
+    modal.style.display = "flex";
+  };
+
+  window.closeModal = function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  };
+
+  // ---------- Profit calculator ----------
+  window.calculatePLRProfit = function calculatePLRProfit() {
+    const cost  = parseFloat($("#calcPLRCost")?.value) || 0;
+    const price = parseFloat($("#calcSellingPrice")?.value) || 0;
+    const sales = parseInt($("#calcMonthlySales")?.value) || 0;
+
+    const revenue = price * sales;
+    const profit  = revenue - (cost * sales);
+    const margin  = revenue ? Math.round((profit / revenue) * 100) : 0;
+    const roi     = cost ? ((price - cost) / cost).toFixed(1) : 0;
+    const annual  = profit * 12;
+
+    $("#calcMonthlyRevenue") && ($("#calcMonthlyRevenue").textContent = `$${revenue.toFixed(2)}`);
+    $("#calcMonthlyProfit")  && ($("#calcMonthlyProfit").textContent  = `$${profit.toFixed(2)}`);
+    $("#calcProfitMargin")   && ($("#calcProfitMargin").textContent   = `${margin}%`);
+    $("#calcROIMultiplier")  && ($("#calcROIMultiplier").textContent  = `${roi}x`);
+    $("#calcAnnualProjection") && ($("#calcAnnualProjection").textContent = `$${annual.toFixed(2)}`);
+    const resultsBox = $("#calculatorResults");
+    if (resultsBox) resultsBox.style.display = "block";
+  };
+
+  // ---------- Export ----------
+  window.exportToCSV = function exportToCSV() {
+    if (!state.results.length) return alert("No analysis results to export.");
+    const headers = ["PLR Content","Niche","Strategy","Market Score","Quality Rating","Profit Potential","Best Strategy"];
+    const rows = state.results.map(r => [
+      r.name, r.niche, r.strategy, r.marketScore, r.qualityRating, r.profitPotential, r.bestStrategy
+    ]);
+    const csv = [headers].concat(rows).map(row =>
+      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+    ).join("\n");
+    downloadFile("analysis.csv", "text/csv", csv);
+  };
+
+  window.exportToPDF = function exportToPDF() {
+    // Simple print-to-PDF
+    const w = window.open("", "_blank");
+    const tableHTML = $("#resultsTable")?.outerHTML || "<p>No data</p>";
+    w.document.write(`<!doctype html><title>PLR Analysis Report</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 24px; }
+        h1 { margin: 0 0 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f0f0f0; text-align: left; }
+      </style>
+      <h1>PLR Analysis Report</h1>
+      ${tableHTML}`);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
+  function downloadFile(name, type, content) {
+    const blob = new Blob([content], { type });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = name; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- Backup (data model, not DOM) ----------
+  window.saveBackup = function saveBackup() {
+    const payload = JSON.stringify(state);
+    localStorage.setItem("UPAT_backup_v1", payload);
+    alert("Backup saved.");
+  };
+
+  window.loadBackup = function loadBackup() {
+    const raw = localStorage.getItem("UPAT_backup_v1");
+    if (!raw) return alert("No backup found.");
+    try {
+      const data = JSON.parse(raw);
+      if (data && data.files) state.files = data.files;
+      if (data && data.results) state.results = data.results;
+      updateFileCount();
+      if (state.results.length) {
+        renderResultsTable();
+        updateOverviewSummary();
+      } else {
+        placeholderResults();
+      }
+      alert("Backup loaded.");
+    } catch (e) {
+      console.error(e);
+      alert("Backup could not be loaded.");
+    }
+  };
+
+  // ---------- Helpers ----------
+  function placeholderResults() {
+    resultsBody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center; padding:40px; color:#666;">
+          Files are ready. Click Start Analysis to generate results.
+        </td>
+      </tr>`;
+  }
+
+  function escapeHTML(s="") {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function escapeAttr(s="") {
+    return s.replace(/['"]/g, c => (c === '"' ? "&quot;" : "&#39;"));
+  }
+
+  // ---------- Init ----------
+  // Seed the checkbox option state if needed later
+  [
+    ["marketIntelligence","marketIntelligence"],
+    ["qualityAssessment","qualityAssessment"],
+    ["profitOptimization","profitOptimization"],
+    ["bundleStrategies","bundleStrategies"],
+    ["aiTitleGeneration","aiTitleGeneration"],
+    ["etsySEO","etsySEO"],
+    ["competitorTracking","competitorTracking"]
+  ].forEach(([id, key]) => {
+    const box = document.getElementById(id);
+    if (box) {
+      box.checked = true;
+      on(box, "change", () => state.options[key] = !!box.checked);
+    }
+  });
+
+  // Initial UI
+  updateFileCount();
+  placeholderResults();
+})();
+</script>
+
 </body>
 </html>
