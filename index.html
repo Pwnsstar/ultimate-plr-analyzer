@@ -2911,6 +2911,143 @@ ${new Date().toLocaleDateString()}
         });
         
         console.log('Ultimate PLR Analysis Tool loaded successfully!');
-    </script>
+    </script><script>
+(function(){
+  if (window.__UPAT_addon_loaded__) return; // guard against double-inject
+  window.__UPAT_addon_loaded__ = true;
+
+  // Stop the browser from navigating on accidental file drops outside the dropzone
+  ['dragover','drop'].forEach(function(evt){
+    window.addEventListener(evt, function(e){ e.preventDefault(); }, false);
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var uploadArea  = document.getElementById('uploadArea');
+    var fileInput   = document.getElementById('fileInput');
+    var fileCountEl = document.getElementById('fileCount');
+
+    function updateFileCount(n){
+      if (!fileCountEl) return;
+      var text = fileCountEl.textContent || '';
+      var firstNum = text.match(/^\d+/);
+      if (firstNum){
+        fileCountEl.textContent = n + text.slice(firstNum[0].length);
+      } else {
+        fileCountEl.textContent = n + ' files selected';
+      }
+    }
+
+    function callHandle(files){
+      var list = Array.from(files || []);
+      if (typeof window.handleFileUpload === 'function'){
+        try { window.handleFileUpload(list); } catch(err){ console.error('handleFileUpload error:', err); }
+      } else {
+        // Minimal fallback so the UI can proceed without errors
+        window.uploadedFiles = (window.uploadedFiles || []).concat(list);
+        document.dispatchEvent(new CustomEvent('filesReady', { detail: { files: list } }));
+        console.warn('No handleFileUpload found. Stored files in window.uploadedFiles.');
+      }
+      updateFileCount((window.uploadedFiles && window.uploadedFiles.length) || list.length);
+    }
+
+    // Wire the upload area without changing your HTML
+    if (uploadArea && fileInput){
+      uploadArea.addEventListener('click', function(){ fileInput.click(); });
+      uploadArea.addEventListener('dragover', function(e){ e.preventDefault(); uploadArea.classList.add('dragover'); });
+      uploadArea.addEventListener('dragleave', function(){ uploadArea.classList.remove('dragover'); });
+      uploadArea.addEventListener('drop', function(e){
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){
+          callHandle(e.dataTransfer.files);
+        }
+      });
+      fileInput.addEventListener('change', function(e){
+        if (e.target && e.target.files && e.target.files.length){
+          callHandle(e.target.files);
+        }
+      });
+    }
+
+    // Harden showTab while respecting your original function
+    if (typeof window.showTab === 'function'){
+      var originalShowTab = window.showTab;
+      window.showTab = function(tabName, evt){
+        try { originalShowTab.call(this, tabName, evt); } catch(_) {}
+        // Ensure correct active state even if event is missing
+        var contents = document.querySelectorAll('.tab-content');
+        var buttons  = document.querySelectorAll('.tab');
+        contents.forEach(function(c){ c.classList.remove('active'); });
+        var target = document.getElementById(tabName);
+        if (target) target.classList.add('active');
+        buttons.forEach(function(btn){
+          var label = (btn.textContent || '').toLowerCase();
+          if (label.indexOf(String(tabName).toLowerCase()) !== -1){
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      };
+    }
+
+    // Lightweight tooltip controller for any element with [data-tooltip]
+    (function(){
+      var tooltip;
+      function ensure(){
+        if (!tooltip){
+          tooltip = document.querySelector('.tooltip');
+          if (!tooltip){
+            tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            document.body.appendChild(tooltip);
+          }
+        }
+      }
+      function position(e){
+        if (!tooltip) return;
+        var x = e.clientX + 12;
+        var y = e.clientY + 12;
+        var rect = tooltip.getBoundingClientRect();
+        var vw = window.innerWidth, vh = window.innerHeight;
+        if (x + rect.width + 8 > vw) x = vw - rect.width - 8;
+        if (y + rect.height + 8 > vh) y = vh - rect.height - 8;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top  = y + 'px';
+      }
+      function show(e){
+        var tip = this.getAttribute('data-tooltip');
+        if (!tip) return;
+        ensure();
+        tooltip.innerHTML = tip; // supports <br> that you use in tooltips
+        position(e);
+        tooltip.classList.add('show');
+      }
+      function hide(){ if (tooltip) tooltip.classList.remove('show'); }
+
+      document.addEventListener('mouseover', function(e){
+        var el = e.target && e.target.closest('[data-tooltip]');
+        if (!el) return;
+        el.addEventListener('mousemove', position);
+        show.call(el, e);
+      });
+      document.addEventListener('mouseout', function(e){
+        var el = e.target && e.target.closest('[data-tooltip]');
+        if (!el) return;
+        el.removeEventListener('mousemove', position);
+        hide();
+      });
+    })();
+
+    // Safe stubs so clicks do not throw errors if these are not defined yet
+    ['exportPDF','exportExcel','exportCSV','exportFullReport','exportBundleGuide','showDetails','closeDetailsModal','updateAllDisplays','updateOptimizeTab','calculatePLRProfit']
+      .forEach(function(name){
+        if (typeof window[name] !== 'function'){
+          window[name] = function(){ console.warn(name + ' is not implemented yet.'); };
+        }
+      });
+  });
+})();
+</script>
 </body>
 </html>
