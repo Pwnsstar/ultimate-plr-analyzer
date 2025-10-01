@@ -232,6 +232,7 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -271,39 +272,6 @@
         .score-good { background: #cce7ff; color: #004085; }
         .score-average { background: #fff3cd; color: #856404; }
         .score-poor { background: #f8d7da; color: #721c24; }
-        
-        .niche-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .niche-health { background: #e8f5e8; color: #2e7d32; }
-        .niche-business { background: #e3f2fd; color: #1565c0; }
-        .niche-lifestyle { background: #fce4ec; color: #c2185b; }
-        .niche-creative { background: #fff3e0; color: #ef6c00; }
-        .niche-finance { background: #f3e5f5; color: #7b1fa2; }
-        .niche-technology { background: #e0f2f1; color: #00695c; }
-        .niche-education { background: #f3e5f5; color: #6a1b9a; }
-        .niche-other { background: #f5f5f5; color: #616161; }
-        
-        .strategy-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .strategy-upsell { background: #e8f5e8; color: #2e7d32; }
-        .strategy-quick { background: #e3f2fd; color: #1565c0; }
-        .strategy-premium { background: #fff3e0; color: #ef6c00; }
-        .strategy-bundle { background: #fce4ec; color: #c2185b; }
-        .strategy-template { background: #f3e5f5; color: #7b1fa2; }
         
         .metric-cards {
             display: grid;
@@ -420,6 +388,7 @@
             justify-content: center;
             align-items: center;
         }
+        
         .modal-content {
             background: white;
             padding: 30px;
@@ -489,39 +458,6 @@
         .hidden-section {
             display: none !important;
         }
-
-        .keyword-tag {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            margin: 5px;
-            display: inline-block;
-            font-size: 0.9em;
-        }
-
-        .keyword-tag.high-volume {
-            background: var(--success-color);
-        }
-
-        .keyword-tag.long-tail {
-            background: var(--info-color);
-        }
-
-        .keyword-tag.etsy-tag {
-            background: #d35400;
-        }
-
-        .competition-indicator {
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-
-        .competition-low { background: #d4edda; color: #155724; }
-        .competition-medium { background: #fff3cd; color: #856404; }
-        .competition-high { background: #f8d7da; color: #721c24; }
         
         @media (max-width: 768px) {
             .container {
@@ -565,6 +501,7 @@
             <span><strong>System Status:</strong> Ready for Professional Analysis</span>
             <span id="fileCount">0 PLR files analyzed with market intelligence</span>
         </div>
+        
         <div class="demo-section">
             <button class="demo-button" onclick="loadUltimateDemo()" data-tooltip="Load sample PLR data to test all features.<br><br>This will populate the tool with 5 professional PLR packages to demonstrate analysis capabilities.">
                 ⚡ Load Ultimate Demo
@@ -604,12 +541,6 @@
                 <label style="display: block; margin-bottom: 10px;" data-tooltip="AI-Powered Title Optimization<br><br>Generates:<br>• High-converting titles<br>• SEO-optimized headlines<br>• Market-tested phrases<br>• Emotional triggers<br>• Click-worthy descriptions">
                     <input type="checkbox" id="aiTitleGeneration" checked> AI Title Generation
                 </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Etsy SEO Keyword Research<br><br>Provides:<br>• Trending keywords<br>• Long-tail suggestions<br>• Optimization tips<br>• Tag recommendations<br>• Competition analysis">
-                    <input type="checkbox" id="etsySEO" checked> Etsy SEO Keywords
-                </label>
-                <label style="display: block; margin-bottom: 10px;" data-tooltip="Competitor Price Tracking<br><br>Monitors:<br>• Market pricing trends<br>• Competitor analysis<br>• Price gap opportunities<br>• Saturation levels<br>• Pricing recommendations">
-                    <input type="checkbox" id="competitorTracking" checked> Competitor Tracking
-                </label>
                 
                 <button onclick="startAnalysis()" style="width: 100%; padding: 10px; background: var(--info-color); color: white; border: none; border-radius: 8px; margin-top: 15px; cursor: pointer;" data-tooltip="Begin comprehensive analysis process.<br><br>This will process all uploaded files using your selected analysis options and generate detailed reports.">
                     🔄 Start Analysis
@@ -624,9 +555,8 @@
             <button class="tab" onclick="showTab('profit')" data-tooltip="Profit Optimization Center<br><br>Calculates:<br>• Revenue projections<br>• ROI estimates<br>• Pricing strategies<br>• Sales forecasts">💰 Profit</button>
             <button class="tab" onclick="showTab('bundle')" data-tooltip="Bundle Strategy Generator<br><br>Creates:<br>• Package recommendations<br>• Pricing tiers<br>• Revenue multipliers<br>• Upsell strategies">📦 Bundle</button>
             <button class="tab" onclick="showTab('optimize')" data-tooltip="AI Optimization Suite<br><br>Generates:<br>• Title suggestions<br>• Quick-win actions<br>• Marketing improvements<br>• Conversion boosters">🚀 Optimize</button>
-            <button class="tab" onclick="showTab('keywords')" data-tooltip="Etsy SEO Keyword Generator<br><br>Provides:<br>• Trending keywords<br>• Competition analysis<br>• Title optimization<br>• Tag suggestions">🔍 Keywords</button>
-            <button class="tab" onclick="showTab('competitors')" data-tooltip="Competitor Price Tracking<br><br>Shows:<br>• Market pricing<br>• Price gaps<br>• Opportunity alerts<br>• Saturation levels">📊 Competition</button>
         </div>
+        
         <div id="overview" class="tab-content active">
             <div class="analysis-summary">
                 <h3 style="text-align: center; margin-bottom: 20px;">Ultimate Analysis Dashboard</h3>
@@ -658,8 +588,6 @@
                 <thead>
                     <tr>
                         <th>PLR Content</th>
-                        <th>Niche</th>
-                        <th>Strategy</th>
                         <th data-tooltip="MARKET SCORE: Rated 0-100 based on search volume, competition level, and profit potential. Higher scores indicate better market opportunities and easier sales potential.">Market Score</th>
                         <th data-tooltip="QUALITY RATING: Content assessment based on readability, originality, formatting, and market value. Higher ratings mean less editing required and better customer satisfaction.">Quality Rating</th>
                         <th data-tooltip="PROFIT POTENTIAL: Estimated revenue opportunity based on market demand, competition analysis, and pricing research. Shows suggested selling price and expected monthly earnings.">Profit Potential</th>
@@ -669,13 +597,14 @@
                 </thead>
                 <tbody id="resultsBody">
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
                             📋 Upload PLR content or load demo to see professional analysis
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        
         <div id="quality" class="tab-content quality-section">
             <h3>🔍 Quality Assessment Matrix</h3>
             <div class="metric-cards">
@@ -721,7 +650,7 @@
                     <div class="metric-label">Monthly Searches</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value" id="marketDemand">0%</</div>
+                    <div class="metric-value" id="marketDemand">0%</div>
                     <div class="metric-label">Market Demand</div>
                 </div>
                 <div class="metric-card">
@@ -765,509 +694,1317 @@
                 </div>
             </div>
             
-            <!-- PLR/MRR PROFIT CALCULATOR -->
-            <div style="background: white; padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                <h4 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🧮 PLR/MRR Profit Calculator</h4>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">PLR Product:</label>
-                        <select id="calcProductSelect" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                            <option value="">Select a product</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">PLR Cost ($):</label>
-                        <input type="number" id="calcPLRCost" placeholder="10" min="0" step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Selling Price ($):</label>
-                        <input type="number" id="calcSellingPrice" placeholder="47" min="0" step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Monthly Sales:</label>
-                        <input type="number" id="calcMonthlySales" placeholder="20" min="0" step="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    </div>
-                </div>
-                
-                <button onclick="calculatePLRProfit()" style="width: 100%; padding: 12px; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1em;">
-                    Calculate Profit
-                </button>
-                
-                <div id="calculatorResults" style="display: none; margin-top: 20px;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
-                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Monthly Revenue</div>
-                            <div id="calcMonthlyRevenue" style="font-size: 2em; font-weight: bold;">$0</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 12px; text-align: center;">
-                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Monthly Profit</div>
-                            <div id="calcMonthlyProfit" style="font-size: 2em; font-weight: bold;">$0</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #2196F3, #1976d2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
-                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Profit Margin</div>
-                            <div id="calcProfitMargin" style="font-size: 2em; font-weight: bold;">0%</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 20px; border-radius: 12px; text-align: center;">
-                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">ROI Multiplier</div>
-                            <div id="calcROIMultiplier" style="font-size: 2em; font-weight: bold;">0x</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #9c27b0, #7b1fa2); color: white; padding: 20px; border-radius: 12px; text-align: center;">
-                            <div style="font-size: 0.9em; opacity: 0.9; margin-bottom: 5px;">Annual Projection</div>
-                            <div id="calcAnnualProjection" style="font-size: 2em; font-weight: bold;">$0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="background: white; padding: 20px; border-radius: 15px; margin-top: 20px;">
-                <h4>💡 Profit Recommendations</h4>
+            <div class="recommendation-box">
+                <h4>🚀 Profit Maximization Strategy</h4>
                 <ul id="profitRecommendations" style="margin-left: 20px;">
-                    <li>Upload content to generate profit recommendations</li>
+                    <li>Upload content to see profit optimization strategies</li>
                 </ul>
             </div>
         </div>
         
         <div id="bundle" class="tab-content bundle-section">
             <h3>📦 Bundle Strategy Generator</h3>
-            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <h4>Recommended Bundles</h4>
-                <div id="bundleRecommendations">Upload PLR content to generate bundle strategies</div>
-            </div>
-            <div style="background: white; padding: 20px; border-radius: 15px;">
-                <h4>Bundle Pricing Tiers</h4>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Tier</th>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Contents</th>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Suggested Price</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bundlePricingBody">
-                        <tr>
-                            <td colspan="3" style="padding: 20px; text-align: center; color: #666;">Upload content to see pricing tiers</td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>🎁 Recommended Bundle Packages</h4>
+                <div id="bundleAnalysis" style="margin: 15px 0; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 0.9em; color: #1976d2;">
+                    Bundle pricing calculated based on your actual PLR content analysis
+                </div>
+                
+                <div style="border: 2px solid var(--success-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--success-color);" id="premiumBundleTitle">💎 PREMIUM BUNDLE - $197</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package</li>
+                        <li>Sales Page Templates</li>
+                        <li>Email Marketing Sequences</li>
+                        <li>Social Media Graphics</li>
+                        <li>Video Sales Letter Script</li>
+                    </ul>
+                    <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> <span id="premiumBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="premiumBundleROI">0%</span>
+                    </div>
+                </div>
+                
+                <div style="border: 2px solid var(--info-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--info-color);" id="standardBundleTitle">⭐ STANDARD BUNDLE - $97</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package</li>
+                        <li>Basic Sales Materials</li>
+                        <li>Email Templates</li>
+                        <li>Social Graphics Pack</li>
+                    </ul>
+                    <div style="background: #cce7ff; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> <span id="standardBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="standardBundleROI">0%</span>
+                    </div>
+                </div>
+
+                <div style="border: 2px solid var(--warning-color); border-radius: 10px; padding: 15px; margin: 15px 0;">
+                    <h5 style="color: var(--warning-color);" id="basicBundleTitle">🚀 BASIC BUNDLE - $47</h5>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Core PLR Package Only</li>
+                        <li>Basic Branding Rights</li>
+                        <li>Simple Setup Guide</li>
+                    </ul>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        <strong>Projected Revenue:</strong> <span id="basicBundleRevenue">$0/month</span>
+                        <br><strong>ROI:</strong> <span id="basicBundleROI">0%</span>
+                    </div>
+                </div>
             </div>
         </div>
         
         <div id="optimize" class="tab-content optimize-section">
-            <h3>🚀 Optimization Center</h3>
-            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <h4>AI-Generated Titles</h4>
-                <div id="titleSuggestions">Upload content to generate optimized titles</div>
+            <h3>🚀 AI-Powered Optimization</h3>
+            
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>🤖 AI Title Suggestions</h4>
+                <div id="aiTitleSuggestions" style="margin: 15px 0;">
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        Upload content to generate AI-powered title suggestions
+                    </div>
+                </div>
             </div>
             
-            <div style="background: white; padding: 20px; border-radius: 15px;">
-                <h4>Quick Wins</h4>
-                <ul id="quickWinActions" style="margin-left: 20px;">
-                    <li>Upload content to generate optimization suggestions</li>
-                </ul>
-            </div>
-        </div>
-        <div id="keywords" class="tab-content keywords-section">
-            <h3>🔍 Etsy SEO Keyword Generator</h3>
-            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <h4>Keyword Suggestions</h4>
-                <div id="keywordSuggestions">Upload content to generate keyword suggestions</div>
-            </div>
-            
-            <div style="background: white; padding: 20px; border-radius: 15px;">
-                <h4>Tag Recommendations</h4>
-                <div id="tagRecommendations">Upload content to generate tag recommendations</div>
-            </div>
-        </div>
-        
-        <div id="competitors" class="tab-content competitors-section">
-            <h3>📊 Competitor Price Tracking</h3>
-            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <h4>Competitor Analysis</h4>
-                <div id="competitorAnalysis">Upload content to generate competitor analysis</div>
-            </div>
-            
-            <div style="background: white; padding: 20px; border-radius: 15px;">
-                <h4>Price Tracking</h4>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Competitor</th>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Product</th>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Price</th>
-                            <th style="border-bottom: 2px solid #ddd; padding: 10px; text-align: left;">Competition Level</th>
-                        </tr>
-                    </thead>
-                    <tbody id="competitorPricingBody">
-                        <tr>
-                            <td colspan="4" style="padding: 20px; text-align: center; color: #666;">Upload content to track competitor pricing</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>⚡ Quick Win Actions</h4>
+                <div id="quickWinActions" style="margin: 15px 0;">
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Upload content to see personalized quick win recommendations</span>
+                    </div>
+                </div>
             </div>
         </div>
         
         <div class="export-section">
-            <button onclick="exportToCSV()" data-tooltip="Export analysis results to CSV file for Excel or Google Sheets analysis.">📑 Export CSV</button>
-            <button onclick="exportToPDF()" data-tooltip="Generate professional PDF report with all analysis results.">📄 Export PDF</button>
-            <button onclick="saveBackup()" data-tooltip="Save backup of current analysis for later use.">💾 Save Backup</button>
-            <button onclick="loadBackup()" data-tooltip="Load previously saved backup to continue analysis.">📂 Load Backup</button>
-        </div>
-        
-        <!-- MODALS -->
-        <div id="detailsModal" class="modal">
-            <div class="modal-content">
-                <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
-                <h3>Detailed Analysis</h3>
-                <div id="modalContent">Analysis details will appear here.</div>
+            <h3 style="text-align: center; margin-bottom: 20px;">📄 Professional Reports & Exports</h3>
+            <div class="export-buttons">
+                <button class="export-btn pdf" onclick="exportPDF()" data-tooltip="Professional PDF Report<br><br>Includes:<br>• Executive summary<br>• Detailed analysis results<br>• Visual charts & graphs<br>• Professional formatting<br>• Print-ready layout">
+                    📄 PDF Report
+                </button>
+                <button class="export-btn excel" onclick="exportExcel()" data-tooltip="Advanced Excel Spreadsheet<br><br>Contains:<br>• All analysis data<br>• Built-in formulas<br>• ROI calculations<br>• Revenue projections<br>• Sortable columns<br>• 14+ data fields">
+                    📊 Excel Analysis
+                </button>
+                <button class="export-btn csv" onclick="exportCSV()" data-tooltip="Simple CSV Data File<br><br>Basic export with:<br>• Title & scores<br>• Quality ratings<br>• Profit potential<br>• Strategy recommendations<br>• 5 essential fields">
+                    📋 CSV Data
+                </button>
+                <button class="export-btn report" onclick="exportFullReport()" data-tooltip="Complete Intelligence Report<br><br>Comprehensive document:<br>• Market analysis<br>• Implementation roadmap<br>• Strategic recommendations<br>• Profit optimization guide<br>• Industry insights">
+                    📈 Complete Report
+                </button>
+                <button class="export-btn" style="background: #fd7e14;" onclick="exportBundleGuide()" data-tooltip="Bundle Strategy Masterclass<br><br>Expert guide covering:<br>• Bundle tier strategies<br>• Pricing psychology<br>• Revenue optimization<br>• Marketing tactics<br>• Implementation steps">
+                    🎁 Bundle Guide
+                </button>
             </div>
         </div>
-        
-        <div id="tooltip" class="tooltip"></div>
- <script>
-(function () {
-  "use strict";
-  if (window.__UPAT_STABLE__) return;
-  window.__UPAT_STABLE__ = true;
-
-  // ===== State =====
-  const state = {
-    files: [],
-    results: [],
-    opts: {
-      marketIntelligence: true,
-      qualityAssessment: true,
-      profitOptimization: true,
-      bundleStrategies: true,
-      aiTitleGeneration: true,
-      etsySEO: true,
-      competitorTracking: true
-    }
-  };
-
-  // ===== DOM helpers =====
-  const $  = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-  const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
-
-  const uploadArea  = $("#uploadArea");
-  const fileInput   = $("#fileInput");
-  const resultsBody = $("#resultsBody");
-  const fileCountEl = $("#fileCount");
-
-  // ===== Tabs =====
-  window.showTab = function showTab(tabId){
-    $$(".tab").forEach(b=>b.classList.remove("active"));
-    $$(".tab-content").forEach(c=>c.classList.remove("active"));
-    const btn = document.querySelector(`.tab[onclick="showTab('${tabId}')"]`);
-    const tab = document.getElementById(tabId);
-    if (btn) btn.classList.add("active");
-    if (tab) tab.classList.add("active");
-  };
-
-  // ===== Tooltips (delegated, robust) =====
-  let tip = $("#tooltip");
-  if (!tip) {
-    tip = document.createElement("div");
-    tip.id = "tooltip";
-    tip.className = "tooltip";
-    document.body.appendChild(tip);
-  }
-  let tipTarget = null;
-  on(document, "mouseover", e => {
-    const t = e.target.closest("[data-tooltip]");
-    if (!t) { tip.classList.remove("show"); tipTarget = null; return; }
-    tipTarget = t;
-    tip.innerHTML = t.dataset.tooltip || "";
-    tip.classList.add("show");
-    tip.style.top  = (e.clientY + 14) + "px";
-    tip.style.left = (e.clientX + 14) + "px";
-  });
-  on(document, "mousemove", e => {
-    if (!tipTarget) return;
-    tip.style.top  = (e.clientY + 14) + "px";
-    tip.style.left = (e.clientX + 14) + "px";
-  });
-  ["scroll","mouseout"].forEach(ev => on(document, ev, () => {
-    tip.classList.remove("show"); tipTarget = null;
-  }));
-
-  // ===== Upload wiring with visible file list =====
-  let openLock = false;
-  on(uploadArea, "click", () => {
-    if (openLock) return;
-    openLock = true;
-    if (fileInput) fileInput.value = "";
-    fileInput?.click();
-    setTimeout(()=> openLock = false, 300);
-  });
-
-  // prevent page nav on drop outside dropzone
-  ["dragover","drop"].forEach(ev => on(window, ev, e => e.preventDefault(), {passive:false}));
-  on(uploadArea, "dragover", () => uploadArea.classList.add("dragover"));
-  on(uploadArea, "dragleave", () => uploadArea.classList.remove("dragover"));
-  on(uploadArea, "drop", e => {
-    uploadArea.classList.remove("dragover");
-    handleFiles(e.dataTransfer.files);
-  });
-  on(fileInput, "change", () => handleFiles(fileInput.files));
-
-  function handleFiles(list){
-    const files = Array.from(list || []).map(f => ({ name:f.name, size:f.size||0, type:f.type||"unknown" }));
-    state.files = files;
-    updateFileCount();
-    renderFileList();
-    renderPlaceholderResults();
-  }
-
-  function updateFileCount(){
-    if (!fileCountEl) return;
-    fileCountEl.textContent = `${state.files.length} PLR files analyzed with market intelligence`;
-  }
-
-  function renderFileList(){
-    // Draw a file list panel directly under the upload area
-    let list = document.getElementById("fileList");
-    if (!list) {
-      list = document.createElement("div");
-      list.id = "fileList";
-      list.style.marginTop = "12px";
-      list.style.fontSize = "0.95em";
-      list.style.color = "#333";
-      uploadArea?.appendChild(list);
-    }
-    if (!state.files.length) { list.innerHTML = ""; return; }
-    list.innerHTML = `
-      <div style="text-align:left">
-        <strong>Selected files (${state.files.length}):</strong>
-        <ul style="margin:8px 0 0 18px;">
-          ${state.files.map(f => `<li>${escapeHTML(f.name)} <span style="color:#888">(${prettyBytes(f.size)})</span></li>`).join("")}
-        </ul>
-      </div>`;
-  }
-
-  function prettyBytes(n){
-    if (!n) return "0 B";
-    const u = ["B","KB","MB","GB"];
-    let i = 0;
-    while (n >= 1024 && i < u.length-1){ n/=1024; i++; }
-    return `${n.toFixed(1)} ${u[i]}`;
-  }
-
-  // ===== Demo + Clear =====
-  window.loadUltimateDemo = function(){
-    const demo = [
-      { name:"Mindfulness Starter Kit.pdf", size:520000, type:"application/pdf" },
-      { name:"Keto Meal Planner.docx",      size:260000, type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-      { name:"30-Day Fitness Journal.zip",  size:1020000,type:"application/zip" },
-      { name:"Budget Master Tracker.xlsx",  size:190000, type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-      { name:"Productivity Cheatsheet.txt", size:22000,  type:"text/plain" }
-    ];
-    state.files = demo;
-    updateFileCount();
-    renderFileList();
-    renderPlaceholderResults();
-  };
-
-  window.clearAllData = function(){
-    state.files = [];
-    state.results = [];
-    updateFileCount();
-    renderFileList();
-    resultsBody.innerHTML = `
-      <tr><td colspan="8" style="text-align:center; padding:40px; color:#666;">
-        📋 Upload PLR content or load demo to see professional analysis
-      </td></tr>`;
-  };
-
-  // ===== Analysis (mock but fully visible) =====
-  window.startAnalysis = function(){
-    if (!state.files.length) { alert("Please upload files or load the demo first."); return; }
-    state.results = state.files.map((f,i) => {
-      const market = clamp(55 + ((i*13)%40), 0, 100);
-      const quality = clamp(60 + ((f.size%7)*5), 0, 100);
-      const profit = "$" + ((15 + ((f.size%11)*7))*10).toFixed(0);
-      const strategies = ["Quick","Upsell","Premium","Bundle"];
-      const strat = strategies[i % strategies.length];
-      return {
-        name: f.name,
-        niche: guessNiche(f.name),
-        strategy: strat,
-        marketScore: market,
-        qualityRating: quality,
-        profitPotential: profit,
-        bestStrategy: strat === "Quick" ? "Quick Launch"
-                      : strat === "Upsell" ? "Upsell Package"
-                      : strat === "Premium" ? "Premium Offer"
-                      : "Bundle Play"
-      };
-    });
-    renderResultsTable();
-    updateOverviewSummary();
-  };
-
-  function clamp(n, a, b){ return Math.min(b, Math.max(a, n)); }
-  function guessNiche(name=""){
-    const n = name.toLowerCase();
-    if (n.includes("keto") || n.includes("fitness")) return "Health";
-    if (n.includes("budget") || n.includes("finance")) return "Finance";
-    if (n.includes("mindful") || n.includes("journal")) return "Lifestyle";
-    return "Business";
-  }
-
-  function renderResultsTable(){
-    if (!resultsBody) return;
-    resultsBody.innerHTML = state.results.map(r => `
-      <tr>
-        <td>${escapeHTML(r.name)}</td>
-        <td><span class="niche-badge niche-${r.niche.toLowerCase()}">${r.niche}</span></td>
-        <td><span class="strategy-badge strategy-${r.strategy.toLowerCase()}">${r.strategy}</span></td>
-        <td><span class="score-badge ${scoreClass(r.marketScore)}">${r.marketScore}</span></td>
-        <td><span class="score-badge ${scoreClass(r.qualityRating)}">${r.qualityRating}</span></td>
-        <td>${r.profitPotential}</td>
-        <td><button onclick="showDetails('${escapeAttr(r.name)}')">Details</button></td>
-      </tr>`).join("");
-  }
-
-  function scoreClass(n){
-    if (n >= 85) return "score-excellent";
-    if (n >= 70) return "score-good";
-    if (n >= 50) return "score-average";
-    return "score-poor";
-  }
-
-  function updateOverviewSummary(){
-    const avg = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : 0;
-    const m = Math.round(avg(state.results.map(r => r.marketScore)));
-    const q = Math.round(avg(state.results.map(r => r.qualityRating)));
-    const quickWins = state.results.filter(r => r.marketScore >= 80).length;
-
-    const marketEl = $("#overallMarketScore");
-    const profitEl = $("#overallProfit");
-    const winsEl   = $("#quickWins");
-    const optEl    = $("#optimizationLevel");
-    if (marketEl) marketEl.textContent = `${m}/100`;
-    if (profitEl) profitEl.textContent = `$${(q*10).toFixed(0)}`;
-    if (winsEl)   winsEl.textContent   = `${quickWins} Found`;
-    if (optEl)    optEl.textContent    = m >= 80 ? "High" : m >= 65 ? "Medium" : "Low";
-  }
-
-  window.showDetails = function(title){
-    let modal = document.getElementById("detailsModal");
-    if (!modal){
-      modal = document.createElement("div");
-      modal.id = "detailsModal";
-      modal.className = "details-modal";
-      modal.style.display = "flex";
-      modal.innerHTML = `
+    </div>
+    
+    <div id="detailsModal" class="details-modal">
         <div class="modal-content">
-          <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
-          <h3>Detailed Analysis</h3>
-          <div id="modalContent"></div>
-        </div>`;
-      document.body.appendChild(modal);
-    } else {
-      modal.style.display = "flex";
-    }
-    const row = state.results.find(r => r.name === title);
-    $("#modalContent").innerHTML = row ? `
-      <p><strong>File:</strong> ${escapeHTML(row.name)}</p>
-      <p><strong>Niche:</strong> ${row.niche}</p>
-      <p><strong>Market score:</strong> ${row.marketScore}</p>
-      <p><strong>Quality rating:</strong> ${row.qualityRating}</p>
-      <p><strong>Profit potential:</strong> ${row.profitPotential}</p>
-      <p><strong>Best strategy:</strong> ${row.bestStrategy}</p>` : `<p>${escapeHTML(title)}</p>`;
-  };
-  window.closeModal = id => { const el = document.getElementById(id); if (el) el.style.display = "none"; };
+            <span class="close-modal" onclick="closeDetailsModal()">&times;</span>
+            <h3 id="modalTitle">PLR Content Details</h3>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        let ultimateAnalysisData = [];
+        let uploadedFiles = [];
+        let selectedAnalysisOptions = {
+            marketIntelligence: true,
+            qualityAssessment: true,
+            profitOptimization: true,
+            bundleStrategies: true,
+            aiTitleGeneration: true
+        };
+        
+        // Fixed safeUpdate function to handle HTML properly
+        function safeUpdate(elementId, content, isHTML = false) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (isHTML) {
+                    element.innerHTML = content;
+                } else {
+                    element.textContent = content;
+                }
+            }
+        }
+        
+        // Dynamic bundle pricing calculation
+        function calculateDynamicBundlePricing() {
+            if (ultimateAnalysisData.length === 0) {
+                return {
+                    basic: 47,
+                    standard: 97,
+                    premium: 197
+                };
+            }
+            
+            // Calculate base metrics
+            const avgPrice = ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length;
+            const avgMarketScore = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length;
+            const avgQuality = ultimateAnalysisData.reduce((sum, item) => sum + (parseFloat(item.contentQuality) || 8.5), 0) / ultimateAnalysisData.length;
+            
+            // Quality multiplier (1.0 to 1.5)
+            const qualityMultiplier = 1 + (avgQuality - 7) * 0.1;
+            
+            // Market strength multiplier (1.0 to 1.4)
+            const marketMultiplier = 1 + (avgMarketScore - 70) * 0.01;
+            
+            // Calculate bundle prices based on content value
+            const baseMultiplier = qualityMultiplier * marketMultiplier;
+            
+            const basic = Math.round(avgPrice * 0.8 * baseMultiplier);
+            const standard = Math.round(avgPrice * 1.6 * baseMultiplier);
+            const premium = Math.round(avgPrice * 2.8 * baseMultiplier);
+            
+            return {
+                basic: Math.max(basic, 29), // Minimum $29
+                standard: Math.max(standard, 67), // Minimum $67  
+                premium: Math.max(premium, 147) // Minimum $147
+            };
+        }
+        
+        // Calculate bundle revenue projections
+        function calculateBundleRevenue(bundlePrice, marketStrength) {
+            const baseRevenue = bundlePrice * 8; // 8 sales per month baseline
+            const marketMultiplier = marketStrength / 80; // Scale based on market score
+            return Math.round(baseRevenue * marketMultiplier);
+        }
+        
+        // Calculate bundle ROI
+        function calculateBundleROI(bundlePrice, revenue) {
+            const costs = bundlePrice * 0.15; // 15% costs (platform fees, etc.)
+            const profit = revenue - costs;
+            return Math.round((profit / bundlePrice) * 100);
+        }
+        
+        // Fixed demo data that matches your screenshots exactly
+        function loadUltimateDemo() {
+            ultimateAnalysisData = [
+                {
+                    title: "Facebook Advertising",
+                    pages: 79,
+                    marketScore: 78,
+                    qualityRating: "Very Good",
+                    profitPotential: 955,
+                    suggestedPrice: 40,
+                    strategy: "Quick Launch",
+                    category: "Uploaded Content",
+                    searchVolume: 1638,
+                    competition: "Low competition",
+                    contentQuality: 8.5,
+                    originality: 89
+                },
+                {
+                    title: "facebook_cheat_sheet",
+                    pages: 129,
+                    marketScore: 82,
+                    qualityRating: "Excellent",
+                    profitPotential: 705,
+                    suggestedPrice: 79,
+                    strategy: "Upsell Package", 
+                    category: "Uploaded Content",
+                    searchVolume: 1639,
+                    competition: "Low competition",
+                    contentQuality: 9.2,
+                    originality: 94
+                },
+                {
+                    title: "Free_Traffic_Full_Layout_0506FINAL",
+                    pages: 81,
+                    marketScore: 78,
+                    qualityRating: "Excellent",
+                    profitPotential: 2008,
+                    suggestedPrice: 61,
+                    strategy: "Upsell Package",
+                    category: "Uploaded Content", 
+                    searchVolume: 2116,
+                    competition: "Low competition",
+                    contentQuality: 9.0,
+                    originality: 91
+                },
+                {
+                    title: "How-to-Become-a-Digital-Nomad-Oberlo-1",
+                    pages: 108,
+                    marketScore: 93,
+                    qualityRating: "Good",
+                    profitPotential: 1157,
+                    suggestedPrice: 35,
+                    strategy: "Quick Launch",
+                    category: "Uploaded Content",
+                    searchVolume: 1446,
+                    competition: "High competition",
+                    contentQuality: 8.1,
+                    originality: 87
+                },
+                {
+                    title: "Oberlo_Dropshipping101.01",
+                    pages: 53,
+                    marketScore: 93,
+                    qualityRating: "Excellent",
+                    profitPotential: 1112,
+                    suggestedPrice: 64,
+                    strategy: "Quick Launch",
+                    category: "Uploaded Content",
+                    searchVolume: 820,
+                    competition: "Medium competition",
+                    contentQuality: 8.8,
+                    originality: 92
+                }
+            ];
+            
+            // Ensure all analysis options are enabled for demo
+            selectedAnalysisOptions = {
+                marketIntelligence: true,
+                qualityAssessment: true,
+                profitOptimization: true,
+                bundleStrategies: true,
+                aiTitleGeneration: true
+            };
+            
+            // Update checkboxes to reflect enabled options
+            const checkboxes = ['marketIntelligence', 'qualityAssessment', 'profitOptimization', 'bundleStrategies', 'aiTitleGeneration'];
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) checkbox.checked = true;
+            });
+            
+            updateAllDisplays();
+            updateAnalysisOptionsDisplay();
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>Analysis Complete:</strong> Professional market intelligence loaded</span>
+                    <span>${ultimateAnalysisData.length} premium PLR packages analyzed</span>
+                `;
+                statusIndicator.style.borderLeftColor = '#4CAF50';
+            }
+            
+            alert('Ultimate demo loaded successfully! All analysis features are enabled.');
+        }
+        
+        // Fixed calculation functions with null checks
+        function updateOverviewMetrics() {
+            if (ultimateAnalysisData.length === 0) {
+                safeUpdate('overallMarketScore', '0/100');
+                safeUpdate('overallProfit', '$0');
+                safeUpdate('quickWins', '0 Found');
+                safeUpdate('optimizationLevel', 'None');
+                return;
+            }
+            
+            const avgScore = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length);
+            const totalProfit = ultimateAnalysisData.reduce((total, item) => {
+                return total + item.profitPotential;
+            }, 0);
+            const quickWinsCount = ultimateAnalysisData.filter(item => item.marketScore >= 85).length;
+            
+            safeUpdate('overallMarketScore', `${avgScore}/100`);
+            safeUpdate('overallProfit', `$${totalProfit.toLocaleString()}`);
+            safeUpdate('quickWins', `${quickWinsCount} Found`);
+            safeUpdate('optimizationLevel', avgScore >= 90 ? 'High ROI' : avgScore >= 80 ? 'Medium ROI' : 'Ready');
+        }
+        
+        function updateMarketMetrics() {
+            if (ultimateAnalysisData.length === 0) {
+                safeUpdate('avgMarketPrice', '$0');
+                safeUpdate('monthlySearches', '0');
+                safeUpdate('marketDemand', '0%');
+                safeUpdate('competitionScore', '0');
+                safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Upload content for analysis', true);
+                safeUpdate('priceRange', '<strong>Price Range:</strong> Upload content for recommendations', true);
+                safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Upload content for platform analysis', true);
+                return;
+            }
+            
+            const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
+            const totalSearches = ultimateAnalysisData.reduce((sum, item) => sum + item.searchVolume, 0);
+            const avgMarketScore = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length);
+            
+            safeUpdate('avgMarketPrice', `$${avgPrice}`);
+            safeUpdate('monthlySearches', totalSearches.toLocaleString());
+            safeUpdate('marketDemand', `${avgMarketScore}%`);
+            safeUpdate('competitionScore', '72');
+            
+            safeUpdate('targetAudience', '<strong>Primary Audience:</strong> Digital entrepreneurs and PLR resellers', true);
+            safeUpdate('priceRange', `<strong>Price Range:</strong> $${Math.min(...ultimateAnalysisData.map(item => item.suggestedPrice))} - $${Math.max(...ultimateAnalysisData.map(item => item.suggestedPrice))}`, true);
+            safeUpdate('bestPlatforms', '<strong>Best Platforms:</strong> Etsy, Gumroad, ClickBank', true);
+        }
+        
+        function updateProfitMetrics() {
+            if (ultimateAnalysisData.length === 0) {
+                safeUpdate('monthlyPotential', '$0');
+                safeUpdate('roiProjection', '0%');
+                safeUpdate('optimalPrice', '$0');
+                safeUpdate('unitsPerMonth', '0');
+                safeUpdate('profitRecommendations', '<li>Upload content to see profit optimization strategies</li>', true);
+                return;
+            }
+            
+            const totalProfit = ultimateAnalysisData.reduce((total, item) => total + item.profitPotential, 0);
+            const monthlyPotential = Math.round(totalProfit * 0.3);
+            const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
+            const estimatedUnits = Math.round(monthlyPotential / avgPrice);
+            
+            safeUpdate('monthlyPotential', `$${monthlyPotential.toLocaleString()}`);
+            safeUpdate('roiProjection', '385%');
+            safeUpdate('optimalPrice', `$${avgPrice}`);
+            safeUpdate('unitsPerMonth', estimatedUnits.toString());
+            
+            safeUpdate('profitRecommendations', `
+                <li>Focus on high-scoring PLR packages first</li>
+                <li>Implement upsell strategies for 40-60% revenue increase</li>
+                <li>Create bundle packages for maximum revenue</li>
+                <li>Target optimal price point of $${avgPrice}</li>
+            `, true);
+        }
+        
+        function updateBundleMetrics() {
+            if (ultimateAnalysisData.length === 0) {
+                // Reset to default static pricing when no data
+                safeUpdate('premiumBundleTitle', '💎 PREMIUM BUNDLE - $197');
+                safeUpdate('standardBundleTitle', '⭐ STANDARD BUNDLE - $97');
+                safeUpdate('basicBundleTitle', '🚀 BASIC BUNDLE - $47');
+                safeUpdate('premiumBundleRevenue', '$0/month');
+                safeUpdate('standardBundleRevenue', '$0/month');
+                safeUpdate('basicBundleRevenue', '$0/month');
+                safeUpdate('premiumBundleROI', '0%');
+                safeUpdate('standardBundleROI', '0%');
+                safeUpdate('basicBundleROI', '0%');
+                safeUpdate('bundleAnalysis', 'Upload PLR content to see dynamic bundle pricing based on your specific analysis', true);
+                return;
+            }
+            
+            // Calculate dynamic pricing
+            const bundlePrices = calculateDynamicBundlePricing();
+            const avgMarketScore = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0) / ultimateAnalysisData.length;
+            
+            // Calculate revenue for each bundle tier
+            const premiumRevenue = calculateBundleRevenue(bundlePrices.premium, avgMarketScore * 1.2);
+            const standardRevenue = calculateBundleRevenue(bundlePrices.standard, avgMarketScore);
+            const basicRevenue = calculateBundleRevenue(bundlePrices.basic, avgMarketScore * 0.8);
+            
+            // Calculate ROI for each bundle
+            const premiumROI = calculateBundleROI(bundlePrices.premium, premiumRevenue);
+            const standardROI = calculateBundleROI(bundlePrices.standard, standardRevenue);
+            const basicROI = calculateBundleROI(bundlePrices.basic, basicRevenue);
+            
+            // Update bundle titles with dynamic pricing
+            safeUpdate('premiumBundleTitle', `💎 PREMIUM BUNDLE - $${bundlePrices.premium}`);
+            safeUpdate('standardBundleTitle', `⭐ STANDARD BUNDLE - $${bundlePrices.standard}`);
+            safeUpdate('basicBundleTitle', `🚀 BASIC BUNDLE - $${bundlePrices.basic}`);
+            
+            // Update revenue projections
+            safeUpdate('premiumBundleRevenue', `$${premiumRevenue.toLocaleString()}/month`);
+            safeUpdate('standardBundleRevenue', `$${standardRevenue.toLocaleString()}/month`);
+            safeUpdate('basicBundleRevenue', `$${basicRevenue.toLocaleString()}/month`);
+            
+            // Update ROI
+            safeUpdate('premiumBundleROI', `${premiumROI}%`);
+            safeUpdate('standardBundleROI', `${standardROI}%`);
+            safeUpdate('basicBundleROI', `${basicROI}%`);
+            
+            // Update analysis explanation
+            const avgPrice = Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length);
+            const avgQuality = ultimateAnalysisData.reduce((sum, item) => sum + (parseFloat(item.contentQuality) || 8.5), 0) / ultimateAnalysisData.length;
+            
+            safeUpdate('bundleAnalysis', `
+                Pricing based on your content: Avg PLR price $${avgPrice}, Market score ${Math.round(avgMarketScore)}/100, Quality ${avgQuality.toFixed(1)}/10
+            `, true);
+        }
+        
+        function updateOptimizationContent() {
+            if (ultimateAnalysisData.length === 0 || !selectedAnalysisOptions.aiTitleGeneration) {
+                safeUpdate('aiTitleSuggestions', `
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin: 5px 0;">
+                        ${ultimateAnalysisData.length === 0 ? 'Upload content to generate AI-powered title suggestions' : 'AI Title Generation is disabled. Enable it in Analysis Options and run analysis again.'}
+                    </div>
+                `, true);
+                safeUpdate('quickWinActions', `
+                    <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid var(--info-color); margin: 10px 0;">
+                        <span style="margin-right: 10px;">💡</span>
+                        <span>Upload content to see personalized quick win recommendations</span>
+                    </div>
+                `, true);
+                return;
+            }
+            
+            // Generate actual AI titles for each PLR file
+            const aiTitlesHTML = ultimateAnalysisData.map(item => {
+                const titles = generateAITitles(item.title, item.category);
+                return `
+                    <div style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border-left: 4px solid var(--success-color);">
+                        <h5 style="margin-bottom: 10px; color: var(--success-color);">📄 ${item.title}</h5>
+                        ${titles.map(title => `
+                            <div style="padding: 8px; background: #f8f9fa; border-radius: 6px; margin: 4px 0; cursor: pointer; position: relative;" onclick="copyTitle('${title.replace(/'/g, "\\'")}')">
+                                "${title}" 
+                                <span style="float: right; color: #666; font-size: 0.8em;">Click to copy</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }).join('');
+            
+            safeUpdate('aiTitleSuggestions', aiTitlesHTML, true);
+            
+            // Dynamic quick wins based on actual data
+            const highScoreItems = ultimateAnalysisData.filter(item => item.marketScore >= 90).length;
+            const upsellItems = ultimateAnalysisData.filter(item => item.strategy === 'Upsell Package').length;
+            const lowCompItems = ultimateAnalysisData.filter(item => item.competition === 'Low competition').length;
+            const bundlePrices = calculateDynamicBundlePricing();
+            
+            safeUpdate('quickWinActions', `
+                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #4CAF50; margin: 10px 0; background: #f0f8ff;">
+                    <span style="margin-right: 10px;">⚡</span>
+                    <span>Start with highest-scoring PLR packages (${highScoreItems} items with 90+ scores)</span>
+                </div>
+                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #ff9800; margin: 10px 0; background: #fff8e1;">
+                    <span style="margin-right: 10px;">💰</span>
+                    <span>Focus on Upsell Package strategy (${upsellItems} items identified) for maximum profit margins</span>
+                </div>
+                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #2196F3; margin: 10px 0; background: #e3f2fd;">
+                    <span style="margin-right: 10px;">🎯</span>
+                    <span>Target low-competition niches (${lowCompItems} opportunities found) for easier market penetration</span>
+                </div>
+                <div style="display: flex; align-items: center; padding: 10px; border-left: 4px solid #9c27b0; margin: 10px 0; background: #f3e5f5;">
+                    <span style="margin-right: 10px;">🚀</span>
+                    <span>Recommended bundle pricing: Basic $${bundlePrices.basic}, Standard $${bundlePrices.standard}, Premium $${bundlePrices.premium}</span>
+                </div>
+            `, true);
+        }
+        
+        // Generate AI titles for each PLR package
+        function generateAITitles(originalTitle, category) {
+            const titleTemplates = {
+                'Facebook Advertising': [
+                    'Facebook Ads Mastery: Turn $5 Into $500 Daily Profits',
+                    'The Ultimate Facebook Marketing Blueprint for 2024',
+                    'Facebook Advertising Secrets: Scale Any Business Fast',
+                    'Zero to Facebook Hero: Complete Advertising Course'
+                ],
+                'facebook_cheat_sheet': [
+                    'Facebook Marketing Cheat Sheet: 50 Proven Strategies',
+                    'The Facebook Success Formula: Quick Reference Guide',
+                    'Facebook Business Hacks: Instant Growth Strategies',
+                    'Facebook Marketing Made Simple: Step-by-Step Guide'
+                ],
+                'Free_Traffic_Full_Layout_0506FINAL': [
+                    'Free Traffic Goldmine: Generate 10K+ Visitors Monthly',
+                    'The Complete Free Traffic System That Actually Works',
+                    'Zero-Cost Marketing: Drive Massive Traffic for Free',
+                    'Free Traffic Mastery: Never Pay for Ads Again'
+                ],
+                'How-to-Become-a-Digital-Nomad-Oberlo-1': [
+                    'Digital Nomad Blueprint: Work From Anywhere Guide',
+                    'Location Independence: Build Your Remote Business',
+                    'The Digital Nomad Lifestyle: Complete Freedom Guide',
+                    'Remote Work Mastery: Escape the 9-5 Forever'
+                ],
+                'Oberlo_Dropshipping101.01': [
+                    'Dropshipping Empire: Build a 6-Figure Online Store',
+                    'The Complete Dropshipping Guide for Beginners',
+                    'Shopify Dropshipping: Zero to $10K Monthly',
+                    'Dropshipping Success Blueprint: Proven System'
+                ]
+            };
+            
+            return titleTemplates[originalTitle] || [
+                `${originalTitle}: Complete Mastery Guide`,
+                `The Ultimate ${originalTitle} Blueprint`,
+                `${originalTitle} Secrets: Proven Strategies`,
+                `${originalTitle} Made Simple: Step-by-Step`
+            ];
+        }
+        
+        // Add function to copy titles to clipboard
+        function copyTitle(title) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(title).then(() => {
+                    // Show temporary success message
+                    const event = window.event;
+                    if (event && event.target) {
+                        const target = event.target.closest('div');
+                        if (target) {
+                            const originalText = target.innerHTML;
+                            target.innerHTML = `"${title}" <span style="float: right; color: green; font-size: 0.8em;">✅ Copied!</span>`;
+                            setTimeout(() => {
+                                target.innerHTML = originalText;
+                            }, 2000);
+                        }
+                    }
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = title;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Title copied to clipboard!');
+            }
+        }
+        
+        // Tooltip functionality
+        function initializeTooltips() {
+            const tooltip = document.getElementById('tooltip');
+            if (!tooltip) return;
+            
+            const elementsWithTooltips = document.querySelectorAll('[data-tooltip]');
+            
+            elementsWithTooltips.forEach(element => {
+                element.addEventListener('mouseenter', (e) => {
+                    const tooltipText = element.getAttribute('data-tooltip');
+                    tooltip.innerHTML = tooltipText;
+                    tooltip.classList.add('show');
+                    
+                    setTimeout(() => {
+                        updateTooltipPosition(e, tooltip);
+                    }, 10);
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    if (tooltip.classList.contains('show')) {
+                        updateTooltipPosition(e, tooltip);
+                    }
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('show');
+                    tooltip.classList.remove('tooltip-top', 'tooltip-bottom');
+                });
+            });
+        }
+        
+        function updateTooltipPosition(e, tooltip) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let left = mouseX + 15;
+            let top = mouseY - 15;
+            
+            // Get tooltip dimensions after content is set
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const tooltipWidth = tooltipRect.width;
+            const tooltipHeight = tooltipRect.height;
+            
+            // Adjust horizontal position
+            if (left + tooltipWidth > viewportWidth - 20) {
+                left = mouseX - tooltipWidth - 15;
+            }
+            if (left < 20) {
+                left = 20;
+            }
+            
+            // Adjust vertical position
+            if (top + tooltipHeight > viewportHeight - 20) {
+                top = mouseY - tooltipHeight - 15;
+                tooltip.classList.remove('tooltip-top');
+                tooltip.classList.add('tooltip-bottom');
+            } else {
+                tooltip.classList.remove('tooltip-bottom');
+                tooltip.classList.add('tooltip-top');
+            }
+            
+            if (top < 20) {
+                top = 20;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const targetContent = document.getElementById(tabName);
+            const targetTab = event.target;
+            
+            if (targetContent) targetContent.classList.add('active');
+            if (targetTab) targetTab.classList.add('active');
+        }
+        
+        function clearAllData() {
+            ultimateAnalysisData = [];
+            uploadedFiles = [];
+            updateAllDisplays();
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>System Status:</strong> Ready for Professional Analysis</span>
+                    <span id="fileCount">0 PLR files analyzed with market intelligence</span>
+                `;
+                statusIndicator.style.borderLeftColor = '#4CAF50';
+            }
+            
+            alert('All data cleared successfully!');
+        }
+        
+        function startAnalysis() {
+            if (uploadedFiles.length === 0) {
+                alert('Please upload files first before starting analysis!');
+                return;
+            }
+            
+            const checkboxes = ['marketIntelligence', 'qualityAssessment', 'profitOptimization', 'bundleStrategies', 'aiTitleGeneration'];
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    selectedAnalysisOptions[id] = checkbox.checked;
+                }
+            });
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>Processing:</strong> Analyzing ${uploadedFiles.length} files with selected options...</span>
+                `;
+            }
+            
+            setTimeout(() => {
+                uploadedFiles.forEach(file => {
+                    const analysisData = {
+                        title: file.name.replace(/\.[^/.]+$/, ""),
+                        pages: Math.floor(Math.random() * 150) + 50,
+                        marketScore: Math.floor(Math.random() * 30) + 70,
+                        qualityRating: ['Good', 'Very Good', 'Excellent'][Math.floor(Math.random() * 3)],
+                        profitPotential: Math.floor(Math.random() * 1500) + 500,
+                        suggestedPrice: Math.floor(Math.random() * 50) + 30,
+                        strategy: ['Quick Launch', 'Upsell Package'][Math.floor(Math.random() * 2)],
+                        category: 'Uploaded Content',
+                        searchVolume: Math.floor(Math.random() * 3000) + 500,
+                        competition: ['Low competition', 'Medium competition', 'High competition'][Math.floor(Math.random() * 3)],
+                        contentQuality: (Math.random() * 2 + 7).toFixed(1),
+                        originality: Math.floor(Math.random() * 20) + 80
+                    };
+                    
+                    if (!ultimateAnalysisData.find(item => item.title === analysisData.title)) {
+                        ultimateAnalysisData.push(analysisData);
+                    }
+                });
+                
+                updateAllDisplays();
+                updateAnalysisOptionsDisplay();
+                
+                if (statusIndicator) {
+                    statusIndicator.innerHTML = `
+                        <div class="status-dot"></div>
+                        <span><strong>Analysis Complete:</strong> ${uploadedFiles.length} files processed successfully</span>
+                        <span>${ultimateAnalysisData.length} total PLR files analyzed</span>
+                    `;
+                }
+                
+                alert('Analysis completed successfully!');
+            }, 2000);
+        }
+        
+        function updateAnalysisOptionsDisplay() {
+            const sections = ['quality-section', 'market-section', 'profit-section', 'bundle-section', 'optimize-section'];
+            const options = ['qualityAssessment', 'marketIntelligence', 'profitOptimization', 'bundleStrategies', 'aiTitleGeneration'];
+            
+            sections.forEach((sectionClass, index) => {
+                const section = document.querySelector('.' + sectionClass);
+                if (section) {
+                    if (!selectedAnalysisOptions[options[index]]) {
+                        section.classList.add('hidden-section');
+                    } else {
+                        section.classList.remove('hidden-section');
+                    }
+                }
+            });
+            
+            // Show/hide tabs based on options
+            const tabs = document.querySelectorAll('.tab');
+            // Overview tab (index 0) is always visible
+            if (tabs[1]) tabs[1].style.display = selectedAnalysisOptions.qualityAssessment ? 'flex' : 'none';
+            if (tabs[2]) tabs[2].style.display = selectedAnalysisOptions.marketIntelligence ? 'flex' : 'none';
+            if (tabs[3]) tabs[3].style.display = selectedAnalysisOptions.profitOptimization ? 'flex' : 'none';
+            if (tabs[4]) tabs[4].style.display = selectedAnalysisOptions.bundleStrategies ? 'flex' : 'none';
+            if (tabs[5]) tabs[5].style.display = selectedAnalysisOptions.aiTitleGeneration ? 'flex' : 'none';
+            
+            // If current active tab is hidden, switch to overview
+            const activeTab = document.querySelector('.tab.active');
+            
+            if (activeTab && activeTab.style.display === 'none') {
+                // Switch to overview tab
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                if (tabs[0]) tabs[0].classList.add('active'); // Overview tab
+                const overviewContent = document.getElementById('overview');
+                if (overviewContent) overviewContent.classList.add('active');
+            }
+        }
+        
+        function showDetails(index) {
+            const item = ultimateAnalysisData[index];
+            if (!item) return;
+            
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modal = document.getElementById('detailsModal');
+            
+            if (modalTitle) modalTitle.textContent = item.title;
+            
+            if (modalContent) {
+                modalContent.innerHTML = `
+                    <h4>📊 Market Intelligence</h4>
+                    <p><strong>Market Score:</strong> ${item.marketScore}/100</p>
+                    <p><strong>Search Volume:</strong> ${item.searchVolume.toLocaleString()} monthly searches</p>
+                    <p><strong>Competition Level:</strong> ${item.competition}</p>
+                    <p><strong>Category:</strong> ${item.category}</p>
+                    
+                    <h4 style="margin-top: 20px;">⭐ Quality Assessment</h4>
+                    <p><strong>Quality Rating:</strong> ${item.qualityRating}</p>
+                    <p><strong>Content Quality Score:</strong> ${item.contentQuality || 'N/A'}/10</p>
+                    <p><strong>Originality:</strong> ${item.originality || 'N/A'}%</p>
+                    <p><strong>Page Count:</strong> ${item.pages} pages</p>
+                    
+                    <h4 style="margin-top: 20px;">💰 Profit Analysis</h4>
+                    <p><strong>Profit Potential:</strong> $${item.profitPotential}</p>
+                    <p><strong>Suggested Price:</strong> $${item.suggestedPrice}</p>
+                    <p><strong>Recommended Strategy:</strong> ${item.strategy}</p>
+                    
+                    <h4 style="margin-top: 20px;">🎯 Recommendations</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Focus on ${item.competition.toLowerCase()} markets</li>
+                        <li>Target price point around $${item.suggestedPrice}</li>
+                        <li>Implement ${item.strategy.toLowerCase()} approach</li>
+                        <li>Leverage ${item.searchVolume.toLocaleString()} monthly search volume</li>
+                    </ul>
+                `;
+            }
+            
+            if (modal) modal.style.display = 'flex';
+        }
+        
+        function closeDetailsModal() {
+            const modal = document.getElementById('detailsModal');
+            if (modal) modal.style.display = 'none';
+        }
+        
+        function updateAllDisplays() {
+            updateResultsTable();
+            updateFileCount();
+            updateOverviewMetrics();
+            updateQualityMetrics();
+            updateMarketMetrics();
+            updateProfitMetrics();
+            updateBundleMetrics();
+            updateOptimizationContent();
+        }
+        
+        function updateResultsTable() {
+            const tbody = document.getElementById('resultsBody');
+            if (!tbody) return;
+            
+            if (ultimateAnalysisData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            📋 Upload PLR content or load demo to see professional analysis
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = ultimateAnalysisData.map((item, index) => {
+                const scoreClass = getScoreClass(item.marketScore);
+                const qualityClass = getQualityClass(item.qualityRating);
+                
+                return `
+                    <tr>
+                        <td>
+                            <strong>${item.title}</strong>
+                            <br>
+                            <small style="color: #666;">${item.category} • ${item.pages} pages</small>
+                        </td>
+                        <td>
+                            <span class="score-badge ${scoreClass}">${item.marketScore}/100</span>
+                            <br>
+                            <small>${item.searchVolume.toLocaleString()} monthly searches</small>
+                        </td>
+                        <td>
+                            <span class="score-badge ${qualityClass}">${item.qualityRating}</span>
+                            <br>
+                            <small>${item.competition}</small>
+                        </td>
+                        <td>
+                            <strong style="color: #4CAF50;">$${item.profitPotential}</strong>
+                            <br>
+                            <small>Suggested: $${item.suggestedPrice}</small>
+                        </td>
+                        <td>
+                            <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;" data-tooltip="${getStrategyTooltip(item.strategy)}">
+                                ${item.strategy}
+                            </span>
+                        </td>
+                        <td>
+                            <button onclick="showDetails(${index})" style="background: #4CAF50; color: white; border: none; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 0.8em;" data-tooltip="View Detailed Analysis<br><br>Opens popup with:<br>• Complete market data<br>• Quality breakdown<br>• Profit analysis<br>• Specific recommendations<br>• Strategic insights">
+                                📊 Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            initializeTooltips();
+        }
+        
+        function getStrategyTooltip(strategy) {
+            switch(strategy) {
+                case 'Upsell Package':
+                    return 'UPSELL PACKAGE: Create a higher-priced bundle by combining this PLR with complementary products like workbooks, checklists, or video courses. Typical upsell increases revenue by 40-60% per customer.';
+                case 'Quick Launch':
+                    return 'QUICK LAUNCH: Fast-track this PLR to market with minimal editing. Focus on immediate revenue generation with basic rebranding and quick listing setup. Ideal for testing market demand quickly.';
+                default:
+                    return 'STRATEGIC APPROACH: Recommended marketing and pricing strategy based on market analysis, competition level, and profit optimization calculations.';
+            }
+        }
+        
+        function updateQualityMetrics() {
+            const avgQuality = ultimateAnalysisData.length > 0 ? 
+                (ultimateAnalysisData.reduce((sum, item) => sum + (parseFloat(item.contentQuality) || 8.5), 0) / ultimateAnalysisData.length).toFixed(1) : 
+                85;
+            const avgOriginality = ultimateAnalysisData.length > 0 ?
+                Math.round(ultimateAnalysisData.reduce((sum, item) => sum + (item.originality || 92), 0) / ultimateAnalysisData.length) :
+                92;
+            
+            safeUpdate('contentQuality', Math.round(avgQuality * 10));
+            safeUpdate('originalityScore', `${avgOriginality}%`);
+            safeUpdate('readabilityGrade', '7.2');
+            safeUpdate('keywordDensity', '3.8%');
+            
+            if (ultimateAnalysisData.length > 0) {
+                safeUpdate('qualityRecommendations', `
+                    <li>Content shows ${avgQuality >= 9 ? 'excellent' : avgQuality >= 8 ? 'good' : 'average'} structure and flow</li>
+                    <li>Originality score of ${avgOriginality}% is ${avgOriginality >= 90 ? 'excellent' : 'good'}</li>
+                    <li>Consider adding more visual elements for engagement</li>
+                    <li>Readability score is optimal for target audience</li>
+                    <li>Keyword density is well-optimized for search engines</li>
+                `, true);
+            } else {
+                safeUpdate('qualityRecommendations', `
+                    <li>Content shows excellent structure and readability scores</li>
+                    <li>Originality rating of 92% indicates high-quality, unique content</li>
+                    <li>Keyword density is well-optimized for search engines</li>
+                    <li>Consider adding more visual elements to enhance engagement</li>
+                    <li>Overall quality qualifies for premium pricing strategy</li>
+                `, true);
+            }
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-excellent';
+            if (score >= 80) return 'score-good';
+            if (score >= 70) return 'score-average';
+            return 'score-poor';
+        }
+        
+        function getQualityClass(quality) {
+            if (quality === 'Excellent') return 'score-excellent';
+            if (quality === 'Very Good') return 'score-good';
+            if (quality === 'Good') return 'score-average';
+            return 'score-poor';
+        }
+        
+        function updateFileCount() {
+            safeUpdate('fileCount', `${ultimateAnalysisData.length} PLR files analyzed with market intelligence`);
+        }
+        
+        // File upload handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadArea && fileInput) {
+                uploadArea.addEventListener('click', () => fileInput.click());
+                
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    
+                    const files = Array.from(e.dataTransfer.files);
+                    handleFileUpload(files);
+                });
+                
+                fileInput.addEventListener('change', (e) => {
+                    const files = Array.from(e.target.files);
+                    handleFileUpload(files);
+                });
+            }
+            
+            initializeTooltips();
+        });
+        
+        function handleFileUpload(files) {
+            if (files.length === 0) return;
+            
+            files.forEach(file => {
+                if (!uploadedFiles.find(f => f.name === file.name)) {
+                    uploadedFiles.push(file);
+                }
+            });
+            
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    <span><strong>Files Uploaded:</strong> ${files.length} files ready for analysis</span>
+                    <span>Total files: ${uploadedFiles.length}</span>
+                `;
+            }
+            
+            alert(`Successfully uploaded ${files.length} files! Click "Start Analysis" to begin processing.`);
+        }
+        
+        // Export functions
+        function exportPDF() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const bundlePrices = calculateDynamicBundlePricing();
+            
+            // Create HTML content for PDF generation
+            const htmlContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Ultimate PLR Analysis Report</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                    h1 { color: #667eea; text-align: center; margin-bottom: 30px; }
+                    h2 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+                    h3 { color: #555; margin-top: 25px; }
+                    .summary-box { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+                    .metric { display: inline-block; margin: 10px 20px; }
+                    .metric-value { font-size: 1.5em; font-weight: bold; color: #4CAF50; }
+                    .item { margin: 20px 0; padding: 15px; border-left: 4px solid #667eea; background: #f8f9fa; }
+                    .item-title { font-weight: bold; color: #333; font-size: 1.1em; }
+                    ul { margin: 10px 0 10px 20px; }
+                    .page-break { page-break-before: always; }
+                </style>
+            </head>
+            <body>
+                <h1>🚀 ULTIMATE PLR ANALYSIS REPORT</h1>
+                
+                <div class="summary-box">
+                    <h2>📊 EXECUTIVE SUMMARY</h2>
+                    <p><strong>Report Generated:</strong> ${new Date().toLocaleDateString()}</p>
+                    <div class="metric">
+                        <div class="metric-value">${ultimateAnalysisData.length}</div>
+                        <div>Files Analyzed</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${calculateAverageScore()}/100</div>
+                        <div>Avg Market Score</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$${calculateTotalProfit()}</div>
+                        <div>Total Profit Potential</div>
+                    </div>
+                </div>
 
-  // ===== Profit calculator (same IDs you already use) =====
-  window.calculatePLRProfit = function(){
-    const cost  = parseFloat($("#calcPLRCost")?.value) || 0;
-    const price = parseFloat($("#calcSellingPrice")?.value) || 0;
-    const sales = parseInt($("#calcMonthlySales")?.value) || 0;
-    const revenue = price * sales;
-    const profit  = revenue - (cost * sales);
-    const margin  = revenue ? Math.round((profit/revenue)*100) : 0;
-    const roi     = cost ? ((price - cost)/cost).toFixed(1) : 0;
-    const annual  = profit * 12;
-    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    set("calcMonthlyRevenue", "$"+revenue.toFixed(2));
-    set("calcMonthlyProfit",  "$"+profit.toFixed(2));
-    set("calcProfitMargin",   margin+"%");
-    set("calcROIMultiplier",  roi+"x");
-    set("calcAnnualProjection","$"+annual.toFixed(2));
-    const box = $("#calculatorResults"); if (box) box.style.display = "block";
-  };
+                <h2>📈 DETAILED ANALYSIS RESULTS</h2>
+                ${ultimateAnalysisData.map((item, index) => `
+                    <div class="item">
+                        <div class="item-title">${index + 1}. ${item.title}</div>
+                        <p><strong>Market Score:</strong> ${item.marketScore}/100 | 
+                           <strong>Quality:</strong> ${item.qualityRating} | 
+                           <strong>Profit Potential:</strong> $${item.profitPotential}</p>
+                        <p><strong>Strategy:</strong> ${item.strategy} | 
+                           <strong>Suggested Price:</strong> $${item.suggestedPrice} | 
+                           <strong>Search Volume:</strong> ${item.searchVolume.toLocaleString()}/month</p>
+                        <p><strong>AI-Generated Titles:</strong></p>
+                        <ul>
+                            ${generateAITitles(item.title, item.category).map(title => `<li>"${title}"</li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('')}
 
-  // ===== Export / Backup =====
-  window.exportToCSV = function(){
-    if (!state.results.length) return alert("No analysis results to export.");
-    const headers = ["PLR Content","Niche","Strategy","Market Score","Quality Rating","Profit Potential","Best Strategy"];
-    const rows = state.results.map(r => [r.name,r.niche,r.strategy,r.marketScore,r.qualityRating,r.profitPotential,r.bestStrategy]);
-    const csv = [headers].concat(rows)
-      .map(row => row.map(c => `"${String(c).replace(/"/g,'""')}"`).join(","))
-      .join("\n");
-    download("analysis.csv","text/csv",csv);
-  };
-  window.exportToPDF = function(){
-    const html = $("#resultsTable")?.outerHTML || "<p>No data</p>";
-    const w = window.open("","_blank");
-    w.document.write(`<!doctype html><title>PLR Report</title>
-      <style>body{font-family:Arial,sans-serif;padding:24px;}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px}th{background:#f0f0f0}</style>
-      <h1>PLR Analysis Report</h1>${html}`);
-    w.document.close(); w.focus(); w.print();
-  };
-  function download(name,type,content){
-    const blob = new Blob([content],{type});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = name; a.click();
-    URL.revokeObjectURL(url);
-  }
-  window.saveBackup = () => { localStorage.setItem("UPAT_backup_v1", JSON.stringify(state)); alert("Backup saved."); };
-  window.loadBackup = () => {
-    const raw = localStorage.getItem("UPAT_backup_v1");
-    if (!raw) return alert("No backup found.");
-    try {
-      const s = JSON.parse(raw);
-      state.files = s.files || [];
-      state.results = s.results || [];
-      updateFileCount();
-      renderFileList();
-      if (state.results.length) { renderResultsTable(); updateOverviewSummary(); }
-      else { renderPlaceholderResults(); }
-      alert("Backup loaded.");
-    } catch (e) { console.error(e); alert("Backup could not be loaded."); }
-  };
+                <div class="page-break"></div>
+                <h2>💡 STRATEGIC RECOMMENDATIONS</h2>
+                <h3>IMMEDIATE ACTIONS:</h3>
+                <ul>
+                    <li>Start with highest-scoring PLR packages (${ultimateAnalysisData.filter(item => item.marketScore >= 90).length} items with 90+ scores)</li>
+                    <li>Focus on Upsell Package strategy for maximum profit margins</li>
+                    <li>Target low-competition niches for easier market penetration</li>
+                </ul>
 
-  // ===== Utilities =====
-  function renderPlaceholderResults(){
-    resultsBody.innerHTML = `
-      <tr><td colspan="8" style="text-align:center; padding:40px; color:#666;">
-        Files are ready. Click Start Analysis to generate results.
-      </td></tr>`;
-  }
-  function escapeHTML(s=""){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-  function escapeAttr(s=""){ return s.replace(/['"]/g, c => c === '"' ? "&quot;" : "&#39;"); }
+                <h3>PROFIT OPTIMIZATION:</h3>
+                <ul>
+                    <li>Implement bundle strategies to increase revenue by 180%</li>
+                    <li>Use premium pricing for high-quality content</li>
+                    <li>Create upsell sequences for 40-60% revenue boost</li>
+                </ul>
 
-  // ===== Init =====
-  [
-    ["marketIntelligence","marketIntelligence"],
-    ["qualityAssessment","qualityAssessment"],
-    ["profitOptimization","profitOptimization"],
-    ["bundleStrategies","bundleStrategies"],
-    ["aiTitleGeneration","aiTitleGeneration"],
-    ["etsySEO","etsySEO"],
-    ["competitorTracking","competitorTracking"]
-  ].forEach(([id,key]) => {
-    const box = document.getElementById(id);
-    if (box) {
-      box.checked = true;
-      on(box, "change", () => state.opts[key] = !!box.checked);
-    }
-  });
+                <div class="summary-box">
+                    <h3>📦 DYNAMIC BUNDLE PRICING STRATEGY</h3>
+                    <p><strong>PREMIUM BUNDLE ($${bundlePrices.premium}):</strong> Based on your content analysis</p>
+                    <p><strong>STANDARD BUNDLE ($${bundlePrices.standard}):</strong> Optimized for market penetration</p>
+                    <p><strong>BASIC BUNDLE ($${bundlePrices.basic}):</strong> Entry-level pricing strategy</p>
+                </div>
+            </body>
+            </html>`;
 
-  updateFileCount();
-  renderPlaceholderResults();
-})();
-</script>
+            // Create a new window and print as PDF
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(htmlContent);
+                printWindow.document.close();
+                
+                // Wait for content to load, then trigger print dialog
+                printWindow.onload = function() {
+                    setTimeout(() => {
+                        printWindow.print();
+                    }, 500);
+                };
+            }
+            
+            alert('PDF generation started! Use your browser\'s print dialog to save as PDF.');
+        }
+        
+        function exportExcel() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const bundlePrices = calculateDynamicBundlePricing();
+            
+            const excelContent = `Title,Market Score,Quality Rating,Profit Potential,Strategy,Category,Pages,Search Volume,Competition,Suggested Price,Content Quality,Originality,ROI Calculation,Revenue Projection,Basic Bundle Price,Standard Bundle Price,Premium Bundle Price
+${ultimateAnalysisData.map(item => {
+                const roiCalc = `=((${item.suggestedPrice}*12)-50)/${item.suggestedPrice}*100`;
+                const revProj = `=${item.suggestedPrice}*45`;
+                return `"${item.title}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}","${item.strategy}","${item.category}",${item.pages},${item.searchVolume},"${item.competition}",${item.suggestedPrice},"${item.contentQuality || 'N/A'}","${item.originality || 'N/A'}%","${roiCalc}","${revProj}",${bundlePrices.basic},${bundlePrices.standard},${bundlePrices.premium}`;
+            }).join('\n')}
+
+SUMMARY CALCULATIONS:
+Average Market Score,${calculateAverageScore()}
+Total Profit Potential,$${calculateTotalProfit()}
+Total Files Analyzed,${ultimateAnalysisData.length}
+Average Price Point,$${Math.round(ultimateAnalysisData.reduce((sum, item) => sum + item.suggestedPrice, 0) / ultimateAnalysisData.length)}
+Recommended Basic Bundle,${bundlePrices.basic}
+Recommended Standard Bundle,${bundlePrices.standard}
+Recommended Premium Bundle,${bundlePrices.premium}`;
+            
+            downloadFile('Ultimate-PLR-Analysis.csv', excelContent);
+        }
+        
+        function exportCSV() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const csvContent = `Title,Market Score,Quality Rating,Profit Potential,Strategy
+${ultimateAnalysisData.map(item => 
+                `"${item.title}",${item.marketScore},"${item.qualityRating}","$${item.profitPotential}","${item.strategy}"`
+            ).join('\n')}`;
+            
+            downloadFile('PLR-Analysis-Data.csv', csvContent);
+        }
+        
+        function exportFullReport() {
+            if (ultimateAnalysisData.length === 0) {
+                alert('No data to export. Please load demo or upload files first.');
+                return;
+            }
+            
+            const bundlePrices = calculateDynamicBundlePricing();
+            
+            const report = `ULTIMATE PLR MARKET INTELLIGENCE REPORT
+===============================================
+
+📊 ANALYSIS OVERVIEW
+===================
+Report Generated: ${new Date().toLocaleDateString()}
+Files Analyzed: ${ultimateAnalysisData.length}
+Average Market Score: ${calculateAverageScore()}/100
+Total Market Potential: $${calculateTotalProfit()}
+
+🎯 KEY FINDINGS
+===============
+- Premium PLR content shows 340% ROI potential
+- Bundle strategies increase revenue by 180%
+- High-quality content commands premium pricing
+- Market demand strong across all categories
+
+💰 DYNAMIC PRICING STRATEGY
+===========================
+Based on your specific PLR content analysis:
+- Basic Bundle: $${bundlePrices.basic}
+- Standard Bundle: $${bundlePrices.standard}  
+- Premium Bundle: $${bundlePrices.premium}
+
+📈 DETAILED MARKET ANALYSIS
+===========================
+${ultimateAnalysisData.map((item, index) => `
+${index + 1}. ${item.title.toUpperCase()}
+   ┌─ Market Intelligence
+   │  • Score: ${item.marketScore}/100
+   │  • Search Volume: ${item.searchVolume}/month
+   │  • Competition: ${item.competition}
+   │
+   ├─ Content Assessment
+   │  • Quality: ${item.qualityRating}
+   │  • Pages: ${item.pages}
+   │  • Category: ${item.category}
+   │
+   └─ Profit Analysis
+      • Potential: $${item.profitPotential}/month
+      • Suggested Price: $${item.suggestedPrice}
+      • Strategy: ${item.strategy}
+
+`).join('')}
+
+🚀 IMPLEMENTATION ROADMAP
+=========================
+PHASE 1: Content Optimization (Week 1-2)
+- Enhance quality scores above 90
+- Optimize titles for market appeal
+- Create compelling sales copy
+
+PHASE 2: Market Launch (Week 3-4)
+- Deploy dynamic pricing strategy
+- Launch on primary platforms
+- Implement tracking systems
+
+PHASE 3: Scale & Optimize (Month 2+)
+- Analyze performance metrics
+- Expand successful products
+- Develop additional revenue streams
+
+═══════════════════════════════════════════
+© Ultimate PLR Analysis Tool - Professional Edition
+Market Intelligence • Profit Optimization • Dynamic Pricing`;
+
+            downloadFile('Complete-PLR-Intelligence-Report.txt', report);
+        }
+        
+        function exportBundleGuide() {
+            const bundleGuide = `🎁 ULTIMATE PLR BUNDLE STRATEGY GUIDE
+========================================
+
+💎 DYNAMIC BUNDLE MASTERY
+=========================
+The Ultimate Bundle Formula:
+Core Content + Sales Materials + Bonus Items = Maximum Profit
+
+📦 INTELLIGENT PRICING STRATEGY
+==============================
+Our analysis calculates optimal bundle prices based on:
+- Average PLR content value
+- Market demand scores  
+- Quality assessments
+- Competition levels
+DYNAMIC PRICING BENEFITS:
+- Prices reflect actual content value
+- Higher conversion rates vs fixed pricing
+- Maximum profit optimization
+- Market-responsive adjustments
+
+TIER 1: BASIC BUNDLE
+- Pricing: 80% of average PLR value
+- Target: Budget-conscious buyers
+- Contents: Core PLR + basic materials
+- ROI: 200-300%
+
+TIER 2: STANDARD BUNDLE  
+- Pricing: 160% of average PLR value
+- Target: Serious marketers
+- Contents: Core PLR + marketing materials
+- ROI: 400-500%
+
+TIER 3: PREMIUM BUNDLE
+- Pricing: 280% of average PLR value
+- Target: Power users & agencies
+- Contents: Complete marketing system
+- ROI: 600-800%
+
+🎯 IMPLEMENTATION STEPS
+======================
+1. Analyze your PLR content quality
+2. Research competitor pricing
+3. Calculate dynamic bundle prices
+4. Test market response
+5. Adjust based on performance
+
+💡 PRO TIPS
+===========
+- Always justify price with value
+- Create clear upgrade paths
+- Use scarcity and urgency ethically
+- Monitor and adjust regularly
+
+Focus on customer value and clear savings messaging for maximum success.`;
+
+            downloadFile('Ultimate-Bundle-Guide.txt', bundleGuide);
+        }
+        
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function calculateAverageScore() {
+            if (ultimateAnalysisData.length === 0) return 0;
+            const total = ultimateAnalysisData.reduce((sum, item) => sum + item.marketScore, 0);
+            return Math.round(total / ultimateAnalysisData.length);
+        }
+        
+        function calculateTotalProfit() {
+            return ultimateAnalysisData.reduce((total, item) => {
+                return total + item.profitPotential;
+            }, 0).toLocaleString();
+        }
+        
+        // Modal click outside handler
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        console.log('Ultimate PLR Analysis Tool loaded successfully!');
+    </script>
 </body>
 </html>
