@@ -2016,11 +2016,23 @@ Focus on customer value and clear savings messaging for maximum success.`;
     return Array.isArray(window.uploadedFiles) && window.uploadedFiles.length > 0;
   }
 
-  function getFileNames(){
-    return hasRealFiles()
-      ? window.uploadedFiles.map(f => (f && f.name) ? f.name : String(f))
-      : [];
-  }
+ function getFileNames(){
+  if (!hasRealFiles()) return [];
+  return window.uploadedFiles
+    .map(function (f){
+      if (!f) return "";
+      if (typeof f === "string") return f;
+      // accept multiple shapes your app uses
+      if (f.name) return f.name;
+      if (f.title) return f.title;
+      if (f.fileName) return f.fileName;
+      if (f.filename) return f.filename;
+      // last resort: something stable to tokenize
+      try { return (f.label || f.id || JSON.stringify(f)).slice(0,120); }
+      catch { return ""; }
+    })
+    .filter(Boolean);
+}
 
   function tokenize(words){
     const stop = new Set([
