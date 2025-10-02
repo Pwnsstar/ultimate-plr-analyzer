@@ -2016,22 +2016,40 @@ Focus on customer value and clear savings messaging for maximum success.`;
     return Array.isArray(window.uploadedFiles) && window.uploadedFiles.length > 0;
   }
 
- function getFileNames(){
-  if (!hasRealFiles()) return [];
-  return window.uploadedFiles
-    .map(function (f){
-      if (!f) return "";
-      if (typeof f === "string") return f;
-      // accept multiple shapes your app uses
-      if (f.name) return f.name;
-      if (f.title) return f.title;
-      if (f.fileName) return f.fileName;
-      if (f.filename) return f.filename;
-      // last resort: something stable to tokenize
-      try { return (f.label || f.id || JSON.stringify(f)).slice(0,120); }
-      catch { return ""; }
-    })
-    .filter(Boolean);
+function getFileNames(){
+  // 1) Try uploadedFiles (covers demo/uploads when available)
+  let names = [];
+  if (hasRealFiles()){
+    names = names.concat(
+      window.uploadedFiles
+        .map(function (f){
+          if (!f) return "";
+          if (typeof f === "string") return f;
+          if (f.name) return f.name;
+          if (f.title) return f.title;
+          if (f.fileName) return f.fileName;
+          if (f.filename) return f.filename;
+          try { return (f.label || f.id || JSON.stringify(f)).slice(0,120); }
+          catch { return ""; }
+        })
+        .filter(Boolean)
+    );
+  }
+
+  // 2) DOM fallback: grab the rendered item headers under AI Title Suggestions
+  const cont = document.getElementById("aiTitleSuggestions");
+  if (cont){
+    const headers = cont.querySelectorAll("h5");
+    if (headers && headers.length){
+      const domNames = Array.from(headers)
+        .map(h => (h.textContent || "").trim())
+        .filter(Boolean);
+      names = names.concat(domNames);
+    }
+  }
+
+  // De-dupe and return
+  return Array.from(new Set(names));
 }
 
   function tokenize(words){
@@ -2182,7 +2200,20 @@ Focus on customer value and clear savings messaging for maximum success.`;
         generateForOptimizeTab();
       }
     });
+      // Rebuild whenever AI Title Suggestions section updates (analysis re-renders it)
+
     obs.observe(fc, { childList: true, characterData: true, subtree: true });
+      (function(){
+  const target = document.getElementById("aiTitleSuggestions");
+  if (!target || typeof MutationObserver === "undefined") return;
+  const obs = new MutationObserver(function(){
+    if (document.getElementById("optimize")?.classList.contains("active")){
+      setTimeout(generateForOptimizeTab, 40);
+    }
+  });
+  obs.observe(target, { childList: true, subtree: true });
+})();
+
   })();
 
   // rebuild after demo loads sample files
