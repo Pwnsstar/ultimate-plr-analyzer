@@ -2052,106 +2052,178 @@ function getFileNames(){
   return Array.from(new Set(names));
 }
 
-  function tokenize(words){
-    const stop = new Set([
-      "and","or","the","a","an","to","for","of","with","in","on","by","your","my",
-      "kit","pack","set","file","files","pdf","doc","docx","txt","zip","xls","xlsx",
-      "template","templates","plr","bundle","guide","blueprint","journal","planner",
-      // anti-noise from placeholders:
-      "upload","content","demo","see","professional","analysis","load"
-    ]);
-    return words
-      .join(" ")
-      .toLowerCase()
-      .replace(/[_\-.]+/g," ")
-      .replace(/[^a-z0-9 ]+/g," ")
-      .split(/\s+/)
-      .filter(w => w && w.length > 2 && !stop.has(w));
+<script>
+/* ---------- SMART TEXT UTILITIES (drop-in) ---------- */
+
+function __splitWords(s){
+  // split underscores/hyphens/camelCase/numbers into words
+  return String(s || "")
+    .replace(/[_\-\.]+/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/(\d+)([A-Za-z])/g, "$1 $2")
+    .replace(/([A-Za-z])(\d+)/g, "$1 $2")
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function __singularize(w){
+  // very light singularization
+  if (w.endsWith("ies") && w.length > 4) return w.slice(0,-3)+"y";
+  if (w.endsWith("sses") || w.endsWith("sses")) return w.slice(0,-2);
+  if (w.endsWith("s") && w.length > 3) return w.slice(0,-1);
+  return w;
+}
+
+const __STOP = new Set([
+  // generic filler we never want as tags
+  "the","a","an","and","or","for","of","to","in","on","by","your","my",
+  "with","from","at","this","that","it","you","we","us","our","their",
+
+  // file/PLR junk
+  "plr","mrr","rr","kit","pack","set","file","files","pdf","doc","docx","txt",
+  "zip","xls","xlsx","template","templates","bundle","guidepdf","blueprintpdf",
+  "journal","planner","upload","content","demo","see","professional","analysis",
+  "load","products","product","part","pages","final","draft","v1","v2",
+
+  // “million” / numbers & noise words
+  "million","100","200","300","400","500","10","60","80","90"
+]);
+
+function tokenizeSmart(names){
+  // names: array of filenames or labels
+  const raw = [];
+  names.forEach(n => {
+    const words = __splitWords(n);
+    raw.push(...words);
+  });
+
+  // keep only clean, meaningful words
+  const kept = [];
+  for (let w of raw){
+    if (!w) continue;
+    // remove punctuation/odd chars
+    w = w.replace(/[^a-z0-9]+/g, "");
+    if (!w) continue;
+
+    // drop pure numbers or long number-ish
+    if (/^\d+$/.test(w)) continue;
+
+    // normalize weirdness like "productdscs" -> still too messy? drop if too long w/out vowels
+    if (w.length > 24) continue;
+
+    const short = __singularize(w);
+    if (__STOP.has(short)) continue;
+
+    // require at least one vowel unless it's a known acronym
+    if (!/[aeiou]/.test(short) && short.length > 3) continue;
+
+    kept.push(short);
+  }
+  return kept;
+}
+
+function buildKeywordPhrases(tokens, max=15){
+  // frequency count
+  const freq = new Map();
+  tokens.forEach(t => freq.set(t, (freq.get(t) || 0)+1));
+
+  // candidate unigrams (filter too-short & too-generic again)
+  const unigrams = [...freq.entries()]
+    .filter(([t,c]) => t.length >= 3)
+    .sort((a,b) => b[1]-a[1])
+    .map(([t]) => t);
+
+  // build bigrams from sequential tokens (same source bag)
+  const bigramFreq = new Map();
+  for (let i=0; i<tokens.length-1; i++){
+    const a = tokens[i], b = tokens[i+1];
+    if (!a || !b) continue;
+    if (__STOP.has(a) || __STOP.has(b)) continue;
+    const phrase = `${a} ${b}`.trim();
+    if (phrase.length < 4 || phrase.length > 20) continue; // Etsy tag limit
+    bigramFreq.set(phrase, (bigramFreq.get(phrase)||0)+1);
+  }
+  const bigrams = [...bigramFreq.entries()].sort((a,b)=>b[1]-a[1]).map(([p])=>p);
+
+  // scoring: prefer bigrams (more specific), then strong unigrams
+  const out = [];
+  const used = new Set();
+  function pushIfOk(tag){
+    const t = tag.trim();
+    if (!t) return;
+    if (t.length > 20) return;             // Etsy ≤20 chars
+    if (used.has(t)) return;
+    // drop last safety for general words
+    if (__STOP.has(t)) return;
+    used.add(t);
+    out.push(t);
   }
 
-  function uniq(arr){ const s=new Set(), out=[]; for(const x of arr){ if(!s.has(x)){ s.add(x); out.push(x); } } return out; }
-  function titleCase(s){ return s.replace(/\b[a-z]/g, m => m.toUpperCase()); }
-
-  function buildPhrases(tokens){
-    if (!tokens.length) return [];
-    const singles = tokens.slice(0,12);
-    const pairs = []; for (let i=0;i<tokens.length-1;i++) pairs.push(tokens[i]+" "+tokens[i+1]);
-    const triples=[]; for (let i=0;i<tokens.length-2;i++) triples.push(tokens[i]+" "+tokens[i+1]+" "+tokens[i+2]);
-
-    const longTail=[];
-    singles.slice(0,5).forEach(s => ["printable","templates","digital"].forEach(m => longTail.push(s+" "+m)));
-    pairs.slice(0,5).forEach(p => { longTail.push(p+" printable"); longTail.push(p+" template"); });
-
-    return uniq(
-      singles.slice(0,8).concat(pairs.slice(0,8)).concat(triples.slice(0,6)).concat(longTail)
-    ).slice(0,15).map(titleCase);
+  // take top bigrams first
+  for (const p of bigrams){
+    pushIfOk(p);
+    if (out.length >= max) break;
   }
-
-  // ---------- Self-healing mount ----------
-  function ensureBlockExists(){
-    if (document.getElementById("etsyKeywordsBlock")) return true;
-
-    const anchor = document.getElementById("aiTitleSuggestions");
-    if (!anchor || !anchor.parentElement) return false; // wait until Optimize card exists
-
-    const wrap = document.createElement("div");
-    wrap.id = "etsyKeywordsBlock";
-    wrap.style.marginTop = "24px";
-    wrap.innerHTML =
-      '<h4 style="margin: 10px 0;">🛍️ Etsy SEO Keywords ' +
-      '<span style="font-weight:normal; color:#666;">(15 suggestions)</span></h4>' +
-      '<div id="etsyKeywordsList"></div>';
-
-    // insert directly AFTER the AI Title Suggestions block, inside the same white card
-    anchor.parentElement.insertBefore(wrap, anchor.nextSibling);
-    return true;
-  }
-
-  function renderKeywords(list){
-    const wrap = document.getElementById("etsyKeywordsList");
-    if (!wrap) return;
-    wrap.innerHTML = "";
-
-    if (!list.length){
-      wrap.innerHTML = '<div style="color:#666">Upload content or load the demo, then open Optimize to see keywords.</div>';
-      return;
+  // then add unigrams to fill
+  if (out.length < max){
+    for (const u of unigrams){
+      pushIfOk(u);
+      if (out.length >= max) break;
     }
+  }
+  return out.slice(0,max);
+}
 
-    list.forEach(function(k){
-      const row = document.createElement("div");
-      row.style.display = "flex";
-      row.style.alignItems = "center";
-      row.style.justifyContent = "space-between";
-      row.style.padding = "10px 12px";
-      row.style.border = "1px solid #eee";
-      row.style.borderRadius = "8px";
-      row.style.margin = "6px 0";
-      row.style.background = "#fff";
+function renderKeywords(listEl, keywords){
+  const el = (typeof listEl === "string") ? document.querySelector(listEl) : listEl;
+  if (!el) return;
+  el.innerHTML = keywords.map(k => `
+    <div style="padding:10px 12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+      <span>${k}</span>
+      <span style="font-size:.85em;color:#666;cursor:pointer;" onclick="copyTitle('${k.replace(/'/g,"\\'")}')">Click to copy</span>
+    </div>
+  `).join("");
+}
 
-      const text = document.createElement("div");
-      text.textContent = k;
-      text.style.overflow = "hidden";
-      text.style.whiteSpace = "nowrap";
-      text.style.textOverflow = "ellipsis";
+/* ---------- TITLE GENERATOR (Etsy-ish) ---------- */
 
-      const btn = document.createElement("button");
-      btn.textContent = "Click to copy";
-      btn.style.border = "none";
-      btn.style.background = "transparent";
-      btn.style.color = "#667eea";
-      btn.style.cursor = "pointer";
-      btn.style.fontWeight = "600";
-      btn.onclick = function(){
-        navigator.clipboard.writeText(k).then(function(){
-          btn.textContent = "Copied!";
-          setTimeout(()=> btn.textContent = "Click to copy", 1200);
-        });
-      };
+const __BENEFITS = [
+  "Step-by-Step", "Complete Guide", "Proven Strategies",
+  "Mastery Guide", "Blueprint", "Fast Track", "Starter Kit"
+];
 
-      row.appendChild(text);
-      row.appendChild(btn);
-      wrap.appendChild(row);
-    });
+function toTitleCase(s){
+  return s.replace(/\w\S*/g, (w)=> w[0].toUpperCase()+w.slice(1));
+}
+
+function generateEtsyTitlesFromKeywords(baseLabel, keywords, count=5){
+  // baseLabel is optional; we mostly use keywords
+  const primary = (keywords[0] || "").trim();
+  const second  = (keywords[1] || "").trim();
+  const third   = (keywords[2] || "").trim();
+  const benefit = __BENEFITS[Math.floor(Math.random()*__BENEFITS.length)];
+
+  const combos = [
+    [primary, benefit],
+    [primary, second, benefit],
+    [primary, third, benefit],
+    [second, primary, benefit],
+    [primary, second, third]
+  ];
+
+  const titles = [];
+  for (const parts of combos){
+    const clean = parts.filter(Boolean).join(" • ");
+    if (!clean) continue;
+    // Etsy allows long titles (~140 chars), but keep tidy
+    const nice = toTitleCase(clean).slice(0, 120);
+    if (!titles.includes(nice)) titles.push(nice);
+    if (titles.length >= count) break;
+  }
+  return titles;
+}
+</script>
   }
 
   function generateForOptimizeTab(){
