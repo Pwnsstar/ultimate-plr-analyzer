@@ -2009,28 +2009,27 @@ Focus on customer value and clear savings messaging for maximum success.`;
         });
         
         console.log('Ultimate PLR Analysis Tool loaded successfully!');
-        /* ===== Etsy SEO Keywords: non-destructive add-on ===== */
+/* ===== Etsy SEO Keywords: non-destructive add-on (revised) ===== */
 (function(){
-  var ranOnce = false;
+  // --- helpers ---------------------------------------------------
+  function hasRealFiles(){
+    return Array.isArray(window.uploadedFiles) && window.uploadedFiles.length > 0;
+  }
 
   function getFileNames(){
-    if (Array.isArray(window.uploadedFiles) && window.uploadedFiles.length){
-      return window.uploadedFiles.map(f => f.name || String(f));
+    // ONLY trust uploadedFiles; ignore placeholders in the DOM
+    if (hasRealFiles()){
+      return window.uploadedFiles.map(f => (f && f.name) ? f.name : String(f));
     }
-    var names = [];
-    var rows = document.querySelectorAll("#resultsTable tbody tr td:first-child");
-    rows.forEach(td => {
-      var t = (td && td.textContent || "").trim();
-      if (t) names.push(t);
-    });
-    return names;
+    return [];
   }
 
   function tokenize(words){
     const stop = new Set([
       "and","or","the","a","an","to","for","of","with","in","on","by","your","my",
       "kit","pack","set","file","files","pdf","doc","docx","txt","zip","xls","xlsx",
-      "template","templates","plr","bundle","guide","blueprint","journal","planner"
+      "template","templates","plr","bundle","guide","blueprint","journal","planner",
+      "upload","content","demo","see","professional","analysis","load"  // anti-noise
     ]);
     return words
       .join(" ")
@@ -2050,6 +2049,7 @@ Focus on customer value and clear savings messaging for maximum success.`;
   function titleCase(s){ return s.replace(/\b[a-z]/g, m => m.toUpperCase()); }
 
   function buildPhrases(tokens){
+    if (!tokens.length) return [];
     const singles = tokens.slice(0,12);
     const pairs   = [];
     for (let i=0; i<tokens.length-1; i++) pairs.push(tokens[i]+" "+tokens[i+1]);
@@ -2057,7 +2057,8 @@ Focus on customer value and clear savings messaging for maximum success.`;
     for (let i=0; i<tokens.length-2; i++) triples.push(tokens[i]+" "+tokens[i+1]+" "+tokens[i+2]);
 
     const longTail = [];
-    singles.slice(0,5).forEach(s => ["printable","templates","digital"].forEach(m => longTail.push(s+" "+m)));
+    singles.slice(0,5).forEach(s => ["printable","templates","digital"]
+      .forEach(m => longTail.push(s+" "+m)));
     pairs.slice(0,5).forEach(p => { longTail.push(p+" printable"); longTail.push(p+" template"); });
 
     const all = uniq(
@@ -2074,10 +2075,12 @@ Focus on customer value and clear savings messaging for maximum success.`;
     const wrap = document.getElementById("etsyKeywordsList");
     if (!wrap) return;
     wrap.innerHTML = "";
+
     if (!list.length){
-      wrap.innerHTML = `<div style="color:#666">Upload files or run analysis, then open Optimize to see keywords.</div>`;
+      wrap.innerHTML = `<div style="color:#666">Upload content or load the demo, then open Optimize to see keywords.</div>`;
       return;
     }
+
     list.forEach(function(k){
       const row = document.createElement("div");
       row.style.display = "flex";
@@ -2115,19 +2118,26 @@ Focus on customer value and clear savings messaging for maximum success.`;
     });
   }
 
+  // --- main trigger ----------------------------------------------
   function generateForOptimizeTab(){
     const names  = getFileNames();
+    if (!names.length){
+      // no real files yet → show placeholder
+      renderKeywords([]);
+      return;
+    }
     const tokens = tokenize(names);
     const list   = buildPhrases(tokens);
     renderKeywords(list);
-    ranOnce = true;
   }
 
+  // Build when user opens Optimize tab
   const optimizeBtn = document.querySelector(`.tab[onclick="showTab('optimize')"]`);
   if (optimizeBtn){
     optimizeBtn.addEventListener("click", generateForOptimizeTab, { passive: true });
   }
 
+  // If Optimize already open on load
   document.addEventListener("DOMContentLoaded", function(){
     const optimizeTab = document.getElementById("optimize");
     if (optimizeTab && optimizeTab.classList.contains("active")){
@@ -2135,11 +2145,38 @@ Focus on customer value and clear savings messaging for maximum success.`;
     }
   });
 
+  // Rebuild when your app dispatches filesReady (your code already does this)
   document.addEventListener("filesReady", function(){
     if (document.getElementById("optimize")?.classList.contains("active")){
       generateForOptimizeTab();
     }
   });
+
+  // Extra safety: observe the file counter; when it changes, regenerate if Optimize is visible
+  (function(){
+    const fc = document.getElementById("fileCount");
+    if (!fc || typeof MutationObserver === "undefined") return;
+    const obs = new MutationObserver(function(){
+      if (document.getElementById("optimize")?.classList.contains("active")){
+        generateForOptimizeTab();
+      }
+    });
+    obs.observe(fc, { childList: true, characterData: true, subtree: true });
+  })();
+
+  // Also rebuild after demo button loads sample files
+  (function(){
+    const demoBtn = document.querySelector(".demo-button");
+    if (!demoBtn) return;
+    demoBtn.addEventListener("click", function(){
+      setTimeout(function(){
+        if (document.getElementById("optimize")?.classList.contains("active")){
+          generateForOptimizeTab();
+        }
+      }, 150); // small delay so uploadedFiles gets set
+    }, { passive: true });
+  })();
+
 })();
 
     </script>
