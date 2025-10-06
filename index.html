@@ -2234,13 +2234,11 @@ function generateEtsyTitlesFromKeywords(baseLabel, keywords, count=5){
       return;
     }
 
-    const names = getFileNames();
-    if (!names.length){
-      renderKeywords([]); // placeholder only (no junk)
-      return;
-    }
-    renderKeywords(buildPhrases(tokenize(names)));
-  }
+ const names  = getFileNames();                 // you already have this
+const tokens = tokenizeSmart(names);           // NEW
+const tags   = buildKeywordPhrases(tokens, 15); // NEW (≤15 tags, each ≤20 chars)
+renderKeywords(tags);                          // NEW render into your existing list
+
 
   // ---------- Triggers ----------
   // when Optimize tab clicked
